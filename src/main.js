@@ -33,7 +33,8 @@ import { setupFluidNavigation, updateFluidNavigation } from './ui/fluid-navigati
 import { setupHeroTransition, updateHeroTransition, resetHeroTransition } from './systems/hero-transition.js';
 import { createStickyHeader, updateStickyHeader } from './ui/sticky-header.js';
 import { setupScrollReveal } from './ui/scroll-reveal.js';
-import { setupCategoryHub } from './ui/category-hub.js';
+import { setupCategoryHub, updateCategoryHubVisibility } from './ui/category-hub.js';
+import { createInteractionHint, updateInteractionHint } from './ui/interaction-hint.js';
 
 /**
  * Initialize the experience
@@ -90,6 +91,7 @@ async function init() {
     createStickyHeader();
     setupScrollReveal();
     setupCategoryHub();
+    createInteractionHint();
 
     setupUpdateLoop();
 
@@ -185,6 +187,12 @@ function setupUpdateLoop() {
 
         // Animate content slide during transition
         updateContentSlide(state.scrollProgress);
+
+        // Update category hub visibility (triggers reveals)
+        updateCategoryHubVisibility(state.scrollProgress);
+
+        // Update interactive scroll hint
+        updateInteractionHint(state.scrollProgress);
     });
 }
 

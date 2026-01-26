@@ -18,8 +18,8 @@ let targetTransitionProgress = 0;
 
 // Configuration
 const HERO_TRANSITION = {
-    FADE_START: 0.0,           // Start fading immediately
-    FADE_END: 0.5,             // Fully faded by 50% overshoot
+    FADE_START: 0.2,           // Start fading after 20% overshoot (protects against bounce)
+    FADE_END: 0.8,             // Fully faded by 80% overshoot
     LERP_SPEED: 6.0,           // Interpolation speed
 };
 

@@ -6,6 +6,7 @@
  */
 
 import { observeElement } from './scroll-reveal.js';
+import { isInContentMode } from '../systems/scroll.js';
 
 // Category data based on artist works
 const CATEGORIES = [
@@ -102,9 +103,11 @@ function createCategoryHubDOM() {
     hub.id = 'category-hub';
 
     hub.innerHTML = `
+        <div class="category-hub__watermark" aria-hidden="true">COLLECTION</div>
         <header class="category-hub__header" data-reveal>
-            <p class="category-hub__subtitle">Explore the Collection</p>
-            <h2 class="category-hub__title">Categories</h2>
+            <span class="category-hub__subtitle">Curated Series</span>
+            <h2 class="category-hub__title">The Collection</h2>
+            <div class="category-hub__divider"></div>
         </header>
         <div class="category-hub__grid reveal-stagger">
             ${CATEGORIES.map(cat => createCardHTML(cat)).join('')}
@@ -270,8 +273,12 @@ export function updateCategoryHubVisibility(scrollProgress) {
     const hub = document.getElementById('category-hub');
     if (!hub) return;
 
-    // Reveal cards when scrollProgress > 1.3 (content area is mostly visible)
-    if (scrollProgress > 1.3 && !hub.classList.contains('is-revealed')) {
+    // Reveal cards when:
+    // 1. scrollProgress > 1.1 (matches the COMMIT_THRESHOLD in scroll.js)
+    // 2. OR if we are explicitly in content mode (handles slow scroll / snap cases)
+    const shouldReveal = scrollProgress > 1.1 || isInContentMode();
+
+    if (shouldReveal && !hub.classList.contains('is-revealed')) {
         hub.classList.add('is-revealed');
 
         // Trigger individual card reveals with stagger

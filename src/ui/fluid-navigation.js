@@ -6,6 +6,7 @@
  */
 import { CONFIG } from '../config.js';
 import { state } from '../state.js';
+import { isInContentMode } from '../systems/scroll.js';
 
 // Canvas and context
 let canvas = null;
@@ -258,6 +259,20 @@ export function updateFluidNavigation(dt) {
     const targetProgress = state.targetScrollProgress;
     const isScrolling = state.isScrolling;
 
+    // Calculate visibility based on scroll
+    let navOpacity = 1;
+    if (isInContentMode()) {
+        navOpacity = 0;
+    } else if (scrollProgress > 1.0) {
+        // Fade out as we push towards transition (1.0 -> 1.15)
+        navOpacity = 1 - (scrollProgress - 1.0) / 0.15;
+        navOpacity = Math.max(0, Math.min(1, navOpacity));
+    }
+
+    // Update canvas visibility and interaction
+    canvas.style.opacity = navOpacity;
+    canvas.style.pointerEvents = navOpacity > 0.1 ? 'auto' : 'none';
+
     // Calculate target Y for active indicator
     const height = window.innerHeight;
     const marginTop = height * STYLE.MARGIN_VERTICAL;
@@ -362,14 +377,20 @@ export function updateFluidNavigation(dt) {
     }
 
     // Render
-    render(scrollProgress, isScrolling);
+    render(scrollProgress, isScrolling, navOpacity);
 }
 
 /**
  * Render the navigation
  */
-function render(scrollProgress, isScrolling) {
+function render(scrollProgress, isScrolling, opacity) {
     ctx.clearRect(0, 0, 200, window.innerHeight);
+
+    // Skip rendering if essentially invisible
+    if (opacity <= 0.01) return;
+
+    ctx.save(); // Save state for globalAlpha
+    ctx.globalAlpha = opacity;
 
     const numSplats = CONFIG.splats.length;
 
@@ -469,6 +490,8 @@ function render(scrollProgress, isScrolling) {
 
     // Draw particles
     renderParticles();
+
+    ctx.restore(); // Restore globalAlpha state
 }
 
 /**

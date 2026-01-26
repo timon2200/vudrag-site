@@ -71,20 +71,39 @@ export function setupScrollControl() {
 /**
  * Handle wheel events - routes between splat scroll and content scroll
  */
+// Accumulator for pull-to-dismiss behavior
+let exitScrollAccumulator = 0;
+const EXIT_SCROLL_THRESHOLD = 50; // Pixels of upward scroll needed to exit
+
+/**
+ * Handle wheel events - routes between splat scroll and content scroll
+ */
 function handleWheel(e) {
     const scrollHint = document.getElementById('scroll-hint');
     const isContentVisible = contentArea?.classList.contains('is-visible');
 
     if (isContentVisible) {
         // Content area is visible - check if we should return to gallery
-        if (e.deltaY < 0 && contentArea.scrollTop <= 0) {
-            // Scrolling UP at top of content - return to gallery
-            e.preventDefault();
-            exitContentMode();
-            return;
+
+        // Only track accumulation if we are at the very top (or negative due to bounce)
+        if (contentArea.scrollTop <= 0 && e.deltaY < 0) {
+            // Accumulate upward scroll (deltaY is negative when scrolling up)
+            exitScrollAccumulator += Math.abs(e.deltaY);
+
+            // If threshold crossed, trigger exit
+            if (exitScrollAccumulator > EXIT_SCROLL_THRESHOLD) {
+                e.preventDefault();
+                exitContentMode();
+                exitScrollAccumulator = 0; // Reset
+                return;
+            }
+        } else {
+            // Reset accumulator if scrolling down or not at top
+            exitScrollAccumulator = 0;
         }
+
+        // If explicitly preventing default for bounce handling, do it here
         // Otherwise let the event bubble to content area naturally
-        // DO NOT preventDefault - let content area scroll
         return;
     }
 
@@ -110,6 +129,11 @@ function handleWheel(e) {
 function handleContentScroll() {
     // Track when user is at top for potential exit
     state.contentScrollTop = contentArea?.scrollTop || 0;
+
+    // Reset accumulator if user scrolls down into content
+    if (state.contentScrollTop > 0) {
+        exitScrollAccumulator = 0;
+    }
 }
 
 /**
@@ -120,6 +144,7 @@ export function enterContentMode() {
 
     contentArea.classList.add('is-visible');
     contentArea.scrollTop = 0; // Start at top
+    exitScrollAccumulator = 0; // Reset accumulator
 
     console.log('📄 Entered content mode');
 }
@@ -133,9 +158,12 @@ export function exitContentMode() {
     // Remove the is-visible class so JS can control the transform
     contentArea.classList.remove('is-visible');
 
-    // Keep scrollProgress where it is (around 1.3+) so animation can play
-    // Only animate TARGET down - the lerp in main.js will smooth it
-    state.targetScrollProgress = 0.99; // Just below threshold
+    // Soft Exit: Set target to 1.15 instead of 1.25
+    // This allows the elastic physics (in updateMagneticSnap) to gently "pull" 
+    // the view back to 1.0 (Romislav) rather than snapping instantly.
+    // Reduced from 1.25 to 1.15 to prevent "bounce" from triggering hero fade-out
+    state.targetScrollProgress = 1.15;
+
     state.lastScrollTime = performance.now();
     state.isScrolling = true;
 
@@ -207,7 +235,8 @@ export function updateMagneticSnap() {
 
     // Overshoot region (>1.0) - entering content area
     if (state.targetScrollProgress > 1.0) {
-        const COMMIT_THRESHOLD = 1.3;
+        // Lower threshold to 1.1 (approx 70% visible) for "auto-scroll" feel
+        const COMMIT_THRESHOLD = 1.1;
 
         // If committed, enter content mode
         if (state.targetScrollProgress >= COMMIT_THRESHOLD) {
@@ -217,7 +246,8 @@ export function updateMagneticSnap() {
 
         // Below commit - elastic snap back
         const overshoot = state.targetScrollProgress - 1.0;
-        const snapStrength = 0.12;
+        // Reduced strength for softer return
+        const snapStrength = 0.08;
         state.targetScrollProgress -= overshoot * snapStrength;
         return;
     }
@@ -242,5 +272,6 @@ export function updateMagneticSnap() {
     }
 
     const snapProgress = snapToIndex / (numSplats - 1);
-    state.targetScrollProgress += (snapProgress - state.targetScrollProgress) * 0.08;
+    // Reduced snap speed for smoother feel (was 0.08)
+    state.targetScrollProgress += (snapProgress - state.targetScrollProgress) * 0.05;
 }

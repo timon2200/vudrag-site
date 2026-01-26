@@ -26,6 +26,7 @@ export function createParticleDebugPanel() {
         color: #f0ebe3;
         min-width: 260px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        display: none;
     `;
 
     panel.innerHTML = `
