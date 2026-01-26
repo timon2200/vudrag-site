@@ -1,0 +1,129 @@
+/**
+ * Sticky Header - Minimalist navigation that appears after scrolling
+ * Patek-inspired: centered logo, hamburger menu, blur background
+ */
+
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2.5rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 5, 8, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+        opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+}
+
+.sticky-header.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Logo - centered */
+.sticky-header .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #c9a77a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.sticky-header .logo:hover {
+    color: #e5d4b8;
+}
+
+/* Menu button - hamburger */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: #c9a77a;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover span {
+    background: #e5d4b8;
+}
+
+.menu-toggle:hover span:first-child {
+    transform: translateX(-3px);
+}
+
+.menu-toggle:hover span:last-child {
+    transform: translateX(3px);
+}
+
+/* Back to gallery link */
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8a8a9a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #c9a77a;
+}
+
+.back-link svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.back-link:hover svg {
+    transform: translateX(-3px);
+}
+
+/* Right side placeholder for balance */
+.header-spacer {
+    width: 30px;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(to right, #c9a77a, rgba(201, 167, 122, 0.3));
+    transition: width 0.1s linear;
+    width: 0;
+}

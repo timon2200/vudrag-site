@@ -1,0 +1,126 @@
+/**
+ * Hero Pinned - Premium Patek-style hero section styling
+ * Using overlay approach for content area
+ */
+
+/* Root scroll container */
+#scroll-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Hero section - fixed at top */
+#hero-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    will-change: transform, opacity;
+}
+
+/* Hero exit animation state */
+#hero-section.exiting {
+    pointer-events: none;
+}
+
+/* Canvas container */
+#hero-section #canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Content area - FIXED OVERLAY approach
+ * When visible, this overlays the entire screen
+ * Scrolling happens INSIDE this container
+ * Transform/opacity controlled by JS for smooth animation
+ */
+.content-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: #050508;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    will-change: transform, opacity;
+
+    /* Initially hidden - JS will animate */
+    transform: translateY(100vh);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* When content is fully active (post-transition) */
+.content-section.is-visible {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Hero overlay gradient - adds depth */
+.hero-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background:
+        radial-gradient(ellipse at center bottom, transparent 50%, rgba(5, 5, 8, 0.3) 100%),
+        linear-gradient(to bottom, transparent 70%, rgba(5, 5, 8, 0.6) 100%);
+}
+
+/* Hero scroll progress indicator */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.hero-scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-scroll-indicator span {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #8a8a9a;
+}
+
+.hero-scroll-indicator .progress-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.hero-scroll-indicator .progress-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3a3a4a;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.hero-scroll-indicator .progress-dot.active {
+    background: #c9a77a;
+    transform: scale(1.3);
+}
