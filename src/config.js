@@ -2,6 +2,7 @@
  * Configuration for Vudrag SuperSplat Experience
  */
 import { Color } from 'playcanvas';
+import { GALLERIES_DATA } from './data/galleries.js';
 
 /** Environment-based dev mode flag */
 export const IS_DEV = import.meta.env.DEV;
@@ -58,6 +59,14 @@ export const CONFIG = {
             }
         }
     ],
+    galleries: GALLERIES_DATA,
+    gallery: {
+        orbitSensitivity: 0.3,
+        zoomSensitivity: 0.1,
+        minZoom: 1.5,
+        maxZoom: 6.0,
+        autoRotateSpeed: 5.0
+    },
     camera: {
         baseDistance: 3.5,
         minDistance: 2.8,

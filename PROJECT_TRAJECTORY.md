@@ -1,25 +1,36 @@
 # Project Trajectory: Vudrag Sculpture Portfolio
 
-> **Status:** Hero section complete ✅ — Roadmap to production website
+> **Status:** Hero & Navigation Core Complete ✅ — Building Collection Pages
 > **Stack:** Vite + PlayCanvas + Gaussian Splatting + Custom GLSL
 
 ---
 
 ## Current State
 
-The hero section is **complete and stunning** — a full-viewport PlayCanvas experience featuring:
+The **Hero Section** and **Core Navigation** are complete.
 
-- **3 Gaussian Splat sculptures** with plasma transitions (Maska, Kapljica, Romislav)
-- **HDR post-processing** (bloom, vignette, color grading via CameraFrame)
-- **Fluid spring-physics navigation line**
-- **Magnetic scroll snapping** with smooth transitions
-- **Pinned hero behavior** ready for content overlay
+- **Hero 3D Experience**: Full Gaussian Splat support with plasma transitions and HDR.
+- **Category Hub**: Implemented with 3D-tilt interactive cards and scroll reveal.
+- **Navigation**: Sticky header with progress bar, full-screen menu overlay, and fluid physics line.
+- **Transition System**: Seamless "fade-to-blur" transition from 3D hero to 2D content.
 
 ---
 
 ## Vision: The Digital Monograph
 
-Following the Design System guidelines, the site will function as a **digital viewing room** — dark, quiet, intimate. Every interaction feels "weighted" and substantial, mirroring the physicality of the sculptures.
+> **Philosophy:** "Timeless elegance with a modern edge."
+
+The site functions as a **digital brand embassy**, not an online store. It prioritizes storytelling, silence, and "weighted" interaction over immediate commerce.
+
+### Core Principles
+1.  **The Atelier (Homepage):** A "Brand Universe" entry point. Full-screen video of the artist at work (clay, marble dust). Minimal text.
+2.  **The Collection:** Organized by **Series** (e.g., "Elemental Fragments"), not by product type.
+3.  **The Singular Page:** A "viewing room" experience for each sculpture.
+    *   No public prices.
+    *   "Request the Portfolio" instead of "Add to Cart".
+    *   Macro photography to show "Material Truth".
+4.  **Commissioning Journey:** A dedicated section selling the collaborative process of creating a legacy piece.
+5.  **The Archive:** Password-protected portal for existing clients (provenance, installation guides).
 
 ---
 
@@ -84,10 +95,10 @@ Following the "Unified Scene Strategy" from the Patek design approach:
 ### 3.1 Category Hub (Post-Hero)
 The section that appears after the splat gallery:
 
-- [ ] **Design category cards** — Persona, Sumerian, Portraits, Coins, Monuments
-- [ ] **Fade-and-slide reveals** — 20px upward motion, 0.8s duration
-- [ ] **Scroll-triggered animations** — staggered timing per category
-- [ ] **PlayCanvas integration** — 3D card effect on hover
+- [x] **Design category cards** — Persona, Sumerian, Portraits, Coins, Monuments
+- [x] **Fade-and-slide reveals** — 20px upward motion, 0.8s duration
+- [x] **Scroll-triggered animations** — staggered timing per category
+- [x] **PlayCanvas integration** — 3D card tilt effect (CSS 3D transform)
 
 ### 3.2 Collection Pages
 Individual category deep-dives:
@@ -102,19 +113,29 @@ Individual category deep-dives:
 - [ ] **Process video** — silent loops (no controls visible)
 - [ ] **"Net-work" philosophy** — conceptual content integration
 
-### 3.4 Contact / Inquiry
-- [ ] **Minimal form design** — bottom-border-only inputs per design spec
-- [ ] **Portfolio request CTA** — text link with expanding underline hover
-- [ ] **Direct inquiry flow** — smooth, non-commercial feel
+### 3.4 Commissioning Journey
+- [ ] **Process methodology** — from consultation to maquette to installation
+- [ ] **Bespoke promise** — selling the collaboration/legacy
+- [ ] **Appointment request** — high-touch form
+
+### 3.5 The Archive (Client Portal)
+- [ ] **Password protection** — exclusive access authentication
+- [ ] **Provenance docs** — digital certificates of authenticity
+- [ ] **Installation guides** — technical PDFs
+- [ ] **Past works** — list of acquired pieces
+
+### 3.6 Contact & Salon
+- [ ] **Minimal contact interface** — single email, phone, salon address
+- [ ] **Privacy focus** — "By Appointment" messaging
 
 ---
 
 ## Phase 4: Navigation & UX
 
 ### 4.1 Header System
-- [ ] **Sticky minimal header** — 1px white line + logo + menu items
-- [ ] **Scroll-aware reveal** — appears after hero section
-- [ ] **Mobile hamburger** — anthracite panel overlay
+- [x] **Sticky minimal header** — 1px white line + logo + menu items (progress bar included)
+- [x] **Scroll-aware reveal** — appears after hero section
+- [x] **Mobile hamburger** — full-screen menu overlay
 
 ### 4.2 Page Transitions
 - [ ] **Fade and lift** — 0.8s duration, 20px vertical offset
@@ -188,25 +209,21 @@ export const state = {
 
 ## Immediate Next Steps
 
-Choose where to focus:
+### Priority 1: Collection Pages (Phase 3.2)
+The Category Hub is ready but links to nowhere. We need to build the grid views for each category.
+1. Create `src/sections/` directory structure.
+2. Build a reusable `CollectionGrid` component.
+3. Connect Category Hub clicks to the routing system.
 
-### Option A: Complete the Gallery Integration
-If you have the separate gallery app ready to merge:
-1. Share the gallery app location/structure
-2. Identify the integration approach (iframe, merge, or route)
-3. Create shared navigation components
+### Priority 2: Gallery App Integration (Phase 2)
+Decide on the integration strategy for the existing gallery app.
+- **Recommended**: Route-based integration (Option C above).
 
-### Option B: Build Category Hub Section
-Extend the current site with the post-hero content:
-1. Design category card components
-2. Implement scroll-triggered reveals
-3. Create transition from splat hero to category grid
-
-### Option C: Polish & Ship Hero MVP
-Make the current hero section production-ready:
-1. Add more sculptures to the collection
-2. Fine-tune mobile experience
-3. Deploy and gather feedback
+### Priority 3: Content Population (Phase 2.5)
+We have the structured data (`content/collections_data.js`). Now we need to:
+1.  **Refine category-hub.js**: Update categories to match the new 6-part structure: Persona, Elemental, Sumerian, Nature, Portraits, Numismatics.
+2.  **Asset Gathering**: Locate high-res images for "Iron Maiden", "Waterdrop", "Tesla", "Euro Coins" to replace placeholders.
+3.  **Implement Detail View**: Create the "Viewing Room" layout to display the rich text descriptions we now have.
 
 ---
 
@@ -257,16 +274,15 @@ vudrag-site-2/
 
 Quick reference from the style guide:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--color-canvas` | `#212121` | Primary background |
-| `--color-surface` | `#383E42` | Secondary/overlay |
-| `--color-ink` | `#0A0A0A` | Headlines |
-| `--color-stone` | `#7E8479` | Body text |
-| `--color-light` | `#F6F6F6` | Interaction states |
-| `--font-primary` | Cormorant Garamond | Display/body |
-| `--page-margin` | `8vw` | Gallery margins |
-| `--transition-slow` | `0.8s cubic-bezier` | Page transitions |
+| Token | Value | RAL Approx | Usage |
+|-------|-------|------------|-------|
+| `--color-canvas` | `#212121` | RAL 7021 | Primary background (Dark Grey) |
+| `--color-surface` | `#383E42` | RAL 7016 | Content panels (Anthracite) |
+| `--color-ink` | `#0A0A0A` | RAL 9005 | Headlines (Jet Black) - sparse |
+| `--color-stone` | `#7E8479` | RAL 7004 | Body text (Signal Grey) |
+| `--color-light` | `#F6F6F6` | RAL 9016 | Accents (Pure White) - restrained |
+| `--font-primary` | `Cormorant` | N/A | Display/Lead |
+| `--font-secondary` | `Inter` | N/A | UI/Body |
 
 ---
 

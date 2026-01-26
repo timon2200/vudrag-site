@@ -15,34 +15,82 @@ let contentArea = null;
 /**
  * Setup all scroll and input event handlers
  */
+// Shared scroll hint reference
+let scrollHint = null;
+
+// Fake scrollable element for triggering mobile browser address bar hide
+let fakeScrollElement = null;
+
 export function setupScrollControl() {
-    const scrollHint = document.getElementById('scroll-hint');
+    scrollHint = document.getElementById('scroll-hint');
     contentArea = document.getElementById('content-area');
+
+    // Create fake scrollable element to trigger mobile browser address bar behavior
+    setupFakeScrollForMobile();
 
     // Mouse wheel - routes to either custom scroll or content area
     window.addEventListener('wheel', handleWheel, { passive: false });
 
     // Touch support
     let touchStartY = 0;
+    let touchExitAccumulator = 0;
+    const TOUCH_EXIT_THRESHOLD = 80; // Pixels of downward swipe needed to exit content mode
+
     window.addEventListener('touchstart', (e) => {
         touchStartY = e.touches[0].clientY;
         state.lastScrollTime = performance.now();
         state.isScrolling = true;
+        // Reset touch exit accumulator on new touch
+        touchExitAccumulator = 0;
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
-        // Skip if content area is visible - let it handle touch
-        if (contentArea?.classList.contains('is-visible')) return;
-
         const touchY = e.touches[0].clientY;
+        const deltaY = touchY - touchStartY; // Positive = swiping down
+
+        // Handle content mode (category hub) - check for pull-to-dismiss gesture
+        if (contentArea?.classList.contains('is-visible')) {
+            // Only accumulate if at the top of content area and swiping down
+            if (contentArea.scrollTop <= 0 && deltaY > 0) {
+                touchExitAccumulator += deltaY * 0.5; // Scale down for better control
+
+                // If threshold crossed, trigger exit
+                if (touchExitAccumulator > TOUCH_EXIT_THRESHOLD) {
+                    exitContentMode();
+                    touchExitAccumulator = 0;
+                    touchStartY = touchY; // Reset to prevent further accumulation
+                }
+            } else {
+                // Reset accumulator if scrolling up or not at top
+                touchExitAccumulator = 0;
+            }
+
+            // Update touchStartY for delta calculation
+            touchStartY = touchY;
+            return;
+        }
+
+        // Splat gallery mode - custom scroll handling
         const delta = (touchStartY - touchY) * 0.003;
         touchStartY = touchY;
         state.targetScrollProgress = Math.max(0, Math.min(2.0, state.targetScrollProgress + delta));
         state.lastScrollTime = performance.now();
+
+        // Hide scroll hint on touch scroll
+        if (state.targetScrollProgress > 0.05) {
+            scrollHint?.classList.add('hidden');
+        } else {
+            scrollHint?.classList.remove('hidden');
+        }
+
+        // Update fake scroll position for mobile browser address bar
+        updateFakeScroll();
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
         state.lastScrollTime = performance.now();
+        // Reset touch exit accumulator
+        touchExitAccumulator = 0;
     }, { passive: true });
 
     // Keyboard navigation (only in splat mode)
@@ -274,4 +322,59 @@ export function updateMagneticSnap() {
     const snapProgress = snapToIndex / (numSplats - 1);
     // Reduced snap speed for smoother feel (was 0.08)
     state.targetScrollProgress += (snapProgress - state.targetScrollProgress) * 0.05;
+}
+
+/**
+ * Create a fake scrollable element to trigger mobile browser address bar behavior
+ * Mobile browsers only hide the address bar with native scroll events
+ */
+function setupFakeScrollForMobile() {
+    // Only needed on mobile/touch devices
+    if (!('ontouchstart' in window)) return;
+
+    // Create fake scroll container
+    fakeScrollElement = document.createElement('div');
+    fakeScrollElement.id = 'fake-scroll-container';
+    fakeScrollElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0;
+    `;
+
+    // Create fake content that's taller than viewport
+    const fakeContent = document.createElement('div');
+    fakeContent.style.cssText = `
+        height: 300vh;
+        width: 100%;
+    `;
+
+    fakeScrollElement.appendChild(fakeContent);
+    document.body.appendChild(fakeScrollElement);
+
+    // Initial position
+    fakeScrollElement.scrollTop = window.innerHeight;
+
+    console.log('📱 Fake scroll element created for mobile browser behavior');
+}
+
+/**
+ * Update fake scroll position based on actual scroll progress
+ * This triggers native scroll events that mobile browsers respond to
+ */
+function updateFakeScroll() {
+    if (!fakeScrollElement) return;
+
+    // Map scroll progress (0-2) to fake scroll position
+    // Start at 1vh so there's room to scroll up and down
+    const viewportHeight = window.innerHeight;
+    const targetScroll = viewportHeight + (state.targetScrollProgress * viewportHeight);
+
+    fakeScrollElement.scrollTop = targetScroll;
 }

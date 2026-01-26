@@ -9,6 +9,10 @@ export default defineConfig({
         sourcemap: false,
         minify: 'terser',
         rollupOptions: {
+            input: {
+                main: 'index.html',
+                gallery: 'gallery.html'
+            },
             output: {
                 manualChunks: {
                     playcanvas: ['playcanvas']

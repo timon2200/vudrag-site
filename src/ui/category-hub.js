@@ -196,10 +196,69 @@ function setupCardTilt(card) {
         }
     };
 
+    // Touch start - set active
+    const handleTouchStart = (e) => {
+        activeCard = card;
+        card.style.transition = `transform ${TILT_CONFIG.trackingSpeed}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+    };
+
+    // Touch move - emulate mouse move
+    const handleTouchMove = (e) => {
+        if (activeCard !== card) return;
+
+        // Prevent scroll while interacting with card
+        // e.preventDefault(); // Optional: decide if we want to block scroll
+
+        const touch = e.touches[0];
+        const rect = card.getBoundingClientRect();
+
+        // Calculate touch position relative to card center (-0.5 to 0.5)
+        const xPercent = (touch.clientX - rect.left) / rect.width - 0.5;
+        const yPercent = (touch.clientY - rect.top) / rect.height - 0.5;
+
+        // Clamp values to avoid extreme flips if touch goes out of bounds
+        const xClamped = Math.max(-0.5, Math.min(0.5, xPercent));
+        const yClamped = Math.max(-0.5, Math.min(0.5, yPercent));
+
+        // Calculate rotation values
+        const rotateX = -yClamped * TILT_CONFIG.maxRotation;
+        const rotateY = xClamped * TILT_CONFIG.maxRotation;
+
+        // Apply 3D transform
+        card.style.transform = `
+            perspective(${TILT_CONFIG.perspective}px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            scale3d(${TILT_CONFIG.scale}, ${TILT_CONFIG.scale}, ${TILT_CONFIG.scale})
+        `;
+
+        // Update shine/highlight position
+        updateCardShine(card, xClamped, yClamped);
+    };
+
+    // Touch end/cancel - reset
+    const handleTouchEnd = () => {
+        activeCard = null;
+        card.style.transition = `transform ${TILT_CONFIG.transitionSpeed}s ease-out`;
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+
+        // Reset shine
+        const shine = card.querySelector('.category-card__shine');
+        if (shine) {
+            shine.style.opacity = '0';
+        }
+    };
+
     // Attach event listeners
     card.addEventListener('mousemove', handleMouseMove);
     card.addEventListener('mouseenter', handleMouseEnter);
     card.addEventListener('mouseleave', handleMouseLeave);
+
+    // Touch listeners
+    card.addEventListener('touchstart', handleTouchStart, { passive: true });
+    card.addEventListener('touchmove', handleTouchMove, { passive: true });
+    card.addEventListener('touchend', handleTouchEnd);
+    card.addEventListener('touchcancel', handleTouchEnd);
 
     // Add shine element for highlight effect
     const shine = document.createElement('div');
@@ -260,8 +319,8 @@ function handleCategoryClick(categoryId) {
         }
     });
 
-    // TODO: Navigate to category gallery
-    // This will integrate with the separate gallery app later
+    // Navigate to category gallery
+    window.location.href = `/gallery.html?category=${categoryId}`;
 }
 
 /**

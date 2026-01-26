@@ -33,12 +33,11 @@ HDR rendering pipeline via PlayCanvas CameraFrame:
 - **Vignette** — Focus attention to center
 - **Color Grading** — Per-sculpture tone adjustment
 
-### ⚡ Fluid Navigation System  
-Spring-physics navigation line with:
-- Elastic, responsive animations
-- Node indicators for each sculpture
-- Particle effects on proximity
-- Adaptive title display
+### ⚡ Fluid Navigation & Category Hub
+- **Category 3D Cards**: Interactive tilt-enabled cards for browsing collections.
+- **Sticky Header**: Minimal navigation that reveals after the hero section.
+- **Menu Overlay**: Full-screen luxury menu for easy access.
+- **Spring-Physics Line**: Fluid indicator that follows your journey.
 
 ### 🎯 Magnetic Scroll Snapping
 Weighted scroll behavior that feels physical:
@@ -95,26 +94,24 @@ vudrag-site/
 │   │   └── plasma.glsl.js           # Custom GLSL transition shader
 │   ├── systems/
 │   │   ├── camera.js                # Orbital camera with sway
-│   │   ├── hero-transition.js       # Hero section transitions
+│   │   ├── hero-transition.js       # Hero fade-out transition
 │   │   ├── particles.js             # Ambient dust particles
 │   │   ├── post-effects.js          # HDR bloom, vignette, grading
 │   │   ├── scroll.js                # Magnetic snap scroll
 │   │   └── splats.js                # Splat loading & transitions
 │   ├── ui/
-│   │   ├── category-hub.js          # Category selection overlay
+│   │   ├── category-hub.js          # 3D interactive category cards
 │   │   ├── debug-panel.js           # Dev: particle tuning
 │   │   ├── fluid-navigation.js      # Spring-physics nav line
+│   │   ├── interaction-hint.js      # Scroll cue
+│   │   ├── menu-overlay.js          # Full-screen hamburger menu
 │   │   ├── scroll-reveal.js         # Scroll-triggered reveals
 │   │   ├── splat-debug-panel.js     # Dev: splat/camera tuning
 │   │   ├── splat-grading-panel.js   # Dev: color grading
 │   │   ├── sticky-header.js         # Minimal sticky header
 │   │   └── text-overlay.js          # Sculpture title display
 │   └── styles/
-│       ├── category-hub.css
-│       ├── hero-pinned.css
-│       ├── luxury-typography.css
-│       ├── scroll-reveal.css
-│       └── sticky-header.css
+│       ├── (various css modules)
 ├── index.html                       # HTML entry with loading screen
 ├── vite.config.js                   # Vite configuration
 ├── ARCHITECTURE.md                  # Detailed technical docs
@@ -198,17 +195,17 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 
 ## 🎯 Roadmap
 
-### Phase 1: Hero ✅
+### Phase 1: Hero & Navigation ✅
 - [x] Plasma explosion transitions
 - [x] HDR post-effects pipeline
-- [x] Fluid navigation system
-- [x] Magnetic scroll snapping
+- [x] Sticky Header & Global Menu
+- [x] Interactive Category Hub
 
-### Phase 2: Content
-- [ ] Category hub section
-- [ ] Individual collection pages
-- [ ] Artist biography section
-- [ ] Contact/inquiry flow
+### Phase 2: Content & Polish
+- [ ] Gallery App Integration (Route-based)
+- [ ] Individual Collection Pages (Grid views)
+- [ ] Artist Biography Section
+- [ ] Contact/Inquiry Flow
 
 ### Phase 3: Production
 - [ ] Mobile optimization

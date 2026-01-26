@@ -13,13 +13,17 @@ import {
 } from 'playcanvas';
 
 // CSS Imports (Vite handles these)
+import './styles/variables.css';
 import './styles/hero-pinned.css';
 import './styles/scroll-reveal.css';
 import './styles/luxury-typography.css';
 import './styles/sticky-header.css';
 import './styles/category-hub.css';
+import './styles/menu-overlay.css';
+import './styles/gallery-overlay.css';
 
 import { CONFIG, IS_DEV } from './config.js';
+
 import { state, SECTIONS } from './state.js';
 import { setupCamera, updateCamera, getTransitionIntensity } from './systems/camera.js';
 import { setupParticles, updateParticleInteraction } from './systems/particles.js';
@@ -35,6 +39,7 @@ import { createStickyHeader, updateStickyHeader } from './ui/sticky-header.js';
 import { setupScrollReveal } from './ui/scroll-reveal.js';
 import { setupCategoryHub, updateCategoryHubVisibility } from './ui/category-hub.js';
 import { createInteractionHint, updateInteractionHint } from './ui/interaction-hint.js';
+import { createMenuOverlay } from './ui/menu-overlay.js';
 
 /**
  * Initialize the experience
@@ -87,11 +92,11 @@ async function init() {
     setupScrollControl();
 
     // Patek-style enhancements
-    setupHeroTransition();
     createStickyHeader();
     setupScrollReveal();
     setupCategoryHub();
     createInteractionHint();
+    createMenuOverlay();
 
     setupUpdateLoop();
 

@@ -1,0 +1,32 @@
+:root {
+    /* 
+     * Refined Monochrome Color System 
+     * Based on RAL approximations for high-end luxury aesthetics
+     */
+
+    /* Primary Canvas - Dark Grey (RAL 7021 - Black Grey) */
+    --color-canvas: #212121;
+
+    /* Elevated Surface - Anthracite Grey (RAL 7016 - Anthracite Grey) */
+    --color-surface: #383E42;
+
+    /* Primary Text - Jet Black (RAL 9005 - Jet Black) - sparse usage */
+    --color-ink: #0A0A0A;
+
+    /* Body Text - Signal Grey (RAL 7004 - Signal Grey) */
+    --color-stone: #7E8479;
+
+    /* Accents - Pure White (RAL 9016 - Traffic White) - restrained usage */
+    --color-light: #F6F6F6;
+
+    /* Legacy Gold Accent (maintained for compatibility/warmth) */
+    --color-gold: #c9a77a;
+
+    /* Typography */
+    --font-primary: 'Cormorant Garamond', Georgia, serif;
+    --font-secondary: 'Inter', sans-serif;
+
+    /* Dimensions */
+    --page-margin: 8vw;
+    --nav-height: 80px;
+}

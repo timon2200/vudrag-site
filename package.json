@@ -9,7 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "playcanvas": "^2.1.0"
+        "playcanvas": "^2.5.0"
     },
     "devDependencies": {
         "vite": "^5.4.0"

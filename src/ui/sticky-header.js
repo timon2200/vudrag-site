@@ -6,6 +6,7 @@
  */
 
 import { state, SECTIONS } from '../state.js';
+import { toggleMenu } from './menu-overlay.js';
 
 // DOM references
 let header = null;
@@ -87,8 +88,7 @@ function setupHeaderEvents() {
     const menuToggle = header.querySelector('.menu-toggle');
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
-            console.log('🍔 Menu clicked - implement menu overlay');
-            // Future: openMenuOverlay();
+            toggleMenu();
         });
     }
 }

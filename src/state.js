@@ -46,4 +46,3 @@ export const state = {
     debugPanel: null,       // Debug panel element
     isLoaded: false         // Whether initial load is complete
 };
-

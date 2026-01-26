@@ -25,19 +25,27 @@ vudrag-site-2/
 │   │   └── plasma.glsl.js   # Custom GLSL plasma transition shader
 │   ├── systems/
 │   │   ├── camera.js        # Orbital camera with sway and breathing
+│   │   ├── hero-transition.js # Handles fade/blur when scrolling past hero
 │   │   ├── particles.js     # Ambient dust particle system
 │   │   ├── post-effects.js  # HDR bloom, vignette, color grading
 │   │   ├── scroll.js        # Magnetic snap scroll behavior
 │   │   └── splats.js        # Gaussian splat loading & transitions
 │   └── ui/
+│       ├── category-hub.js      # 3D interactive category cards
 │       ├── debug-panel.js       # Particle tuning (dev only)
 │       ├── fluid-navigation.js  # Spring-physics navigation line
+│       ├── interaction-hint.js  # Scroll interaction cue
+│       ├── menu-overlay.js      # Full-screen hamburger menu
+│       ├── scroll-reveal.js     # Element reveal animation observer
 │       ├── splat-debug-panel.js # Splat & camera tuning (dev only)
-│       └── text-overlay.js      # Sculpture title/subtitle display
+│       └── text-overlay.js    # Sculpture title/subtitle display
 ├── index.html               # HTML entry point with loading screen
 ├── style.css                # Global styles
 ├── package.json             # Dependencies (playcanvas, vite)
 ├── vite.config.js           # Vite configuration
+├── content/                 # Static content
+│   ├── artist_bio.md        # Biography & Philosophy
+│   └── collections_data.js  # Structured arrangement of works
 ├── gs_*.sog                 # Gaussian Splat asset files
 └── ARCHITECTURE.md          # This file
 ```
@@ -52,7 +60,25 @@ npm run build   # Production build
 
 ---
 
-## Core Architecture
+## Design System & Philosophy
+
+### Refined Monochrome Palette
+Based on RAL approximations for a "private gallery" aesthetic:
+- **Canvas (`#212121` / RAL 7021)**: Deep dark grey, not pure black.
+- **Surface (`#383E42` / RAL 7016)**: Anthracite for subtle separation.
+- **Ink (`#0A0A0A` / RAL 9005)**: Jet black for critical headers.
+- **Stone (`#7E8479` / RAL 7004)**: Soft grey for body text.
+
+### Site Architecture Pattern
+The site follows a **Digital Monograph** structure:
+1.  **The Atelier**: Homepage brand universe (video loop).
+2.  **Series**: Grouping of works (not "categories").
+3.  **Viewing Room**: Singular sculpture experience (Hero -> Detail -> Provenance).
+4.  **Commission**: Bespoke process explanation.
+5.  **Archive**: Password-protected client area.
+6.  **Salon**: Contact/Appointment.
+
+### Core Architecture
 
 ### State Management
 
@@ -162,6 +188,11 @@ Orchestrates initialization and the update loop:
 - `setupScrollControl()` - Mouse wheel, touch, keyboard handlers
 - `updateMagneticSnap()` - Sticky snap behavior when idle
 
+#### Hero Transition (`src/systems/hero-transition.js`)
+- `updateHeroTransition()` - Fades out hero and blurs canvas when scrolling past content
+- `applyHeroFade()` - Controls opacity and pointer-events dynamically
+- `resetHeroTransition()` - Restores hero state when scrolling back up
+
 ### UI Components
 
 #### Text Overlay (`src/ui/text-overlay.js`)
@@ -176,6 +207,16 @@ Orchestrates initialization and the update loop:
 - Active indicator blob follows scroll position
 - Particles spawn on node proximity
 - Adaptive title display
+
+#### Category Hub (`src/ui/category-hub.js`)
+- **3D Tilt Cards**: Interactive cards that rotate based on mouse position
+- **Shine Effect**: Dynamic lighting overlay based on cursor
+- **Scroll Reveal**: Cards cascade in when scrolled into view
+
+#### Navigation & Overlays
+- **Sticky Header** (`sticky-header.js`): Minimal header with progress bar, appears after hero
+- **Menu Overlay** (`menu-overlay.js`): Full-screen navigation menu
+- **Interaction Hint** (`interaction-hint.js`): Visual scroll cue ("Scroll to Explore")
 
 #### Debug Panels (dev only)
 - **Particle Panel** (`debug-panel.js`) - Tune particle radius, scale, count, lifetime
