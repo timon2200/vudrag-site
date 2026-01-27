@@ -36,7 +36,7 @@ HDR rendering pipeline via PlayCanvas CameraFrame:
 ### ⚡ Fluid Navigation & Category Hub
 - **Category 3D Cards**: Interactive tilt-enabled cards for browsing collections.
 - **Sticky Header**: Minimal navigation that reveals after the hero section.
-- **Menu Overlay**: Full-screen luxury menu for easy access.
+- **Menu Overlay**: Full-screen luxury menu with navigation to all sections.
 - **Spring-Physics Line**: Fluid indicator that follows your journey.
 
 ### 🎯 Magnetic Scroll Snapping
@@ -44,6 +44,29 @@ Weighted scroll behavior that feels physical:
 - Sculptures "want" to stay in frame
 - 40/60% threshold for commit/revert
 - Smooth interpolation with idle detection
+
+### 🖼️ Sculpture Detail Pages
+Rich cinematic detail pages for each sculpture featuring:
+- **Ken Burns Hero**: Scroll-based zoom effect on hero image
+- **Floating Info Cards**: Materials, dimensions, collection, concept
+- **Process & Technique Sections**: Behind-the-scenes narrative
+- **Vision & Story Sections**: Artist statement and context
+- **Technical Gallery**: Blueprint-style documentation with lightbox
+- **Inquire Section**: Elegant sculptural CTA linking to contact
+- **Related Works**: Dynamic grid of related pieces
+
+### 📬 Contact Page
+Sculptural presentation of contact information:
+- Ambient floating particles and glowing background
+- Elegant typography with signature styling
+- Interactive email link with hover glow effects
+- Decorative crown and base ornaments
+
+### 🎥 Video Integration
+Atmospheric video elements throughout the experience:
+- **Video Dividers**: Cinematic section transitions
+- **Artist Section Background**: YouTube embed with oversized cropping
+- Dynamic loading with graceful fallbacks
 
 ---
 
@@ -69,6 +92,17 @@ npm run dev
 
 The site will be available at `http://localhost:3000` (or 3001 if 3000 is occupied).
 
+### Starting the CMS
+
+```bash
+# In a separate terminal
+cd cms
+npm install
+node server.js
+```
+
+CMS Admin Panel: [http://localhost:3001/admin](http://localhost:3001/admin)
+
 ### Build for Production
 
 ```bash
@@ -83,39 +117,54 @@ npm run preview  # Preview production build
 ```
 vudrag-site/
 ├── public/
-│   ├── gs_Maska_Vudrag.sog          # Gaussian Splat: Maska
-│   ├── gs_Vudrag_galerija_kapljica.sog  # Gaussian Splat: Kapljica
-│   └── gs_vudrag_romislav.sog       # Gaussian Splat: Romislav
+│   ├── gs_*.sog                      # Gaussian Splat files
+│   └── textures/                     # Title textures
 ├── src/
-│   ├── main.js                      # Entry point & orchestrator
-│   ├── config.js                    # Centralized configuration
-│   ├── state.js                     # Global application state
+│   ├── main.js                       # Entry point & orchestrator
+│   ├── config.js                     # Centralized configuration
+│   ├── state.js                      # Global application state
+│   ├── contact.js                    # Contact page logic
+│   ├── sculpture-page.js             # Sculpture detail page
 │   ├── shaders/
-│   │   └── plasma.glsl.js           # Custom GLSL transition shader
+│   │   └── plasma.glsl.js            # Custom GLSL transition shader
 │   ├── systems/
-│   │   ├── camera.js                # Orbital camera with sway
-│   │   ├── hero-transition.js       # Hero fade-out transition
-│   │   ├── particles.js             # Ambient dust particles
-│   │   ├── post-effects.js          # HDR bloom, vignette, grading
-│   │   ├── scroll.js                # Magnetic snap scroll
-│   │   └── splats.js                # Splat loading & transitions
+│   │   ├── camera.js                 # Orbital camera with sway
+│   │   ├── hero-transition.js        # Hero fade-out transition
+│   │   ├── particles.js              # Ambient dust particles
+│   │   ├── post-effects.js           # HDR bloom, vignette, grading
+│   │   ├── scroll.js                 # Magnetic snap scroll
+│   │   └── splats.js                 # Splat loading & transitions
 │   ├── ui/
-│   │   ├── category-hub.js          # 3D interactive category cards
-│   │   ├── debug-panel.js           # Dev: particle tuning
-│   │   ├── fluid-navigation.js      # Spring-physics nav line
-│   │   ├── interaction-hint.js      # Scroll cue
-│   │   ├── menu-overlay.js          # Full-screen hamburger menu
-│   │   ├── scroll-reveal.js         # Scroll-triggered reveals
-│   │   ├── splat-debug-panel.js     # Dev: splat/camera tuning
-│   │   ├── splat-grading-panel.js   # Dev: color grading
-│   │   ├── sticky-header.js         # Minimal sticky header
-│   │   └── text-overlay.js          # Sculpture title display
+│   │   ├── artist-section.js         # Artist biography section
+│   │   ├── category-hub.js           # 3D interactive category cards
+│   │   ├── footer.js                 # Dynamic CMS-powered footer
+│   │   ├── menu-overlay.js           # Full-screen hamburger menu
+│   │   ├── sticky-header.js          # Minimal sticky header
+│   │   ├── video-divider.js          # Cinematic video transitions
+│   │   └── works-showcase.js         # Portfolio grid display
 │   └── styles/
-│       ├── (various css modules)
-├── index.html                       # HTML entry with loading screen
-├── vite.config.js                   # Vite configuration
-├── ARCHITECTURE.md                  # Detailed technical docs
-└── PROJECT_TRAJECTORY.md            # Roadmap & vision
+│       ├── artist-section.css        # Artist section styles
+│       ├── contact.css               # Contact page styles
+│       ├── footer.css                # Footer styles
+│       ├── sculpture-page.css        # Detail page styles
+│       └── video-divider.css         # Video component styles
+├── admin/
+│   ├── index.html                    # CMS admin panel
+│   ├── src/app.js                    # Admin panel JavaScript
+│   └── styles/admin.css              # Admin panel styles
+├── cms/
+│   ├── server.js                     # Express API server
+│   └── data/
+│       ├── splats.json               # 3D splat configuration
+│       ├── galleries.json            # Gallery definitions
+│       ├── collections.json          # Category hub content
+│       ├── sculptures.json           # Detail page narratives
+│       ├── site-content.json         # Footer & contact content
+│       └── grid-order.json           # Splat display order
+├── index.html                        # Main page
+├── sculpture.html                    # Sculpture detail template
+├── contact.html                      # Contact page
+└── vite.config.js                    # Vite configuration
 ```
 
 ---
@@ -135,26 +184,63 @@ All panels feature real-time sliders with a **"Log Current Values"** button to c
 
 ---
 
-## ➕ Adding New Sculptures
+## 🖥️ CMS (Content Management System)
 
-1. **Add the `.sog` file** to the `public/` directory
+A lightweight headless CMS powers the portfolio's dynamic content.
 
-2. **Update `src/config.js`**:
+### Accessing the Admin Panel
 
-```javascript
-{
-    name: 'NewSculpture',
-    file: 'gs_new_sculpture.sog',
-    position: [0, 0, 0],
-    rotation: [0, 0, 180],      // Usually flipped 180°
-    scale: 1.0,
-    title: 'NEW SCULPTURE',
-    subtitle: 'Your description here',
-    number: '04'
-}
-```
+| Interface | URL |
+|-----------|-----|
+| **Admin Panel** | [http://localhost:3001/admin](http://localhost:3001/admin) |
+| **API** | [http://localhost:3001/api/*](http://localhost:3001/api/) |
 
-The system automatically handles asset loading, entity creation, shader application, UI overlays, and navigation nodes.
+Login uses the password defined in `cms/.env` as `ADMIN_PASSWORD`.
+
+### What You Can Manage
+
+| Section | Description |
+|---------|-------------|
+| **Splats** | 3D splat transforms, positions, rotations, and color grading |
+| **Galleries** | Sculpture series metadata (artist, year, material) |
+| **Collections** | Category hub content and nested works |
+| **Sculptures** | Rich narrative content for detail pages |
+| **Assets** | Upload/manage `.sog` files, images, and environments |
+| **Site Content** | Footer, contact page text, artist section, and social links |
+
+### Site Content Editor
+
+The Site Content section allows editing of:
+
+**Artist Section:**
+- Portrait image
+- Name, born date, tagline
+- Quote and background video URL
+- Biography (intro, education, philosophy)
+- Technique highlight (title, description, effect)
+
+**Footer:**
+- Brand name and tagline
+- Description text
+- Email and location
+- Navigation and social links
+
+**Contact Page:**
+- Label and title lines
+- Invitation text
+- Email address and signature
+
+### Data Storage
+
+All content is stored as flat-file JSON in `cms/data/`:
+- `splats.json` — 3D splat configuration
+- `galleries.json` — Gallery definitions
+- `collections.json` — Category hub content
+- `sculptures.json` — Detail page narratives
+- `site-content.json` — Footer, contact, and artist section content
+- `grid-order.json` — Display ordering
+
+See **[cms/README.md](./cms/README.md)** for full API documentation.
 
 ---
 
@@ -169,54 +255,8 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 | Stone | `#6b6b7a` | Muted text |
 | Display Font | Cormorant Garamond | Elegant serifs |
 | Body Font | Inter | Clean sans-serif |
+| Signature Font | Mrs Saint Delafield | Cursive signature |
 | Transition | `0.8s cubic-bezier` | Luxurious ease |
-
----
-
-## 🖥️ CMS (Content Management System)
-
-A lightweight headless CMS powers the portfolio's dynamic content.
-
-### Starting the CMS Server
-
-```bash
-# Navigate to the CMS directory
-cd cms
-
-# Start the server
-node server.js
-```
-
-The CMS runs on **port 3001** by default.
-
-### Accessing the Admin Panel
-
-| Interface | URL |
-|-----------|-----|
-| **Admin Panel** | [http://localhost:3001/admin](http://localhost:3001/admin) |
-| **API Config** | [http://localhost:3001/api/config.json](http://localhost:3001/api/config.json) |
-
-Login uses the password defined in `cms/.env` as `ADMIN_PASSWORD`.
-
-### What You Can Manage
-
-| Section | Description |
-|---------|-------------|
-| **Splats** | 3D splat transforms, positions, rotations, and color grading |
-| **Galleries** | Sculpture series metadata (artist, year, material) |
-| **Collections** | Category hub content and nested works |
-| **Sculptures** | Rich narrative content for detail pages |
-| **Assets** | Upload/manage `.sog` files, images, and environments |
-
-### Data Storage
-
-All content is stored as flat-file JSON in `cms/data/`:
-- `splats.json` — 3D splat configuration
-- `galleries.json` — Gallery definitions
-- `collections.json` — Category hub content
-- `sculptures.json` — Detail page narratives
-
-See **[cms/README.md](./cms/README.md)** for full API documentation.
 
 ---
 
@@ -229,6 +269,7 @@ See **[cms/README.md](./cms/README.md)** for full API documentation.
 | **Gaussian Splatting** | Photorealistic 3D capture rendering |
 | **Custom GLSL** | Plasma transition shaders |
 | **CameraFrame** | HDR post-processing pipeline |
+| **Express.js** | CMS API server |
 | **Canvas 2D** | Fluid navigation overlay |
 
 ---
@@ -249,13 +290,21 @@ See **[cms/README.md](./cms/README.md)** for full API documentation.
 - [x] Sticky Header & Global Menu
 - [x] Interactive Category Hub
 
-### Phase 2: Content & Polish
-- [ ] Gallery App Integration (Route-based)
-- [ ] Individual Collection Pages (Grid views)
-- [ ] Artist Biography Section
-- [ ] Contact/Inquiry Flow
+### Phase 2: Content & Polish ✅
+- [x] Sculpture Detail Pages (Ken Burns hero, info cards, technical gallery)
+- [x] Artist Biography Section with video background
+- [x] Contact/Inquiry Flow with sculptural design
+- [x] Dynamic Footer with CMS integration
+- [x] Inquire section on sculpture pages
+- [x] Video divider components
 
-### Phase 3: Production
+### Phase 3: CMS & Admin ✅
+- [x] Headless CMS with Express.js
+- [x] Admin panel for content management
+- [x] Site Content editor (footer, contact, artist)
+- [x] Asset management with drag-and-drop ordering
+
+### Phase 4: Production
 - [ ] Mobile optimization
 - [ ] SEO & accessibility
 - [ ] Performance profiling
