@@ -1,0 +1,1623 @@
+/**
+ * Sculpture Page - Cinematic Full-Bleed Styles
+ * 
+ * Ken Burns hero, title reveal, floating info cards,
+ * polaroid gallery, and premium transitions.
+ */
+
+/* === Navigation === */
+.sculpture-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem var(--page-margin, 8vw);
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(5, 5, 8, 0.8) 0%, transparent 100%);
+}
+
+.sculpture-nav__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-light);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.sculpture-nav__back:hover {
+    opacity: 1;
+    color: var(--color-gold);
+}
+
+.sculpture-nav__back svg {
+    transition: transform 0.3s ease;
+}
+
+.sculpture-nav__back:hover svg {
+    transform: translateX(-4px);
+}
+
+/* === Ken Burns Hero === */
+.sculpture-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.sculpture-hero__image-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.sculpture-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+.sculpture-hero__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%,
+            transparent 0%,
+            rgba(5, 5, 8, 0.3) 50%,
+            rgba(5, 5, 8, 0.8) 100%);
+    pointer-events: none;
+}
+
+.sculpture-hero__scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: opacity 0.5s ease;
+}
+
+.sculpture-hero__scroll-indicator svg {
+    color: var(--color-gold);
+    animation: bounceDown 2s infinite;
+}
+
+@keyframes bounceDown {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(6px);
+    }
+
+    60% {
+        transform: translateY(3px);
+    }
+}
+
+/* === Title Reveal Section === */
+.sculpture-title {
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg, #050508 0%, var(--color-canvas) 50%);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-title::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--title-texture, url('/textures/title-texture.png'));
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.sculpture-title__series {
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.sculpture-title__name {
+    font-family: var(--font-primary);
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 300;
+    color: var(--color-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+}
+
+.sculpture-title__year {
+    font-family: var(--font-secondary);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--color-stone);
+    letter-spacing: 0.15em;
+}
+
+/* === Floating Info Cards === */
+.sculpture-info {
+    position: relative;
+    padding: 10vh var(--page-margin, 8vw);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sculpture-info__card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 2rem;
+    transition: transform 0.5s ease, border-color 0.3s ease;
+}
+
+.sculpture-info__card[data-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.sculpture-info__card[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sculpture-info__card--left[data-reveal] {
+    transform: translateX(-40px) translateY(40px);
+}
+
+.sculpture-info__card--right[data-reveal] {
+    transform: translateX(40px) translateY(40px);
+}
+
+.sculpture-info__card--left[data-reveal].is-revealed,
+.sculpture-info__card--right[data-reveal].is-revealed {
+    transform: translateX(0) translateY(0);
+}
+
+.sculpture-info__card:hover {
+    border-color: var(--color-gold-dim);
+}
+
+.sculpture-info__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.sculpture-info__value {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-light);
+    line-height: 1.6;
+}
+
+/* === Artist Statement === */
+.sculpture-statement {
+    padding: 15vh var(--page-margin, 8vw);
+    text-align: center;
+    background: var(--color-canvas);
+}
+
+.sculpture-statement__quote {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.sculpture-statement__quote[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-statement__quote[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sculpture-statement__quote p {
+    font-family: var(--font-primary);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-body-text);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.sculpture-statement__quote cite {
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--color-gold);
+    letter-spacing: 0.1em;
+}
+
+/* === Technical Gallery (Blueprint + Lightbox) === */
+.technical-gallery {
+    position: relative;
+    padding: 12vh var(--page-margin, 8vw) 15vh;
+    background: var(--color-canvas);
+}
+
+.technical-gallery__title {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 6rem;
+}
+
+.technical-gallery__title[data-reveal] {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.technical-gallery__title[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Clean 3-column grid layout */
+.technical-gallery__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* === Blueprint Thumbnail === */
+.blueprint-thumb {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blueprint-thumb:hover {
+    transform: translateY(-8px);
+}
+
+/* Image container */
+.blueprint-thumb__image-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #1a1a1a;
+    border-radius: 4px;
+    transition: box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blueprint-thumb:hover .blueprint-thumb__image-wrap {
+    box-shadow: 0 0 30px rgba(201, 167, 122, 0.3),
+        0 0 60px rgba(201, 167, 122, 0.15),
+        0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.blueprint-thumb__image {
+    width: 100%;
+    height: auto;
+    /* Keep original aspect ratio - no fixed aspect-ratio */
+    object-fit: cover;
+    /* Full color - no grayscale filter */
+    filter: brightness(0.95);
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.blueprint-thumb:hover .blueprint-thumb__image {
+    filter: brightness(1.05);
+    /* No scale - only border glow effect */
+}
+
+/* Technical label with measurement line */
+.blueprint-thumb__label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.1em;
+}
+
+/* Measurement line */
+.blueprint-thumb__label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--color-gold-dim);
+    flex-shrink: 0;
+}
+
+/* Figure reference number */
+.blueprint-thumb__fig {
+    font-family: 'Courier New', monospace;
+    font-size: 0.55rem;
+    color: var(--color-gold);
+    letter-spacing: 0.05em;
+}
+
+.blueprint-thumb__desc {
+    color: var(--color-muted);
+    text-transform: uppercase;
+}
+
+/* Corner brackets (technical drawing detail) - gold glow on hover */
+.blueprint-thumb__image-wrap::before,
+.blueprint-thumb__image-wrap::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--color-gold-dim);
+    opacity: 0;
+    transition: opacity 0.3s ease, border-color 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.blueprint-thumb__image-wrap::before {
+    top: 8px;
+    left: 8px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.blueprint-thumb__image-wrap::after {
+    bottom: 8px;
+    right: 8px;
+    border-left: none;
+    border-top: none;
+}
+
+.blueprint-thumb:hover .blueprint-thumb__image-wrap::before,
+.blueprint-thumb:hover .blueprint-thumb__image-wrap::after {
+    opacity: 1;
+    border-color: var(--color-gold);
+}
+
+/* Reveal animation */
+.blueprint-thumb[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.blueprint-thumb[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: var(--delay, 0s);
+}
+
+/* === Fullscreen Lightbox Modal === */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(5, 5, 8, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Close button */
+.lightbox__close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    z-index: 10;
+}
+
+.lightbox__close:hover {
+    border-color: var(--color-gold);
+    background: rgba(201, 167, 122, 0.1);
+}
+
+.lightbox__close svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-light);
+}
+
+/* Image container with Ken Burns */
+.lightbox__image-container {
+    position: relative;
+    width: 85vw;
+    height: 75vh;
+    overflow: hidden;
+}
+
+.lightbox__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: scale(1);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 8s ease-out;
+}
+
+.lightbox.is-open .lightbox__image {
+    opacity: 1;
+    transform: scale(1.05);
+    /* Ken Burns slow zoom */
+}
+
+.lightbox__image.transitioning {
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Navigation arrows */
+.lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.lightbox__nav:hover {
+    border-color: var(--color-gold);
+    background: rgba(201, 167, 122, 0.1);
+}
+
+.lightbox__nav svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--color-light);
+}
+
+.lightbox__nav--prev {
+    left: 2rem;
+}
+
+.lightbox__nav--next {
+    right: 2rem;
+}
+
+/* Caption emerges from bottom */
+.lightbox__caption {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.8s, transform 0.6s ease 0.8s;
+    /* Delayed */
+}
+
+.lightbox.is-open .lightbox__caption {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.lightbox__caption-fig {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: var(--color-gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+}
+
+.lightbox__caption-text {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--color-light);
+    letter-spacing: 0.02em;
+}
+
+/* Image counter */
+.lightbox__counter {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: var(--color-stone);
+    letter-spacing: 0.1em;
+}
+
+/* === Related Works === */
+.related-works {
+    padding: 10vh var(--page-margin, 8vw) 15vh;
+    background: #1a1a1a;
+}
+
+.related-works__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-stone);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.related-works__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.related-card {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: transform 0.4s ease;
+}
+
+.related-card:hover {
+    transform: translateY(-8px);
+}
+
+.related-card__image-wrap {
+    height: 200px;
+    overflow: hidden;
+}
+
+.related-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%) brightness(0.9);
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.related-card:hover .related-card__image {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+}
+
+.related-card__content {
+    padding: 1.25rem;
+    background: var(--color-surface);
+}
+
+.related-card__series {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-stone);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.related-card__title {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-light);
+}
+
+/* === Inquire Section === */
+.sculpture-inquire {
+    position: relative;
+    padding: 12vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg, var(--color-canvas) 0%, #0a0a0c 50%, var(--color-canvas) 100%);
+    overflow: hidden;
+}
+
+.sculpture-inquire::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(201, 167, 122, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.sculpture-inquire__container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sculpture-inquire__container[data-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-inquire__container[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Crown decoration */
+.sculpture-inquire__crown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.sculpture-inquire__line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold-dim), transparent);
+}
+
+.sculpture-inquire__diamond {
+    color: var(--color-gold);
+    font-size: 0.75rem;
+    opacity: 0.7;
+    animation: inquire-pulse 3s ease-in-out infinite;
+}
+
+@keyframes inquire-pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Label */
+.sculpture-inquire__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 1.5rem;
+}
+
+/* Title */
+.sculpture-inquire__title {
+    font-family: var(--font-primary);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
+
+.sculpture-inquire__title-word {
+    display: block;
+    color: var(--color-light);
+}
+
+.sculpture-inquire__title-accent {
+    display: block;
+    font-style: italic;
+    background: linear-gradient(135deg, var(--color-gold) 0%, #e5d4b8 50%, var(--color-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Text */
+.sculpture-inquire__text {
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--color-stone);
+    max-width: 420px;
+    margin: 0 auto 3rem;
+}
+
+/* CTA Button */
+.sculpture-inquire__cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-secondary);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    text-decoration: none;
+    padding: 1.25rem 2.5rem;
+    background: rgba(201, 167, 122, 0.05);
+    border: 1px solid var(--color-gold-dim);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sculpture-inquire__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201, 167, 122, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.sculpture-inquire__cta:hover {
+    background: rgba(201, 167, 122, 0.12);
+    border-color: var(--color-gold);
+    box-shadow: 0 0 40px rgba(201, 167, 122, 0.15);
+}
+
+.sculpture-inquire__cta:hover::before {
+    opacity: 1;
+}
+
+.sculpture-inquire__cta svg {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sculpture-inquire__cta:hover svg {
+    transform: translateX(6px);
+}
+
+/* Base decoration */
+.sculpture-inquire__base {
+    margin-top: 4rem;
+}
+
+.sculpture-inquire__base-line {
+    display: block;
+    width: 100px;
+    height: 1px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, var(--color-gold-dim), transparent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sculpture-inquire {
+        padding: 10vh var(--page-margin, 8vw);
+    }
+
+    .sculpture-inquire__line {
+        width: 40px;
+    }
+
+    .sculpture-inquire__text {
+        font-size: 0.95rem;
+    }
+
+    .sculpture-inquire__cta {
+        padding: 1rem 2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* === Footer === */
+.sculpture-footer {
+    padding: 5rem var(--page-margin, 8vw);
+    text-align: center;
+    background: #141416;
+}
+
+.sculpture-footer__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--color-gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1px solid var(--color-gold-dim);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.sculpture-footer__cta:hover {
+    background: rgba(201, 167, 122, 0.1);
+    border-color: var(--color-gold);
+}
+
+.sculpture-footer__cta svg {
+    transition: transform 0.3s ease;
+}
+
+.sculpture-footer__cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* === Process & Technique Section === */
+.sculpture-process {
+    position: relative;
+    padding: 15vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg, #0a0a0c 0%, #050508 50%, #0a0a0c 100%);
+    overflow: hidden;
+}
+
+.sculpture-process__container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.sculpture-process__accent {
+    display: none;
+}
+
+.sculpture-process__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    padding: 0;
+}
+
+.sculpture-process__column {
+    position: relative;
+    min-height: 550px;
+    border-radius: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+/* Mouse-following border glow */
+.sculpture-process__column::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    padding: 1px;
+    background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+            rgba(201, 167, 122, 0.6) 0%,
+            rgba(201, 167, 122, 0.15) 40%,
+            transparent 70%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sculpture-process__column:hover::before {
+    opacity: 1;
+}
+
+.sculpture-process__column[data-reveal] {
+    opacity: 0;
+    transform: translateY(60px) rotateX(5deg);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sculpture-process__column[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+
+.sculpture-process__column--right[data-reveal] {
+    transition-delay: 0.15s;
+}
+
+/* Background Images - More Visible */
+.sculpture-process__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.7) saturate(1.1);
+    transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+.sculpture-process__column:hover .sculpture-process__bg {
+    filter: brightness(0.85) saturate(1.2);
+    /* No scale - only border glow effect */
+}
+
+/* Sophisticated gradient overlay - bottom heavy for text readability */
+.sculpture-process__column::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            transparent 30%,
+            rgba(5, 5, 8, 0.4) 50%,
+            rgba(5, 5, 8, 0.85) 75%,
+            rgba(5, 5, 8, 0.98) 100%);
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0;
+}
+
+/* Glass morphism text container */
+.sculpture-process__text-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem;
+    z-index: 2;
+    background: linear-gradient(to top,
+            rgba(5, 5, 8, 0.6) 0%,
+            transparent 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 0;
+}
+
+.sculpture-process__label {
+    display: inline-block;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: rgba(201, 167, 122, 0.1);
+    border: 1px solid rgba(201, 167, 122, 0.25);
+    border-radius: 20px;
+}
+
+.sculpture-process__title {
+    font-family: var(--font-primary);
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: 400;
+    color: var(--color-light);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sculpture-process__text {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(246, 246, 246, 0.85);
+    line-height: 1.75;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+.sculpture-process__text::first-letter {
+    font-size: 2.5rem;
+    font-weight: 400;
+    float: left;
+    line-height: 1;
+    margin-right: 0.4rem;
+    margin-top: 0.15rem;
+    color: var(--color-gold);
+    text-shadow: 0 0 30px rgba(201, 167, 122, 0.5);
+}
+
+.sculpture-process__pattern {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(201, 167, 122, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(201, 167, 122, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* === Vision Statement Section === */
+.sculpture-vision {
+    position: relative;
+    padding: 15vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg, #0a0a0c 0%, #0f0f12 50%, #0a0a0c 100%);
+    overflow: hidden;
+    min-height: 70vh;
+}
+
+/* Video Background Container */
+.sculpture-vision__video-bg {
+    position: absolute;
+    inset: -60px;
+    /* Extend beyond bounds to hide YouTube UI */
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.sculpture-vision__video-bg iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 180%;
+    /* Oversized to crop and fill */
+    height: 180%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+    filter: brightness(0.5) saturate(1.1) contrast(1.1);
+}
+
+/* Dark Overlay for text readability */
+.sculpture-vision__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(5, 5, 8, 0.7) 0%,
+            rgba(5, 5, 8, 0.4) 50%,
+            rgba(5, 5, 8, 0.8) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Fallback Background Image (shows if video fails) */
+.sculpture-vision__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.35) saturate(1.2);
+    opacity: 0.6;
+    z-index: 0;
+    transition: filter 1s ease, transform 1s ease;
+}
+
+.sculpture-vision:hover .sculpture-vision__bg {
+    filter: brightness(0.45) saturate(1.3);
+    transform: scale(1.03);
+}
+
+.sculpture-vision__noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.sculpture-vision__content {
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sculpture-vision__content[data-reveal] {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.sculpture-vision__content[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.sculpture-vision__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.sculpture-vision__quote {
+    margin: 0 0 3rem;
+    padding: 0;
+}
+
+.sculpture-vision__quote p {
+    font-family: var(--font-primary);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-light);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+}
+
+.sculpture-vision__inspiration {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(201, 167, 122, 0.2);
+}
+
+.sculpture-vision__inspiration-label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-stone);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.sculpture-vision__inspiration p {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    line-height: 1.6;
+}
+
+/* === Technical Specifications Card === */
+.sculpture-specs {
+    position: relative;
+    padding: 10vh var(--page-margin, 8vw);
+    background: #0a0a0c;
+}
+
+.sculpture-specs__card {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(201, 167, 122, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.sculpture-specs__card[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-specs__card[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sculpture-specs__title {
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sculpture-specs__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.sculpture-specs__item {
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.sculpture-specs__item--full {
+    grid-column: 1 / -1;
+}
+
+.sculpture-specs__label {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.sculpture-specs__value {
+    display: block;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-light);
+    line-height: 1.6;
+}
+
+.sculpture-specs__accent-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-gold) 50%, transparent 100%);
+    opacity: 0.5;
+}
+
+/* === Story & Context Section === */
+.sculpture-story {
+    position: relative;
+    padding: 12vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg, #0a0a0c 0%, var(--color-canvas) 100%);
+}
+
+/* Story Side-by-Side Layout */
+.sculpture-story__layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 60vh;
+}
+
+.sculpture-story__image-column {
+    position: relative;
+}
+
+.sculpture-story__image-column[data-reveal] {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-story__image-column[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sculpture-story__image-wrap {
+    position: sticky;
+    top: 10vh;
+    height: 70vh;
+    border-radius: 8px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(15%) brightness(0.85);
+    transition: filter 0.6s ease;
+}
+
+.sculpture-story__image-wrap:hover {
+    filter: grayscale(0%) brightness(1);
+}
+
+.sculpture-story__content-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem 0;
+}
+
+.sculpture-story__main[data-reveal],
+.sculpture-story__sidebar[data-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.sculpture-story__main[data-reveal].is-revealed,
+.sculpture-story__sidebar[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sculpture-story__sidebar[data-reveal] {
+    transition-delay: 0.2s;
+}
+
+.sculpture-story__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.sculpture-story__text {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--color-body-text);
+    line-height: 1.9;
+}
+
+.sculpture-story__text p {
+    margin-bottom: 1.5rem;
+}
+
+.sculpture-story__text p:last-child {
+    margin-bottom: 0;
+}
+
+.sculpture-story__context-card {
+    padding: 2rem;
+    background: rgba(201, 167, 122, 0.05);
+    border-left: 2px solid var(--color-gold-dim);
+    border-radius: 0 4px 4px 0;
+}
+
+.sculpture-story__context-label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.sculpture-story__context-text {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    line-height: 1.7;
+    font-style: italic;
+}
+
+.sculpture-story__divider {
+    max-width: 200px;
+    margin: 4rem auto 0;
+    color: var(--color-gold-dim);
+    opacity: 0.5;
+}
+
+.sculpture-story__divider svg {
+    width: 100%;
+    height: 20px;
+}
+
+/* === Detail Images Gallery === */
+.sculpture-details {
+    position: relative;
+    padding: 8vh var(--page-margin, 8vw);
+    background: var(--color-canvas);
+}
+
+.sculpture-details__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sculpture-details__item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sculpture-details__item[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.sculpture-details__item[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sculpture-details__item--large {
+    grid-row: 1 / -1;
+}
+
+.sculpture-details__item--small:first-of-type {
+    transition-delay: 0.15s;
+}
+
+.sculpture-details__item--small:last-of-type {
+    transition-delay: 0.3s;
+}
+
+.sculpture-details__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(15%) brightness(0.85);
+    transition: filter 0.6s ease, transform 0.6s ease;
+}
+
+.sculpture-details__item:hover .sculpture-details__image {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+}
+
+.sculpture-details__caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    font-family: var(--font-secondary);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-light);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.4rem 0.75rem;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sculpture-details__item:hover .sculpture-details__caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .sculpture-info {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sculpture-info__card--left[data-reveal],
+    .sculpture-info__card--right[data-reveal] {
+        transform: translateY(40px);
+    }
+
+    /* 2-column grid on tablet */
+    .technical-gallery__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Lightbox adjustments */
+    .lightbox__nav--prev {
+        left: 1rem;
+    }
+
+    .lightbox__nav--next {
+        right: 1rem;
+    }
+
+    .lightbox__nav {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sculpture-title__name {
+        font-size: 2.5rem;
+    }
+
+    /* Single column on mobile */
+    .technical-gallery__grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Hide lightbox nav on mobile (use swipe) */
+    .lightbox__nav {
+        display: none;
+    }
+
+    .lightbox__image-container {
+        width: 95vw;
+        height: 60vh;
+    }
+
+    /* New sections responsive */
+    .sculpture-process__content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding-left: 1.5rem;
+    }
+
+    .sculpture-process__text::first-letter {
+        font-size: 2.25rem;
+    }
+
+    .sculpture-specs__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sculpture-story__container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .sculpture-story__sidebar {
+        order: -1;
+    }
+}

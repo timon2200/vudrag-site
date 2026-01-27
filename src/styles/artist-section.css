@@ -1,0 +1,351 @@
+/**
+ * Artist Section - Premium Biography Styles
+ * 
+ * Dark canvas with luxury typography following the
+ * established Patek-inspired design system.
+ */
+
+/* === Artist Section Container === */
+.artist-section {
+    position: relative;
+    min-height: 100vh;
+    padding: 15vh 8vw;
+    background: linear-gradient(180deg, #1a1a1a 0%, #212121 50%, #1a1a1a 100%);
+    overflow: hidden;
+}
+
+/* === Video Background === */
+.artist-section__video-bg {
+    position: absolute;
+    inset: -60px;
+    /* Extend beyond bounds to hide YouTube UI */
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.artist-section__video-bg iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 180%;
+    /* Oversized to crop and fill */
+    height: 180%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+    filter: brightness(0.4) saturate(1.1) contrast(1.1);
+}
+
+/* Dark Overlay for text readability */
+.artist-section__video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(26, 26, 26, 0.85) 0%,
+            rgba(26, 26, 26, 0.6) 50%,
+            rgba(26, 26, 26, 0.9) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.artist-section__watermark {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-primary);
+    font-size: 18vw;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* === Quote Block === */
+.artist-section__quote-block {
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+    margin: 0 auto 10vh;
+    text-align: center;
+}
+
+.artist-section__quote {
+    font-family: var(--font-primary);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-gold);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    position: relative;
+    padding: 0 2rem;
+}
+
+.artist-section__quote::before,
+.artist-section__quote::after {
+    content: '"';
+    font-size: 4rem;
+    color: var(--color-gold-dim);
+    position: absolute;
+    font-style: normal;
+}
+
+.artist-section__quote::before {
+    top: -1rem;
+    left: -1rem;
+}
+
+.artist-section__quote::after {
+    content: '"';
+    bottom: -2rem;
+    right: -1rem;
+}
+
+/* === Main Grid Layout === */
+.artist-section__grid {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 8vw;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* === Portrait Column === */
+.artist-section__portrait-col {
+    position: relative;
+}
+
+.artist-section__portrait-frame {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.artist-section__portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(20%) contrast(1.1);
+    transition: filter 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.artist-section__portrait-frame:hover .artist-section__portrait {
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.03);
+}
+
+.artist-section__portrait-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            transparent 60%,
+            rgba(26, 26, 26, 0.8) 100%);
+    pointer-events: none;
+}
+
+.artist-section__portrait-caption {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.artist-section__name {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-light);
+    letter-spacing: 0.05em;
+}
+
+.artist-section__born {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* === Biography Column === */
+.artist-section__bio-col {
+    position: relative;
+}
+
+.artist-section__header {
+    margin-bottom: 3rem;
+}
+
+.artist-section__label {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.artist-section__title {
+    font-family: var(--font-primary);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--color-light);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.artist-section__divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold), transparent);
+    opacity: 0.6;
+}
+
+/* === Biography Text === */
+.artist-section__bio-text {
+    margin-bottom: 3rem;
+}
+
+.artist-section__bio-text p {
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-body-text);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.artist-section__bio-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* === Technique Highlight === */
+.artist-section__technique {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 2px solid var(--color-gold-dim);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.artist-section__technique-title {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-light);
+    margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+}
+
+.artist-section__technique-desc {
+    font-family: var(--font-secondary);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-body-text);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.artist-section__technique-effect {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-gold);
+    line-height: 1.6;
+}
+
+/* === Stats Row === */
+.artist-section__stats {
+    display: flex;
+    justify-content: center;
+    gap: 6vw;
+    margin-top: 10vh;
+    padding-top: 5vh;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.artist-section__stat {
+    text-align: center;
+}
+
+.artist-section__stat-value {
+    display: block;
+    font-family: var(--font-primary);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--color-gold);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.artist-section__stat-label {
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-stone);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* === Responsive === */
+@media (max-width: 968px) {
+    .artist-section__grid {
+        grid-template-columns: 1fr;
+        gap: 5vh;
+    }
+
+    .artist-section__portrait-col {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .artist-section__quote::before,
+    .artist-section__quote::after {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .artist-section {
+        padding: 10vh 6vw;
+    }
+
+    .artist-section__stats {
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .artist-section__technique {
+        padding: 1.5rem;
+    }
+}
+
+/* === Reveal Animation Overrides === */
+.artist-section [data-reveal] {
+    opacity: 0;
+    transform: translateY(50px);
+    transition:
+        opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.artist-section [data-reveal="left"] {
+    transform: translateX(-50px);
+}
+
+.artist-section [data-reveal].is-revealed,
+.artist-section [data-reveal="left"].is-revealed {
+    opacity: 1;
+    transform: translate(0, 0);
+}

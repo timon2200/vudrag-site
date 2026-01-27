@@ -11,7 +11,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: 'index.html',
-                gallery: 'gallery.html'
+                gallery: 'gallery.html',
+                sculpture: 'sculpture.html'
             },
             output: {
                 manualChunks: {
@@ -22,7 +23,13 @@ export default defineConfig({
     },
     server: {
         port: 3000,
-        open: true
+        open: true,
+        proxy: {
+            '/api': {
+                target: 'http://127.0.0.1:3001',
+                changeOrigin: true
+            }
+        }
     },
     assetsInclude: ['**/*.sog']
 });

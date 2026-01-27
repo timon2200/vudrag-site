@@ -32,7 +32,7 @@
     color: #fff;
     padding: 0.8rem 1.2rem;
     border-radius: 4px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-secondary);
     font-size: 0.9rem;
     cursor: pointer;
     pointer-events: auto;
@@ -60,7 +60,7 @@
     /* Deep dark background */
     backdrop-filter: blur(20px);
     padding: 2.5rem;
-    border-left: 2px solid #c9a77a;
+    border-left: 2px solid var(--color-gold);
     /* Gold accent */
     color: #fff;
     pointer-events: auto;
@@ -109,7 +109,7 @@
 .info-card .gallery-info-header h2 {
     font-size: 0.9rem;
     margin: 0;
-    color: #c9a77a;
+    color: var(--color-gold);
     text-transform: uppercase;
     letter-spacing: 0.2em;
 }
@@ -172,14 +172,14 @@
     .drag-indicator {
         width: 40px;
         height: 4px;
-        background: linear-gradient(90deg, rgba(201, 167, 122, 0.3), rgba(201, 167, 122, 0.6), rgba(201, 167, 122, 0.3));
+        background: linear-gradient(90deg, var(--color-gold-dim), var(--color-gold), var(--color-gold-dim));
         border-radius: 2px;
-        transition: all 0.3s ease;
+        transition: var(--transition-fast);
     }
 
     .panel-drag-handle:hover .drag-indicator,
     .panel-drag-handle:active .drag-indicator {
-        background: linear-gradient(90deg, rgba(201, 167, 122, 0.5), rgba(201, 167, 122, 0.9), rgba(201, 167, 122, 0.5));
+        background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
         width: 50px;
     }
 
@@ -252,8 +252,8 @@
 
 .nav-btn:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: #c9a77a;
-    color: #c9a77a;
+    border-color: var(--color-gold);
+    color: var(--color-gold);
 }
 
 .nav-hint {
@@ -317,7 +317,7 @@
         padding-left: calc(2rem + env(safe-area-inset-left));
         padding-right: calc(2rem + env(safe-area-inset-right));
         border-left: none;
-        border-top: 2px solid #c9a77a;
+        border-top: 2px solid var(--color-gold);
         border-radius: 1rem 1rem 0 0;
         background: rgba(5, 5, 8, 0.95);
         overflow-y: auto;
@@ -456,7 +456,7 @@
         backdrop-filter: blur(10px);
         border-radius: 20px;
         color: rgba(255, 255, 255, 0.7);
-        font-family: 'Inter', sans-serif;
+        font-family: var(--font-secondary);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
         z-index: 3000;
@@ -477,7 +477,7 @@
 
     .hint-inline .material-symbols-outlined {
         font-size: 18px;
-        color: #c9a77a;
+        color: var(--color-gold);
     }
 
     /* Drag hint - positioned center-top of screen */

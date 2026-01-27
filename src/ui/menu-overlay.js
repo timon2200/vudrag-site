@@ -110,6 +110,10 @@ function handleMenuClick(e) {
         // Assuming hub reveals after scroll progress 1.0
         state.targetScrollProgress = 1.2;
         state.isScrolling = true;
+    } else if (target === 'contact') {
+        // Navigate to contact page
+        window.location.href = '/contact.html';
+        return;
     }
 
     // Log for unimplemented sections

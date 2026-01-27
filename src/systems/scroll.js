@@ -194,6 +194,13 @@ export function enterContentMode() {
     contentArea.scrollTop = 0; // Start at top
     exitScrollAccumulator = 0; // Reset accumulator
 
+    // Ensure pointer events are enabled immediately
+    contentArea.style.pointerEvents = 'auto';
+
+    // Focus the content area so it can receive scroll events immediately
+    // This prevents the "need to move mouse first" issue
+    contentArea.focus();
+
     console.log('📄 Entered content mode');
 }
 

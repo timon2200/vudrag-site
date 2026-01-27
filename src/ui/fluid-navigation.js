@@ -55,16 +55,21 @@ export function setupFluidNavigation() {
     // Create canvas overlay
     canvas = document.createElement('canvas');
     canvas.id = 'fluid-nav-canvas';
+
+    // Check initial state to determine starting opacity
+    // This handles page restore from sculpture detail page
+    const initialOpacity = state.scrollProgress > 1.3 ? 0 : 1;
+
     canvas.style.cssText = `
         position: fixed;
         top: 0;
         right: 0;
         width: 200px;
         height: 100%;
-        pointer-events: auto;
+        pointer-events: ${initialOpacity > 0 ? 'auto' : 'none'};
         cursor: pointer;
         z-index: 100;
-        opacity: 1;
+        opacity: ${initialOpacity};
         transition: opacity 0.4s ease-out;
     `;
     document.body.appendChild(canvas);
@@ -260,8 +265,9 @@ export function updateFluidNavigation(dt) {
     const isScrolling = state.isScrolling;
 
     // Calculate visibility based on scroll
+    // Hide navigation when in content mode OR when scroll has passed the content threshold
     let navOpacity = 1;
-    if (isInContentMode()) {
+    if (isInContentMode() || scrollProgress > 1.3) {
         navOpacity = 0;
     } else if (scrollProgress > 1.0) {
         // Fade out as we push towards transition (1.0 -> 1.15)

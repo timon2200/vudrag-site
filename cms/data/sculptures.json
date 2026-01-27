@@ -1,0 +1,102 @@
+{
+    "iron-maiden": {
+        "id": "iron-maiden",
+        "title": "Iron Maiden",
+        "series": "Persona",
+        "year": "2023",
+        "materials": "Welded steel mesh, integrated LED system",
+        "dimensions": "185 × 95 × 75 cm",
+        "collection": "Private Collection, Zagreb",
+        "concept": "A meditation on duality—strength and vulnerability, presence and absence.",
+        "statement": "\"The Iron Maiden emerged from years of exploring how light can reveal what metal conceals. Each weld is a gesture, each shadow a breath.\"",
+        "process": "The creation began with over 2,000 individual steel rods, each cut and prepared by hand. Over six months, these elements were welded into an organic lattice following an intuitive process that balanced mathematical precision with artistic spontaneity.",
+        "technique": "The Net-work technique involves welding short steel rods at precise angles to create a mesh that appears solid from one perspective and transparent from another. Each junction point is hand-finished to achieve seamless transitions.",
+        "vision": "I envisioned a face that could exist between worlds—visible yet vanishing, present yet permeable. The interplay of light and shadow becomes the true medium.",
+        "inspiration": "Renaissance devotional imagery, Japanese Noh masks, and the mathematical structures found in nature—particularly the branching patterns of neural networks and river deltas.",
+        "weight": "45 kg",
+        "lighting": "Integrated warm-white LED system (3000K) with programmable dimming, allowing the piece to breathe between full illumination and subtle ambient glow.",
+        "installationNotes": "Requires wall-mounted steel brackets (included). Recommended installation height: eye-level center at 160cm. Electrical connection: standard 220V outlet within 2m.",
+        "story": "The Iron Maiden represents the culmination of a decade-long exploration into identity and perception. The title references both the medieval torture device and the protective 'maiden' armor of vulnerability we construct around our true selves.",
+        "context": "Created during the artist's Zagreb period (2020-2023), this work emerged from a series of studies on how light penetrates and defines sculptural form. It draws from the Croatian tradition of metal craftsmanship while incorporating contemporary lighting technology.",
+        "processImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+        "techniqueImage": "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&q=80",
+        "storyImage": "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200&q=80",
+        "detailImages": [
+            "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=1000&q=80",
+            "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=800&q=80",
+            "https://images.unsplash.com/photo-1569982175971-d92b01cf8694?w=800&q=80"
+        ],
+        "heroImage": "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=1600&q=80",
+        "gallery": [
+            "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=800&q=80",
+            "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+            "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=800&q=80",
+            "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&q=80"
+        ],
+        "related": [
+            "vitreolum",
+            "relic",
+            "madonna"
+        ]
+    },
+    "vitreolum": {
+        "id": "vitreolum",
+        "title": "Vitreolum",
+        "series": "Net-work",
+        "year": "2023",
+        "materials": "Bronze-patinated steel mesh, fiber optics",
+        "dimensions": "220 × 140 × 100 cm",
+        "collection": "Museum of Contemporary Art, Ljubljana",
+        "concept": "Light as liquid, form as vessel.",
+        "statement": "\"Vitreolum speaks to the alchemical transformation of raw material into ethereal presence.\"",
+        "process": "",
+        "technique": "",
+        "vision": "",
+        "inspiration": "",
+        "weight": "",
+        "lighting": "",
+        "installationNotes": "",
+        "story": "",
+        "context": "",
+        "heroImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80",
+        "gallery": [
+            "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+            "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80",
+            "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=800&q=80"
+        ],
+        "related": [
+            "iron-maiden",
+            "madonna",
+            "relic"
+        ]
+    },
+    "madonna": {
+        "id": "madonna",
+        "title": "Madonna & the Veil",
+        "series": "Net-work",
+        "year": "2025",
+        "materials": "Stainless steel mesh, programmable LEDs",
+        "dimensions": "240 × 180 × 120 cm",
+        "collection": "Commission in progress",
+        "concept": "Sacred geometry meets industrial craft.",
+        "statement": "\"The veil both reveals and conceals—a paradox at the heart of all devotional imagery.\"",
+        "process": "",
+        "technique": "",
+        "vision": "",
+        "inspiration": "",
+        "weight": "",
+        "lighting": "",
+        "installationNotes": "",
+        "story": "",
+        "context": "",
+        "heroImage": "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1600&q=80",
+        "gallery": [
+            "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80",
+            "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=800&q=80"
+        ],
+        "related": [
+            "vitreolum",
+            "iron-maiden"
+        ]
+    }
+}

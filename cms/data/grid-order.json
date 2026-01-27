@@ -1,0 +1,34 @@
+[
+  {
+    "id": "iron-maiden",
+    "size": "large"
+  },
+  {
+    "id": "vitreolum",
+    "size": "medium"
+  },
+  {
+    "id": "sumerian-moon",
+    "size": "medium"
+  },
+  {
+    "id": "relic",
+    "size": "medium"
+  },
+  {
+    "id": "tomislav",
+    "size": "medium"
+  },
+  {
+    "id": "madonna",
+    "size": "large"
+  },
+  {
+    "id": "waterdrop",
+    "size": "tall"
+  },
+  {
+    "id": "tolkien",
+    "size": "tall"
+  }
+]

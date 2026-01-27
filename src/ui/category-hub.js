@@ -7,9 +7,13 @@
 
 import { observeElement } from './scroll-reveal.js';
 import { isInContentMode } from '../systems/scroll.js';
+import { state } from '../state.js';
 
-// Category data based on artist works
-const CATEGORIES = [
+// CMS API URL
+const CMS_API = 'http://localhost:3001/api';
+
+// Fallback category data (used if CMS unavailable)
+const FALLBACK_CATEGORIES = [
     {
         id: 'persona',
         title: 'Persona',
@@ -52,6 +56,9 @@ const CATEGORIES = [
     }
 ];
 
+// Current categories (populated from CMS or fallback)
+let CATEGORIES = [...FALLBACK_CATEGORIES];
+
 // 3D Tilt configuration
 const TILT_CONFIG = {
     maxRotation: 6,       // Maximum rotation in degrees (subtle)
@@ -65,14 +72,43 @@ const TILT_CONFIG = {
 let activeCard = null;
 
 /**
+ * Fetch categories from CMS (uses Collections/Galleries data)
+ */
+async function fetchCategoriesFromCMS() {
+    try {
+        const response = await fetch(`${CMS_API}/collections`);
+        if (!response.ok) throw new Error('CMS unavailable');
+        const collections = await response.json();
+        if (collections && collections.length > 0) {
+            // Map collections to category card format
+            return collections.map(collection => ({
+                id: collection.id,
+                title: collection.title,
+                subtitle: collection.subtitle || '',
+                description: collection.description || '',
+                image: collection.image || '',
+                count: collection.works?.length || 0
+            }));
+        }
+        return FALLBACK_CATEGORIES;
+    } catch (err) {
+        console.warn('⚠️ CMS unavailable, using fallback categories');
+        return FALLBACK_CATEGORIES;
+    }
+}
+
+/**
  * Initialize the category hub section
  */
-export function setupCategoryHub() {
+export async function setupCategoryHub() {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) {
         console.warn('⚠️ Content area not found for category hub');
         return null;
     }
+
+    // Fetch categories from CMS
+    CATEGORIES = await fetchCategoriesFromCMS();
 
     const hubElement = createCategoryHubDOM();
     contentArea.appendChild(hubElement);
@@ -318,6 +354,16 @@ function handleCategoryClick(categoryId) {
             card.classList.add('is-active');
         }
     });
+
+    // Save scroll position before navigating (so we can restore on return)
+    const contentArea = document.getElementById('content-area');
+    sessionStorage.setItem('vudrag_scroll_position', JSON.stringify({
+        scrollProgress: state.scrollProgress,
+        targetScrollProgress: state.targetScrollProgress,
+        windowScrollY: window.scrollY,
+        contentAreaScrollTop: contentArea ? contentArea.scrollTop : 0,
+        wasInContentMode: contentArea ? contentArea.classList.contains('is-visible') : false
+    }));
 
     // Navigate to category gallery
     window.location.href = `/gallery.html?category=${categoryId}`;

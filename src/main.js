@@ -21,6 +21,9 @@ import './styles/sticky-header.css';
 import './styles/category-hub.css';
 import './styles/menu-overlay.css';
 import './styles/gallery-overlay.css';
+import './styles/artist-section.css';
+import './styles/works-showcase.css';
+import './styles/footer.css';
 
 import { CONFIG, IS_DEV } from './config.js';
 
@@ -40,12 +43,18 @@ import { setupScrollReveal } from './ui/scroll-reveal.js';
 import { setupCategoryHub, updateCategoryHubVisibility } from './ui/category-hub.js';
 import { createInteractionHint, updateInteractionHint } from './ui/interaction-hint.js';
 import { createMenuOverlay } from './ui/menu-overlay.js';
+import { setupArtistSection } from './ui/artist-section.js';
+import { setupWorksShowcase } from './ui/works-showcase.js';
+import { setupFooter } from './ui/footer.js';
 
 /**
  * Initialize the experience
  */
 async function init() {
     console.log('🎨 Initializing Vudrag SuperSplat Experience...');
+
+    // Restore state early (before UI setup) so navigation knows the correct state
+    restoreScrollStateEarly();
 
     const container = document.getElementById('canvas-container');
     const canvas = document.createElement('canvas');
@@ -94,7 +103,10 @@ async function init() {
     // Patek-style enhancements
     createStickyHeader();
     setupScrollReveal();
-    setupCategoryHub();
+    await setupCategoryHub();
+    await setupArtistSection();
+    await setupWorksShowcase();
+    await setupFooter();
     createInteractionHint();
     createMenuOverlay();
 
@@ -164,7 +176,41 @@ function setupUpdateLoop() {
         const currentIndex = Math.floor(Math.min(splatProgress, numSplats - 1.001));
         const transitionT = splatProgress - currentIndex;
 
-        // Update systems
+        // === PERFORMANCE OPTIMIZATION ===
+        // When fully in content mode (scrollProgress > 1.3), skip expensive 3D operations
+        const isInContentZone = state.scrollProgress > 1.3;
+        const canvasContainer = document.getElementById('canvas-container');
+
+        if (isInContentZone) {
+            // Hide canvas to fully release GPU resources
+            if (canvasContainer && canvasContainer.style.visibility !== 'hidden') {
+                canvasContainer.style.visibility = 'hidden';
+                canvasContainer.style.pointerEvents = 'none';
+                console.log('⏸️ 3D rendering paused for content mode');
+            }
+
+            // Only do minimal updates needed for scroll tracking
+            state.currentSplatIndex = currentIndex;
+
+            // Animate content slide during transition
+            updateContentSlide(state.scrollProgress);
+
+            // Update category hub visibility (triggers reveals)
+            updateCategoryHubVisibility(state.scrollProgress);
+
+            // Update interactive scroll hint
+            updateInteractionHint(state.scrollProgress);
+            return; // Skip all expensive 3D operations
+        }
+
+        // Restore canvas visibility when returning to splat gallery
+        if (canvasContainer && canvasContainer.style.visibility === 'hidden') {
+            canvasContainer.style.visibility = 'visible';
+            canvasContainer.style.pointerEvents = 'auto';
+            console.log('▶️ 3D rendering resumed');
+        }
+
+        // Update systems (expensive 3D operations)
         updateSplatTransitions(currentIndex, transitionT, dt);
         updateSplatInteraction(dt);
         updateParticleInteraction(dt);
@@ -206,12 +252,108 @@ function setupUpdateLoop() {
  */
 function hideLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
-    setTimeout(() => {
+
+    // If returning from sculpture page, skip the loading animation entirely
+    const isReturning = state._pendingScrollRestore != null;
+
+    if (isReturning) {
+        // Immediately hide loading screen and restore position
         loadingScreen.classList.add('loaded');
-    }, 800);
+        restoreScrollPosition();
+    } else {
+        // Normal first load - show loading animation
+        setTimeout(() => {
+            loadingScreen.classList.add('loaded');
+        }, 800);
+    }
+}
+
+/**
+ * Save scroll position before navigating to sculpture page
+ */
+function setupScrollPositionSave() {
+    // Listen for clicks on sculpture or gallery links
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href*="sculpture.html"], a[href*="gallery.html"]');
+        if (link) {
+            const contentArea = document.getElementById('content-area');
+            sessionStorage.setItem('vudrag_scroll_position', JSON.stringify({
+                scrollProgress: state.scrollProgress,
+                targetScrollProgress: state.targetScrollProgress,
+                windowScrollY: window.scrollY,
+                contentAreaScrollTop: contentArea ? contentArea.scrollTop : 0,
+                wasInContentMode: contentArea ? contentArea.classList.contains('is-visible') : false
+            }));
+        }
+    });
+}
+
+/**
+ * Early state restoration - called at the start of init() before UI setup
+ * This ensures navigation and other components initialize with correct state
+ */
+function restoreScrollStateEarly() {
+    const saved = sessionStorage.getItem('vudrag_scroll_position');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            // Only restore state values, not UI - UI restoration happens later
+            state.scrollProgress = data.scrollProgress;
+            state.targetScrollProgress = data.targetScrollProgress;
+            // Store the data for later UI restoration
+            state._pendingScrollRestore = data;
+            console.log('📍 Early state restore:', { scrollProgress: data.scrollProgress });
+        } catch (e) {
+            console.warn('Could not parse saved scroll position:', e);
+        }
+    }
+}
+
+/**
+ * Restore scroll position when returning from sculpture page
+ * This handles UI restoration after DOM is ready
+ */
+function restoreScrollPosition() {
+    const data = state._pendingScrollRestore;
+    if (!data) return;
+
+    try {
+        const { windowScrollY, contentAreaScrollTop, wasInContentMode } = data;
+
+        // If we were in content mode, restore that state
+        const contentArea = document.getElementById('content-area');
+        if (wasInContentMode && contentArea) {
+            // Restore content mode state
+            contentArea.classList.add('is-visible');
+            contentArea.style.transform = 'translateY(0)';
+            contentArea.style.opacity = '1';
+            contentArea.style.visibility = 'visible';
+            contentArea.style.pointerEvents = 'auto';
+
+            // Restore content area scroll position after a short delay to let DOM settle
+            setTimeout(() => {
+                contentArea.scrollTop = contentAreaScrollTop || 0;
+            }, 50);
+        }
+
+        // Restore window scroll (for legacy/fallback)
+        if (windowScrollY > 0 && !wasInContentMode) {
+            window.scrollTo(0, windowScrollY);
+        }
+
+        // Clear after restore (only restore once)
+        sessionStorage.removeItem('vudrag_scroll_position');
+        delete state._pendingScrollRestore;
+
+        console.log('📍 UI scroll position restored', { wasInContentMode, contentAreaScrollTop });
+    } catch (e) {
+        console.warn('Could not restore scroll position:', e);
+    }
 }
 
 // Start application
 window.addEventListener('error', (e) => console.error('Error:', e.error));
-init().catch(console.error);
+init().then(() => {
+    setupScrollPositionSave();
+}).catch(console.error);
 

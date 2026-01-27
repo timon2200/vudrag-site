@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vudrag CMS | Admin</title>
+    <link rel="stylesheet" href="styles/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <div class="login-container">
+                <div class="login-logo">
+                    <span class="logo-text">VUDRAG</span>
+                    <span class="logo-subtitle">Content Management</span>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="password">Admin Password</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                    <p id="login-error" class="error-message"></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="screen">
+            <header class="header">
+                <div class="header-brand">
+                    <span class="brand-name">VUDRAG CMS</span>
+                </div>
+                <nav class="header-nav">
+                    <button class="nav-btn active" data-section="splats">Splats</button>
+                    <button class="nav-btn" data-section="sculptures">Sculptures</button>
+                    <button class="nav-btn" data-section="grid-order">Grid Order</button>
+                    <button class="nav-btn" data-section="galleries">Galleries</button>
+                    <button class="nav-btn" data-section="collections">Collections</button>
+                    <button class="nav-btn" data-section="assets">Assets</button>
+                    <button class="nav-btn" data-section="site-content">Site Content</button>
+                </nav>
+                <button id="logout-btn" class="btn-logout">Logout</button>
+            </header>
+
+            <main class="main-content">
+                <!-- Splats Section -->
+                <section id="splats-section" class="content-section active">
+                    <div class="section-header">
+                        <h2>Hero Splats</h2>
+                        <button class="btn-add" id="add-splat">+ Add Splat</button>
+                    </div>
+                    <div id="splats-list" class="items-grid"></div>
+                </section>
+
+                <!-- Sculptures Section (Detail Pages) -->
+                <section id="sculptures-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Sculpture Pages</h2>
+                        <button class="btn-add" id="add-sculpture-page">+ Add Sculpture</button>
+                    </div>
+                    <div id="sculptures-list" class="items-grid"></div>
+                </section>
+
+                <!-- Grid Order Section -->
+                <section id="grid-order-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Works Showcase Grid Order</h2>
+                        <button class="btn-add" id="save-grid-order">💾 Save Order</button>
+                    </div>
+                    <p class="section-hint">Drag cards to reorder. Changes are applied when you click "Save Order".</p>
+                    <div id="grid-order-preview" class="grid-order-preview"></div>
+                </section>
+
+                <!-- Galleries Section -->
+                <section id="galleries-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Galleries</h2>
+                        <button class="btn-add" id="add-gallery">+ Add Gallery</button>
+                    </div>
+                    <div id="galleries-list" class="items-list"></div>
+                </section>
+
+                <!-- Collections Section -->
+                <section id="collections-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Collections</h2>
+                        <button class="btn-add" id="add-collection">+ Add Collection</button>
+                    </div>
+                    <div id="collections-list" class="items-list"></div>
+                </section>
+
+                <!-- Assets Section -->
+                <section id="assets-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Asset Management</h2>
+                    </div>
+                    <div class="upload-zone" id="upload-zone">
+                        <div class="upload-content">
+                            <span class="upload-icon">📁</span>
+                            <p>Drag & drop files here or click to browse</p>
+                            <p class="upload-hint">Supports: .sog (splats), .jpg/.png (images)</p>
+                        </div>
+                        <input type="file" id="file-input" hidden accept=".sog,.jpg,.jpeg,.png,.webp">
+                    </div>
+                    <div id="upload-status" class="upload-status"></div>
+
+                    <h3 style="margin: 32px 0 16px; color: var(--text-primary);">Uploaded Assets</h3>
+                    <div id="assets-list" class="items-grid"></div>
+                </section>
+
+                <!-- Site Content Section -->
+                <section id="site-content-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Site Content</h2>
+                        <button class="btn-add" id="save-site-content">💾 Save All Changes</button>
+                    </div>
+                    <p class="section-hint">Edit main page content. Changes are applied when you click "Save All
+                        Changes".</p>
+
+                    <!-- Note: Category Hub is managed via Collections tab -->
+
+                    <!-- Artist Section Editor -->
+                    <div class="site-content-block">
+                        <h3 class="block-title">👤 Artist Section</h3>
+                        <div class="artist-editor-grid">
+                            <!-- Portrait & Basic Info -->
+                            <div class="site-content-panel">
+                                <h4 class="panel-subtitle">Portrait & Identity</h4>
+                                <div id="artist-portrait-container">
+                                    <!-- Portrait image uploader will be inserted here by JavaScript -->
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="artist-name">Name</label>
+                                        <input type="text" id="artist-name" name="artist-name"
+                                            placeholder="Nikola Vudrag">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="artist-born">Born</label>
+                                        <input type="text" id="artist-born" name="artist-born"
+                                            placeholder="1989, Croatia">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-tagline">Tagline</label>
+                                    <input type="text" id="artist-tagline" name="artist-tagline"
+                                        placeholder="Sculptor of Light & Steel">
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-quote">Quote</label>
+                                    <textarea id="artist-quote" name="artist-quote" rows="2"
+                                        placeholder="&quot;Each weld is a meditation...&quot;"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-video">Background Video URL (YouTube)</label>
+                                    <input type="text" id="artist-video" name="artist-video"
+                                        placeholder="https://www.youtube.com/embed/...">
+                                </div>
+                            </div>
+
+                            <!-- Biography -->
+                            <div class="site-content-panel">
+                                <h4 class="panel-subtitle">Biography</h4>
+                                <div class="form-group">
+                                    <label for="artist-bio-intro">Introduction</label>
+                                    <textarea id="artist-bio-intro" name="artist-bio-intro" rows="3"
+                                        placeholder="Biography intro..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-bio-education">Education</label>
+                                    <textarea id="artist-bio-education" name="artist-bio-education" rows="3"
+                                        placeholder="Education background..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-bio-philosophy">Philosophy</label>
+                                    <textarea id="artist-bio-philosophy" name="artist-bio-philosophy" rows="3"
+                                        placeholder="Artistic philosophy..."></textarea>
+                                </div>
+
+                                <h4 class="panel-subtitle" style="margin-top: 24px;">Technique Highlight</h4>
+                                <div class="form-group">
+                                    <label for="artist-tech-title">Technique Title</label>
+                                    <input type="text" id="artist-tech-title" name="artist-tech-title"
+                                        placeholder="The Net-work Method">
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-tech-desc">Technique Description</label>
+                                    <textarea id="artist-tech-desc" name="artist-tech-desc" rows="3"
+                                        placeholder="Description of the technique..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="artist-tech-effect">Technique Effect</label>
+                                    <textarea id="artist-tech-effect" name="artist-tech-effect" rows="2"
+                                        placeholder="Visual effect description..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer & Contact (Existing) -->
+                    <div class="site-content-grid">
+                        <!-- Footer Settings -->
+                        <div class="site-content-panel">
+                            <h3 class="panel-title">Footer</h3>
+
+                            <div class="form-group">
+                                <label for="footer-brand">Brand Name</label>
+                                <input type="text" id="footer-brand" name="footer-brand" placeholder="VUDRAG">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="footer-tagline">Tagline</label>
+                                <input type="text" id="footer-tagline" name="footer-tagline"
+                                    placeholder="Sculptures in Light">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="footer-description">Description</label>
+                                <textarea id="footer-description" name="footer-description" rows="3"
+                                    placeholder="Creating photorealistic bronze sculptures..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="footer-email">Email</label>
+                                <input type="email" id="footer-email" name="footer-email"
+                                    placeholder="studio@nikolavudrag.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="footer-location">Location</label>
+                                <input type="text" id="footer-location" name="footer-location"
+                                    placeholder="Varaždin, Croatia">
+                            </div>
+                        </div>
+
+                        <!-- Contact Page Settings -->
+                        <div class="site-content-panel">
+                            <h3 class="panel-title">Contact Page</h3>
+
+                            <div class="form-group">
+                                <label for="contact-label">Section Label</label>
+                                <input type="text" id="contact-label" name="contact-label" placeholder="Correspondence">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-title1">Title Line 1</label>
+                                    <input type="text" id="contact-title1" name="contact-title1" placeholder="Get in">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-title2">Title Line 2</label>
+                                    <input type="text" id="contact-title2" name="contact-title2" placeholder="Touch">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-text">Invitation Text</label>
+                                <textarea id="contact-text" name="contact-text" rows="3"
+                                    placeholder="For commissions, exhibitions..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-email">Contact Email</label>
+                                <input type="email" id="contact-email" name="contact-email"
+                                    placeholder="studio@nikolavudrag.com">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-name">Signature Name</label>
+                                    <input type="text" id="contact-name" name="contact-name"
+                                        placeholder="Nikola Vudrag">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-location">Signature Location</label>
+                                    <input type="text" id="contact-location" name="contact-location"
+                                        placeholder="Varaždin, Croatia">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Edit Item</h3>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <form id="edit-form" class="modal-body">
+                    <!-- Dynamic form fields inserted here -->
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="modal-cancel">Cancel</button>
+                    <button type="button" class="btn-primary" id="modal-save">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="src/app.js"></script>
+</body>
+
+</html>

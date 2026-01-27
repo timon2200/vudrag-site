@@ -173,6 +173,53 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 
 ---
 
+## 🖥️ CMS (Content Management System)
+
+A lightweight headless CMS powers the portfolio's dynamic content.
+
+### Starting the CMS Server
+
+```bash
+# Navigate to the CMS directory
+cd cms
+
+# Start the server
+node server.js
+```
+
+The CMS runs on **port 3001** by default.
+
+### Accessing the Admin Panel
+
+| Interface | URL |
+|-----------|-----|
+| **Admin Panel** | [http://localhost:3001/admin](http://localhost:3001/admin) |
+| **API Config** | [http://localhost:3001/api/config.json](http://localhost:3001/api/config.json) |
+
+Login uses the password defined in `cms/.env` as `ADMIN_PASSWORD`.
+
+### What You Can Manage
+
+| Section | Description |
+|---------|-------------|
+| **Splats** | 3D splat transforms, positions, rotations, and color grading |
+| **Galleries** | Sculpture series metadata (artist, year, material) |
+| **Collections** | Category hub content and nested works |
+| **Sculptures** | Rich narrative content for detail pages |
+| **Assets** | Upload/manage `.sog` files, images, and environments |
+
+### Data Storage
+
+All content is stored as flat-file JSON in `cms/data/`:
+- `splats.json` — 3D splat configuration
+- `galleries.json` — Gallery definitions
+- `collections.json` — Category hub content
+- `sculptures.json` — Detail page narratives
+
+See **[cms/README.md](./cms/README.md)** for full API documentation.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
@@ -190,6 +237,7 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** — Deep technical documentation covering systems, shaders, and module architecture
 - **[PROJECT_TRAJECTORY.md](./PROJECT_TRAJECTORY.md)** — Roadmap, vision, and future development phases
+- **[cms/README.md](./cms/README.md)** — CMS server documentation with full API reference
 
 ---
 

@@ -5,17 +5,6 @@
  * Following the "Dark Charcoal/Monochrome" design system.
  */
 
-/* === CSS Variables (Design System Reference) === */
-:root {
-    --color-canvas: #212121;
-    --color-surface: #383E42;
-    --color-ink: #0A0A0A;
-    --color-stone: #7E8479;
-    --color-light: #F6F6F6;
-    --font-primary: 'Cormorant Garamond', serif;
-    --transition-slow: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-    --transition-hover: all 0.4s ease-out;
-}
 
 /* === Category Hub Section === */
 .category-hub {
@@ -51,14 +40,14 @@
     transform: translateX(-50%);
     width: 60px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #c9a77a, transparent);
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
     opacity: 0.5;
 }
 
 .category-hub__divider {
     width: 1px;
     height: 60px;
-    background: linear-gradient(to bottom, #c9a77a, transparent);
+    background: linear-gradient(to bottom, var(--color-gold), transparent);
     margin: 0 auto;
     opacity: 0.3;
 }
@@ -85,7 +74,7 @@
     font-family: var(--font-primary);
     font-size: 1rem;
     font-weight: 400;
-    color: #c9a77a;
+    color: var(--color-gold);
     letter-spacing: 0.3em;
     text-transform: uppercase;
 }
@@ -152,7 +141,7 @@
 }
 
 .category-card__label {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-secondary);
     font-size: 0.7rem;
     font-weight: 500;
     color: var(--color-stone);
@@ -171,7 +160,7 @@
 }
 
 .category-card__count {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-secondary);
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--color-stone);
@@ -182,7 +171,7 @@
 .category-card:hover {
     box-shadow:
         0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(201, 167, 122, 0.1);
+        0 0 60px var(--color-gold-dim);
 }
 
 .category-card:hover .category-card__image {
@@ -212,7 +201,7 @@
     inset: -2px;
     background: linear-gradient(135deg,
             transparent 40%,
-            rgba(201, 167, 122, 0.15) 50%,
+            var(--color-gold-dim) 50%,
             transparent 60%);
     border-radius: 6px;
     opacity: 0;

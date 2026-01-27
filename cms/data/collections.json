@@ -1,0 +1,208 @@
+[
+    {
+        "id": "persona",
+        "title": "Persona",
+        "subtitle": "The Mask Series",
+        "description": "Steel constructs exploring identity, duality, and the interface between outward presentation and inward essence.",
+        "image": "/images/collections/persona.jpg",
+        "works": [
+            {
+                "title": "Persona",
+                "year": "2022",
+                "dimensions": "85 x 65 x 50 cm",
+                "description": "Examining identity through its ancient roots (Latin: mask). A steel construct serving as both armor and expression.",
+                "image": "/images/works/persona-1.jpg"
+            },
+            {
+                "title": "Vitreolum",
+                "year": "2023",
+                "dimensions": "90 x 70 x 55 cm",
+                "description": "The face emerges from a web of iron bars... Perhaps every identity is a cage, forged from inherited bars of lineage.",
+                "image": "/images/works/vitreolum.jpg"
+            },
+            {
+                "title": "The Relic",
+                "year": "2022",
+                "dimensions": "95 x 75 x 50 cm",
+                "description": "A face that occupies space yet allows us to see through it. Tradition as a vast latticework of fragments.",
+                "image": "/images/works/relic.jpg"
+            },
+            {
+                "title": "The Last Iron Maiden",
+                "year": "2025",
+                "dimensions": "110 x 80 x 60 cm",
+                "description": "The culminating work. Thousands of heavy steel rods welded into a single, breathing visage.",
+                "image": "/images/works/last-iron-maiden.jpg"
+            },
+            {
+                "title": "Iron Maiden",
+                "year": "2016/2023",
+                "dimensions": "200 x 200 x 40 cm",
+                "description": "A wall relief blurring painting and sculpture. Achieved 712,000 EUR at auction.",
+                "image": "/images/works/iron-maiden.jpg"
+            },
+            {
+                "title": "Madonna and the Veil",
+                "year": "2025",
+                "dimensions": "180 x 120 x 80 cm",
+                "description": "Instead of a perfect portrayal, a veil where the visage would be. Absence becomes the locus of presence.",
+                "image": "/images/works/madonna-veil.jpg"
+            }
+        ]
+    },
+    {
+        "id": "elemental",
+        "title": "Elemental",
+        "subtitle": "Amphoras & Drops",
+        "description": "Vessels and forms that explore the fundamental substances of life: water, oil, and the earth.",
+        "image": "/images/collections/elemental.jpg",
+        "works": [
+            {
+                "title": "Waterdrop",
+                "year": "2025",
+                "dimensions": "280 x 150 x 150 cm",
+                "description": "A glowing ripple frozen in time. 20,000 welded bars finished in high-gloss patina.",
+                "image": "/images/works/waterdrop.jpg"
+            },
+            {
+                "title": "Oildrop & Ripple",
+                "year": "2025",
+                "dimensions": "100 cm diameter",
+                "description": "Diptych. Oildrop: burned with mechanical oil (earth). Ripple: high-gloss polish (water).",
+                "image": "/images/works/oildrop-ripple.jpg"
+            },
+            {
+                "title": "Triptych of Amphoras",
+                "year": "2025",
+                "description": "Relic (earth/rust), Water (transparency/light), Oleum (sacred oil/black).",
+                "image": "/images/works/amphora-triptych.jpg"
+            },
+            {
+                "title": "Amphora Oleum",
+                "year": "2025",
+                "dimensions": "160 x 90 cm",
+                "description": "Burnt steel coaxing emerald greens and violet iridescence.",
+                "image": "/images/works/amphora-oleum.jpg"
+            }
+        ]
+    },
+    {
+        "id": "sumerian",
+        "title": "Sumerian",
+        "subtitle": "Script & Fragments",
+        "description": "Contemporary translations of the world's earliest script, rendered in steel lattices.",
+        "image": "/images/collections/sumerian.jpg",
+        "works": [
+            {
+                "title": "Sumerian Cuneiform",
+                "year": "2022-2025",
+                "dimensions": "Various (45cm to 200cm)",
+                "description": "Airy lattices where every rod operates like a stylus mark.",
+                "image": "/images/works/sumerian-cuneiform.jpg"
+            },
+            {
+                "title": "Sumerian Moon",
+                "year": "2025",
+                "dimensions": "120 cm diameter",
+                "description": "A perfect sphere encased in a sharp, angular skin of cuneiform script.",
+                "image": "/images/works/sumerian-moon.jpg"
+            }
+        ]
+    },
+    {
+        "id": "nature",
+        "title": "Nature",
+        "subtitle": "Flora & Landscape",
+        "description": "Organic forms reimagined through industrial precision.",
+        "image": "/images/collections/nature.jpg",
+        "works": [
+            {
+                "title": "The Dandelion",
+                "year": "2024",
+                "dimensions": "220 x 80 x 80 cm",
+                "description": "Mirrored steel. A quiet philosopher of the ruins.",
+                "image": "/images/works/dandelion.jpg"
+            },
+            {
+                "title": "The \"After\" Dandelion",
+                "year": "2024",
+                "dimensions": "Variable",
+                "description": "A dialogue between a stainless steel \"ideal\" and a rusted Corten \"survivor\".",
+                "image": "/images/works/after-dandelion.jpg"
+            },
+            {
+                "title": "Amazona",
+                "year": "2022",
+                "dimensions": "180 x 240 cm",
+                "description": "Fragments series. Double arc suggesting riverbanks.",
+                "image": "/images/works/amazona.jpg"
+            }
+        ]
+    },
+    {
+        "id": "portraits",
+        "title": "Portraits",
+        "subtitle": "Bronze Busts",
+        "description": "Disciplined realism capturing the \"second portrait\"—the private pulse behind the public face.",
+        "image": "/images/collections/portraits.jpg",
+        "works": [
+            {
+                "title": "Dr. Franjo Tuđman",
+                "year": "Various",
+                "description": "A series of 7 busts charting Croatia's transition.",
+                "image": "/images/works/tudman.jpg"
+            },
+            {
+                "title": "J.R.R. Tolkien",
+                "year": "Commission",
+                "description": "Coded tribute with \"1973\" hidden in book spines. Installed in Oxford.",
+                "image": "/images/works/tolkien.jpg"
+            },
+            {
+                "title": "Hypatia of Alexandria",
+                "year": "Restored 2023",
+                "description": "A fractured bust repaired with visible \"scars\" of gold/bronze.",
+                "image": "/images/works/hypatia.jpg"
+            },
+            {
+                "title": "Nietzsche and Zarathustra",
+                "year": "2011",
+                "description": "A dialogue between the tense philosopher and his serene ideal.",
+                "image": "/images/works/nietzsche.jpg"
+            }
+        ]
+    },
+    {
+        "id": "numismatics",
+        "title": "Numismatics",
+        "subtitle": "Coins & Medals",
+        "description": "Masterful hand-engraving for the Croatian National Bank and ECB.",
+        "image": "/images/collections/numismatics.jpg",
+        "works": [
+            {
+                "title": "Euro Coins",
+                "year": "Official Circulation",
+                "description": "Official Croatian Euro coinage. Two-layer design: motifs (Tesla, Marten) emerging from the national checkerboard.",
+                "image": "/images/works/euro-coins.jpg"
+            },
+            {
+                "title": "King Tomislav",
+                "year": "Commemorative",
+                "description": "Bi-metallic gold and silver. Micro-engraved profile and olive tree reverse.",
+                "image": "/images/works/king-tomislav.jpg"
+            },
+            {
+                "title": "Dalmatian Dog",
+                "year": "Investment Gold",
+                "description": "Spots rendered as the silhouettes of Dalmatian islands.",
+                "image": "/images/works/dalmatian-dog.jpg"
+            },
+            {
+                "title": "Croatian Black Lizard",
+                "year": "Native Species",
+                "description": "Deep black patina mirroring volcanic soil.",
+                "image": "/images/works/black-lizard.jpg"
+            }
+        ]
+    }
+]

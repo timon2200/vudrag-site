@@ -1,0 +1,73 @@
+{
+  "footer": {
+    "brand": "VUDRAG",
+    "tagline": "Art in Bronze",
+    "description": "Creating photorealistic bronze sculptures that bridge classical mastery with contemporary vision.",
+    "email": "office@vudrag.com",
+    "location": "Varaždin, Croatia",
+    "navLinks": [
+      {
+        "label": "Works",
+        "href": "#works-showcase"
+      },
+      {
+        "label": "Collections",
+        "href": "#category-hub"
+      },
+      {
+        "label": "About",
+        "href": "#artist-section"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact.html"
+      }
+    ],
+    "socialLinks": [
+      {
+        "name": "Instagram",
+        "icon": "instagram",
+        "url": "https://instagram.com/nikola.vudrag"
+      },
+      {
+        "name": "LinkedIn",
+        "icon": "linkedin",
+        "url": "https://linkedin.com/in/nikolavudrag"
+      },
+      {
+        "name": "Artsy",
+        "icon": "artsy",
+        "url": "https://artsy.net/artist/nikola-vudrag"
+      }
+    ]
+  },
+  "contact": {
+    "pageTitle": "Contact | Nikola Vudrag",
+    "pageDescription": "Get in touch with Nikola Vudrag's studio for commissions, inquiries, and collaborations.",
+    "label": "Correspondence",
+    "titleLine1": "Get in",
+    "titleLine2": "Touch",
+    "text": "For commissions, exhibitions, or simply to share your thoughts on the interplay of form and light—I welcome your message.",
+    "email": "office@vudrag.com",
+    "signatureName": "Nikola Vudrag",
+    "signatureLocation": "Varaždin, Croatia"
+  },
+  "artistSection": {
+    "name": "Nikola Vudrag",
+    "born": "1989, Croatia",
+    "tagline": "Sculptor of Light & Steel",
+    "quote": "\"Each weld is a meditation—twenty thousand moments of attention fused into form.\"",
+    "portrait": "https://images.unsplash.com/photo-1560421683-6856ea585c78?w=800&q=80",
+    "videoUrl": "https://www.youtube.com/embed/FWGdlVFq39g",
+    "biography": {
+      "intro": "Born into a family with a metalworking legacy, Nikola was raised amidst forges and workshops, developing an early bond with metal that would define his artistic vision.",
+      "education": "He studied at the Academy of Applied Arts in Rijeka and the Academy of Fine Arts in Zagreb, specializing in medal-making and art therapy.",
+      "philosophy": "His work synthesizes science, mathematics, linguistics, philosophy, and mythology. Vudrag focuses on universal truths, creating art that resonates beyond cultural boundaries."
+    },
+    "technique": {
+      "title": "The Net-work Method",
+      "description": "Vudrag's signature technique involves welding thousands of short steel rods into organic lattices. Up to 20,000 welds are fused in what he describes as a \"ritual of attention.\"",
+      "effect": "The resulting structures oscillate between solidity and void—appearing as dense mass in daylight and \"solidified mist\" when lit from within."
+    }
+  }
+}

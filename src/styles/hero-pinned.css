@@ -48,7 +48,7 @@
     right: 0;
     bottom: 0;
     z-index: 100;
-    background: #050508;
+    background: var(--color-deep-black);
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -107,7 +107,7 @@
     font-size: 0.7rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: #8a8a9a;
+    color: var(--color-muted);
 }
 
 .hero-scroll-indicator .progress-dots {
@@ -124,6 +124,6 @@
 }
 
 .hero-scroll-indicator .progress-dot.active {
-    background: #c9a77a;
+    background: var(--color-gold);
     transform: scale(1.3);
 }

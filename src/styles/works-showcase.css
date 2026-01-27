@@ -1,0 +1,346 @@
+/**
+ * Works Showcase - Bento Grid Styles
+ * 
+ * Asymmetric grid layout with varying card sizes,
+ * 3D hover depth effects, and premium reveal animations.
+ */
+
+/* === Works Showcase Container === */
+.works-showcase {
+    position: relative;
+    min-height: 100vh;
+    padding: 15vh var(--page-margin);
+    background: linear-gradient(180deg, #1a1a1a 0%, var(--color-canvas) 30%, var(--color-canvas) 70%, #1a1a1a 100%);
+    overflow: hidden;
+}
+
+.works-showcase__watermark {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-primary);
+    font-size: 20vw;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* === Header === */
+.works-showcase__header {
+    text-align: center;
+    margin-bottom: 8vh;
+    position: relative;
+    z-index: 1;
+}
+
+.works-showcase__label {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.works-showcase__title {
+    font-family: var(--font-primary);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--color-light);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.works-showcase__divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    margin: 0 auto;
+    opacity: 0.6;
+}
+
+/* === Bento Grid Layout === */
+.works-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 280px;
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    perspective: 1500px;
+}
+
+/* === Card Sizes (Bento asymmetry) === */
+.works-card--large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.works-card--wide {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.works-card--tall {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.works-card--medium {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* === Card Base Styles === */
+.works-card {
+    display: block;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: var(--transition-medium);
+    will-change: transform;
+    background: var(--color-surface);
+}
+
+.works-card__image-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.works-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%) brightness(0.85);
+    transition: filter 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.works-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            transparent 30%,
+            rgba(10, 10, 10, 0.7) 70%,
+            rgba(10, 10, 10, 0.95) 100%);
+    pointer-events: none;
+    transition: var(--transition-fast);
+}
+
+/* === Card Content === */
+.works-card__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    transform: translateZ(30px);
+    transition: var(--transition-medium);
+}
+
+.works-card--large .works-card__content,
+.works-card--tall .works-card__content {
+    padding: 2rem;
+}
+
+.works-card__series {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--color-stone);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.works-card__title {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-light);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+}
+
+.works-card--large .works-card__title {
+    font-size: 1.75rem;
+}
+
+.works-card--wide .works-card__title {
+    font-size: 1.5rem;
+}
+
+.works-card__year {
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+}
+
+/* === Shine Effect === */
+.works-card__shine {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+/* === Hover States === */
+.works-card:hover {
+    z-index: 10;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(201, 167, 122, 0.08);
+}
+
+.works-card:hover .works-card__image {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+}
+
+.works-card:hover .works-card__overlay {
+    background: linear-gradient(180deg,
+            transparent 40%,
+            rgba(10, 10, 10, 0.6) 70%,
+            rgba(10, 10, 10, 0.9) 100%);
+}
+
+.works-card:hover .works-card__content {
+    transform: translateZ(50px);
+}
+
+.works-card:hover .works-card__series {
+    color: var(--color-gold);
+}
+
+/* === Glow Ring === */
+.works-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg,
+            transparent 40%,
+            rgba(201, 167, 122, 0.2) 50%,
+            transparent 60%);
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.works-card:hover::before {
+    opacity: 1;
+}
+
+/* === CTA Link === */
+.works-showcase__cta {
+    text-align: center;
+    margin-top: 8vh;
+}
+
+.works-showcase__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-secondary);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--color-gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1px solid var(--color-gold-dim);
+    border-radius: 2px;
+    transition: var(--transition-fast);
+}
+
+.works-showcase__link:hover {
+    background: rgba(201, 167, 122, 0.1);
+    border-color: var(--color-gold);
+}
+
+.works-showcase__link svg {
+    transition: transform 0.3s ease;
+}
+
+.works-showcase__link:hover svg {
+    transform: translateX(4px);
+}
+
+/* === Responsive === */
+@media (max-width: 1200px) {
+    .works-showcase__grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 240px;
+    }
+
+    .works-card--large {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .works-showcase {
+        padding: 10vh 6vw;
+    }
+
+    .works-showcase__grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 200px;
+        gap: 1rem;
+    }
+
+    .works-card--large,
+    .works-card--wide {
+        grid-column: span 2;
+    }
+
+    .works-card--tall {
+        grid-row: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .works-showcase__grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 280px;
+    }
+
+    .works-card--large,
+    .works-card--wide,
+    .works-card--tall,
+    .works-card--medium {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+/* === Reveal Animations === */
+.works-card[data-reveal] {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+    transition:
+        opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.works-card[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}

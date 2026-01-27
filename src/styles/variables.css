@@ -13,18 +13,34 @@
     /* Primary Text - Jet Black (RAL 9005 - Jet Black) - sparse usage */
     --color-ink: #0A0A0A;
 
+    /* Deep Black - for overlays and content backgrounds */
+    --color-deep-black: #050508;
+
     /* Body Text - Signal Grey (RAL 7004 - Signal Grey) */
     --color-stone: #7E8479;
+
+    /* Secondary Body Text - lighter grey for paragraphs */
+    --color-body-text: #a0a0a8;
+
+    /* Muted Text - for captions and hints */
+    --color-muted: #8a8a9a;
 
     /* Accents - Pure White (RAL 9016 - Traffic White) - restrained usage */
     --color-light: #F6F6F6;
 
-    /* Legacy Gold Accent (maintained for compatibility/warmth) */
+    /* Gold Accent System */
     --color-gold: #c9a77a;
+    --color-gold-light: #e5d4b8;
+    --color-gold-dim: rgba(201, 167, 122, 0.4);
 
     /* Typography */
     --font-primary: 'Cormorant Garamond', Georgia, serif;
     --font-secondary: 'Inter', sans-serif;
+
+    /* Transitions */
+    --transition-fast: all 0.3s ease;
+    --transition-medium: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-slow: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 
     /* Dimensions */
     --page-margin: 8vw;

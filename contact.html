@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Nikola Vudrag</title>
+    <meta name="description"
+        content="Get in touch with Nikola Vudrag's studio for commissions, inquiries, and collaborations.">
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&family=Mrs+Saint+Delafield&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/contact.css">
+</head>
+
+<body>
+    <!-- Ambient background effects -->
+    <div class="contact-bg">
+        <div class="contact-bg__gradient"></div>
+        <div class="contact-bg__noise"></div>
+        <div class="contact-bg__glow contact-bg__glow--1"></div>
+        <div class="contact-bg__glow contact-bg__glow--2"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation back -->
+    <nav class="contact-nav">
+        <a href="/" class="contact-nav__back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>Return to Gallery</span>
+        </a>
+    </nav>
+
+    <!-- Main sculpture-style content -->
+    <main class="contact-sculpture">
+        <!-- Decorative top element -->
+        <div class="sculpture__crown">
+            <div class="sculpture__line sculpture__line--left"></div>
+            <div class="sculpture__diamond"></div>
+            <div class="sculpture__line sculpture__line--right"></div>
+        </div>
+
+        <!-- The pedestal - where the "sculpture" sits -->
+        <div class="sculpture__pedestal">
+            <!-- Label above -->
+            <span class="sculpture__label">Correspondence</span>
+
+            <!-- Main title - the sculpture itself -->
+            <h1 class="sculpture__title">
+                <span class="sculpture__title-word">Get in</span>
+                <span class="sculpture__title-accent">Touch</span>
+            </h1>
+
+            <!-- Ornamental divider -->
+            <div class="sculpture__ornament">
+                <span class="ornament__wing ornament__wing--left"></span>
+                <span class="ornament__center">◈</span>
+                <span class="ornament__wing ornament__wing--right"></span>
+            </div>
+
+            <!-- The invitation text -->
+            <p class="sculpture__text">
+                For commissions, exhibitions, or simply to share your thoughts
+                on the interplay of form and light—I welcome your message.
+            </p>
+
+            <!-- The email - presented as an engraved element -->
+            <div class="sculpture__email-frame">
+                <div class="sculpture__email-glow"></div>
+                <a href="mailto:studio@nikolavudrag.com" class="sculpture__email">
+                    studio@nikolavudrag.com
+                </a>
+            </div>
+
+            <!-- Signature -->
+            <div class="sculpture__signature">
+                <span class="signature__text">Nikola Vudrag</span>
+                <span class="signature__location">Varaždin, Croatia</span>
+            </div>
+        </div>
+
+        <!-- Decorative base element -->
+        <div class="sculpture__base">
+            <div class="sculpture__base-line"></div>
+        </div>
+    </main>
+
+    <!-- Floating accent elements -->
+    <div class="floating-accents">
+        <div class="accent accent--1"></div>
+        <div class="accent accent--2"></div>
+        <div class="accent accent--3"></div>
+    </div>
+
+    <script type="module" src="/src/contact.js"></script>
+</body>
+
+</html>
