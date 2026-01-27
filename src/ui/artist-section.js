@@ -9,7 +9,7 @@
 import { observeElement } from './scroll-reveal.js';
 
 // CMS API URL
-const CMS_API = 'http://localhost:3001/api';
+const CMS_API = '/api';
 
 // Fallback artist content
 const FALLBACK_ARTIST_DATA = {
@@ -39,7 +39,16 @@ let ARTIST_DATA = { ...FALLBACK_ARTIST_DATA };
  */
 async function fetchArtistContent() {
     try {
-        const response = await fetch(`${CMS_API}/site-content`);
+        // Create a timeout signal (2 seconds)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+        const response = await fetch(`${CMS_API}/site-content`, {
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
         if (!response.ok) throw new Error('CMS unavailable');
         const data = await response.json();
         if (data.artistSection) {
@@ -64,7 +73,7 @@ async function fetchArtistContent() {
         }
         return FALLBACK_ARTIST_DATA;
     } catch (err) {
-        console.warn('⚠️ CMS unavailable, using fallback artist data');
+        console.warn('⚠️ CMS unavailable or timed out, using fallback artist data');
         return FALLBACK_ARTIST_DATA;
     }
 }

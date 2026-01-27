@@ -10,6 +10,10 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSy
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import multer from 'multer';
+import dotenv from 'dotenv';
+
+// Load environment variables immediately
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -27,11 +31,19 @@ if (!existsSync(DATA_DIR)) {
 }
 
 // === Middleware ===
-app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003'] }));
+// === Middleware ===
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000,http://localhost:3001,http://localhost:3003';
+app.use(cors({
+    origin: CORS_ORIGIN === '*' ? '*' : CORS_ORIGIN.split(','),
+    credentials: true
+}));
 app.use(express.json());
 
 // Static file serving for admin panel
 app.use('/admin', express.static(join(__dirname, '..', 'admin')));
+
+// Serve public assets (images, splats)
+app.use(express.static(PUBLIC_DIR));
 
 // === File Storage Utilities ===
 function loadJSON(filename) {

@@ -26,8 +26,12 @@ export function setupScrollReveal() {
         return;
     }
 
+    // Use content-area as root if it exists (for custom scrolling context)
+    const contentArea = document.getElementById('content-area');
+
     // Create observer
     revealObserver = new IntersectionObserver(handleIntersection, {
+        root: contentArea || null,
         rootMargin: REVEAL_CONFIG.ROOT_MARGIN,
         threshold: REVEAL_CONFIG.THRESHOLD
     });

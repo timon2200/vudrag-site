@@ -6,7 +6,7 @@
  */
 
 // CMS API URL
-const CMS_API = 'http://localhost:3001/api';
+const CMS_API = '/api';
 
 // Fallback content (used if CMS unavailable)
 const FALLBACK_CONTENT = {

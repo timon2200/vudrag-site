@@ -10,7 +10,7 @@ import { isInContentMode } from '../systems/scroll.js';
 import { state } from '../state.js';
 
 // CMS API URL
-const CMS_API = 'http://localhost:3001/api';
+const CMS_API = '/api';
 
 // Fallback category data (used if CMS unavailable)
 const FALLBACK_CATEGORIES = [
@@ -84,7 +84,16 @@ let activeCard = null;
  */
 async function fetchCategoriesFromCMS() {
     try {
-        const response = await fetch(`${CMS_API}/collections`);
+        // Create a timeout signal (2 seconds)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+        const response = await fetch(`${CMS_API}/collections`, {
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
         if (!response.ok) throw new Error('CMS unavailable');
         const collections = await response.json();
         if (collections && collections.length > 0) {
@@ -100,7 +109,7 @@ async function fetchCategoriesFromCMS() {
         }
         return FALLBACK_CATEGORIES;
     } catch (err) {
-        console.warn('⚠️ CMS unavailable, using fallback categories');
+        console.warn('⚠️ CMS unavailable or timed out, using fallback categories');
         return FALLBACK_CATEGORIES;
     }
 }
