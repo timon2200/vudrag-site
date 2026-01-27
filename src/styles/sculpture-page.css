@@ -1612,12 +1612,19 @@
         grid-template-columns: 1fr;
     }
 
-    .sculpture-story__container {
+    .sculpture-story__layout {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
     }
 
-    .sculpture-story__sidebar {
-        order: -1;
+    .sculpture-story__image-wrap {
+        position: relative;
+        top: 0;
+        height: 50vh;
+        margin-bottom: 3rem;
+    }
+
+    .sculpture-story__content-column {
+        padding-top: 0;
     }
 }

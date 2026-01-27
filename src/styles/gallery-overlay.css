@@ -56,6 +56,13 @@
     right: 4rem;
     transform: translateY(-50%);
     width: 350px;
+    pointer-events: auto;
+    overflow: visible;
+    /* Needed for hint visibility on mobile */
+    /* Visual styles moved to .gallery-panel-content */
+}
+
+.gallery-panel-content {
     background: rgba(5, 5, 8, 0.85);
     /* Deep dark background */
     backdrop-filter: blur(20px);
@@ -63,8 +70,9 @@
     border-left: 2px solid var(--color-gold);
     /* Gold accent */
     color: #fff;
-    pointer-events: auto;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 /* ============================================
@@ -195,7 +203,8 @@
 
     /* Collapsed state - show only drag handle peek */
     .gallery-info-panel.collapsed {
-        transform: translateY(calc(100% - 2.5rem));
+        /* Ensure enough peek is visible (3.5rem + safe area) */
+        transform: translateY(calc(100% - 3.5rem - env(safe-area-inset-bottom)));
     }
 
     .gallery-info-panel.collapsed .panel-drag-handle {
@@ -312,6 +321,13 @@
         width: 100%;
         max-height: 45vh;
         transform: none;
+        padding: 0;
+        border: none;
+        background: transparent;
+        overflow: visible;
+    }
+
+    .gallery-panel-content {
         padding: 1.5rem 2rem;
         padding-bottom: calc(2rem + env(safe-area-inset-bottom));
         padding-left: calc(2rem + env(safe-area-inset-left));
@@ -322,6 +338,8 @@
         background: rgba(5, 5, 8, 0.95);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        height: 100%;
+        width: 100%;
     }
 
     .gallery-info-header {
@@ -482,7 +500,7 @@
 
     /* Drag hint - positioned center-top of screen */
     .hint-drag {
-        top: 30%;
+        top: 15%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
@@ -491,14 +509,33 @@
         transform: translate(-50%, -50%);
     }
 
-    /* Collapse hint - positioned right above the panel */
+    /* Collapse hint - positioned relative to the panel wrapper */
     .hint-collapse {
-        bottom: 52vh;
+        position: absolute;
+        bottom: 100%;
         left: 50%;
-        transform: translateX(-50%) translateY(5px);
+        transform: translateX(-50%);
+        margin-bottom: 1.5rem;
     }
 
     .hint-collapse.visible {
-        transform: translateX(-50%) translateY(0);
+        /* No translation needed as it's absolute, simpler transition if needed */
+        opacity: 1;
+        transform: translateX(-50%);
+    }
+
+    /* Zoom hint - same position as drag hint */
+    .hint-zoom {
+        top: 15%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /* Slow fade out */
+        transition: opacity 2.0s ease, transform 0.4s ease;
+    }
+
+    .hint-zoom.visible {
+        transform: translate(-50%, -50%);
+        /* Fast fade in */
+        transition: opacity 0.4s ease, transform 0.4s ease;
     }
 }

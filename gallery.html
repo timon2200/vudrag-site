@@ -81,14 +81,22 @@
         </a>
 
         <div id="gallery-info-panel" class="gallery-info-panel">
-            <div class="panel-drag-handle" id="panel-drag-handle">
-                <div class="drag-indicator"></div>
+            <!-- Hint collapse is now relative to this panel -->
+            <div id="hint-collapse" class="hint-inline hint-collapse">
+                <span class="material-symbols-outlined">keyboard_arrow_down</span>
+                <span>Swipe down to hide</span>
             </div>
 
-            <!-- Carousel container for scrolling between sculptures -->
-            <div class="info-carousel-viewport">
-                <div id="info-carousel-track" class="info-carousel-track">
-                    <!-- Cards will be dynamically generated for each sculpture -->
+            <div class="gallery-panel-content">
+                <div class="panel-drag-handle" id="panel-drag-handle">
+                    <div class="drag-indicator"></div>
+                </div>
+
+                <!-- Carousel container for scrolling between sculptures -->
+                <div class="info-carousel-viewport">
+                    <div id="info-carousel-track" class="info-carousel-track">
+                        <!-- Cards will be dynamically generated for each sculpture -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,9 +120,9 @@
         <span>Drag to rotate</span>
     </div>
 
-    <div id="hint-collapse" class="hint-inline hint-collapse">
-        <span class="material-symbols-outlined">keyboard_arrow_down</span>
-        <span>Swipe down to hide</span>
+    <div id="hint-zoom" class="hint-inline hint-zoom">
+        <span class="material-symbols-outlined">pinch</span>
+        <span>Pinch to zoom</span>
     </div>
 
     <div id="loading-screen">

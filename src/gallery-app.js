@@ -336,6 +336,9 @@ class OrbitCameraController {
 
             this.lastTouchPoint.set(touch.x, touch.y);
         } else if (touches.length === 2) {
+            // Hide zoom hint when user pinches
+            if (window.hideZoomHint) window.hideZoomHint();
+
             // Pinch zoom
             const currentPinchDistance = this.getPinchDistance(touches[0], touches[1]);
             const diffInPinchDistance = currentPinchDistance - this.lastPinchDistance;
@@ -946,7 +949,8 @@ function initDraggablePanel() {
     const DIRECTION_LOCK_THRESHOLD = 10;
 
     const panelHeight = () => panel.offsetHeight;
-    const collapsedOffset = () => panelHeight() - 50;
+    // Increase visible area to 80px to account for safe-area-inset on mobile
+    const collapsedOffset = () => panelHeight() - 80;
     const cardWidth = () => track?.querySelector('.info-card')?.offsetWidth || 0;
     const totalCards = () => galleryState.activeGallery?.sculptures?.length || 1;
 
@@ -1278,7 +1282,7 @@ function initInlineHints() {
     showHints();
 }
 
-// Hide drag hint when user interacts
+// Hide drag hint when user interacts (and show zoom hint)
 function hideDragHint() {
     if (!hintState.dragHintVisible) return;
 
@@ -1289,6 +1293,8 @@ function hideDragHint() {
 
         setTimeout(() => {
             hintDrag.classList.add('hidden');
+            // Chain: Show zoom hint after drag hint disappears
+            showZoomHint();
         }, 400);
     }
 }
@@ -1310,6 +1316,44 @@ function showDragHint() {
     }
 }
 
+// Show zoom hint
+function showZoomHint() {
+    // Only show if we haven't shown it yet this session
+    if (hintState.zoomHintShown) return;
+    if (hintState.zoomHintVisible) return;
+    if (window.innerWidth > 768) return;
+
+    const hintZoom = document.getElementById('hint-zoom');
+    if (hintZoom) {
+        hintZoom.classList.remove('hidden');
+
+        setTimeout(() => {
+            hintZoom.classList.add('visible');
+            hintState.zoomHintVisible = true;
+            hintState.zoomHintShown = true;
+
+            // Auto-hide after 4 seconds
+            setTimeout(hideZoomHint, 4000);
+        }, 100);
+    }
+}
+
+// Hide zoom hint
+function hideZoomHint() {
+    if (!hintState.zoomHintVisible) return;
+
+    const hintZoom = document.getElementById('hint-zoom');
+    if (hintZoom) {
+        hintZoom.classList.remove('visible');
+        hintState.zoomHintVisible = false;
+
+        // Match the CSS transition duration (2s)
+        setTimeout(() => {
+            hintZoom.classList.add('hidden');
+        }, 2000);
+    }
+}
+
 // Hide collapse hint when user interacts
 function hideCollapseHint() {
     if (!hintState.collapseHintVisible) return;
@@ -1328,6 +1372,7 @@ function hideCollapseHint() {
 // Expose globally for camera controller and auto-orbit to use
 window.hideDragHint = hideDragHint;
 window.showDragHint = showDragHint;
+window.hideZoomHint = hideZoomHint;
 window.hideCollapseHint = hideCollapseHint;
 
 // Start
