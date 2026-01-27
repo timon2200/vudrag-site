@@ -224,7 +224,8 @@ app.post('/api/galleries/:galleryId/sculptures', authMiddleware, (req, res) => {
 });
 
 // === Collections Routes ===
-app.get('/api/collections', authMiddleware, (req, res) => {
+// Public endpoint - needed for frontend Category Hub
+app.get('/api/collections', (req, res) => {
     const collections = loadJSON('collections.json') || [];
     res.json(collections);
 });
@@ -253,6 +254,18 @@ app.post('/api/collections', authMiddleware, (req, res) => {
     collections.push(newCollection);
     saveJSON('collections.json', collections);
     res.json(newCollection);
+});
+
+// Delete collection
+app.delete('/api/collections/:id', authMiddleware, (req, res) => {
+    const collections = loadJSON('collections.json') || [];
+    const index = collections.findIndex(c => c.id === req.params.id);
+    if (index === -1) {
+        return res.status(404).json({ error: 'Collection not found' });
+    }
+    const deleted = collections.splice(index, 1)[0];
+    saveJSON('collections.json', collections);
+    res.json({ deleted });
 });
 
 // Add work to collection

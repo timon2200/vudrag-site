@@ -281,45 +281,7 @@ async function loadSiteContent() {
 function renderSiteContent() {
     const content = state.siteContent;
 
-    // === Category Hub Cards with Image Uploaders ===
-    const categoriesEditor = document.getElementById('categories-editor');
-    if (categoriesEditor && content.categories) {
-        categoriesEditor.innerHTML = content.categories.map((cat, index) => `
-            <div class="category-edit-card" data-category-index="${index}" data-category-id="${cat.id}">
-                <div class="category-edit-card__image-wrapper">
-                    ${createImageUploader(`category-image-${index}`, 'Category Image', cat.image || '')}
-                </div>
-                <div class="category-edit-card__body">
-                    <div class="category-edit-card__id">${cat.id}</div>
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" data-field="title" value="${cat.title || ''}" placeholder="Category Title">
-                    </div>
-                    <div class="form-group">
-                        <label>Subtitle</label>
-                        <input type="text" data-field="subtitle" value="${cat.subtitle || ''}" placeholder="SERIES NAME">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" data-field="description" value="${cat.description || ''}" placeholder="Short description">
-                    </div>
-                    <div class="form-group">
-                        <label>Count</label>
-                        <input type="number" data-field="count" value="${cat.count || 0}" min="0">
-                    </div>
-                </div>
-            </div>
-        `).join('');
-
-        // Initialize image uploaders for each category
-        content.categories.forEach((cat, index) => {
-            initializeImageUploader(`category-image-${index}`, (path) => {
-                // Update state when image changes
-                if (!state.tempCategoryImages) state.tempCategoryImages = {};
-                state.tempCategoryImages[index] = path;
-            });
-        });
-    }
+    // Note: Category Hub is now managed via Collections tab
 
     // === Artist Section with Portrait Uploader ===
     const artist = content.artistSection || {};
@@ -394,22 +356,7 @@ async function saveSiteContent() {
         saveBtn.textContent = 'Saving...';
         saveBtn.disabled = true;
 
-        // === Collect Categories from Cards ===
-        const categories = [];
-        const categoryCards = document.querySelectorAll('.category-edit-card');
-        categoryCards.forEach((card, index) => {
-            const originalCat = state.siteContent.categories?.[index] || {};
-            // Get image from the hidden input created by the image uploader
-            const imageInput = card.querySelector(`input[name="category-image-${index}"]`);
-            categories.push({
-                id: card.dataset.categoryId || originalCat.id || `category-${index}`,
-                title: card.querySelector('[data-field="title"]')?.value || '',
-                subtitle: card.querySelector('[data-field="subtitle"]')?.value || '',
-                description: card.querySelector('[data-field="description"]')?.value || '',
-                image: imageInput?.value || state.tempCategoryImages?.[index] || originalCat.image || '',
-                count: parseInt(card.querySelector('[data-field="count"]')?.value) || 0
-            });
-        });
+        // Note: Categories are managed via Collections tab, not here
 
         // === Collect Artist Section ===
         // Get portrait from hidden input created by image uploader
@@ -435,7 +382,6 @@ async function saveSiteContent() {
 
         // === Gather Footer & Contact ===
         const updatedContent = {
-            categories: categories.length > 0 ? categories : state.siteContent.categories,
             artistSection,
             footer: {
                 brand: document.getElementById('footer-brand')?.value || '',
@@ -626,23 +572,32 @@ function renderGalleries() {
 function renderCollections() {
     const container = document.getElementById('collections-list');
 
-    container.innerHTML = `<div class="items-grid">${state.collections.map((collection, index) => `
-        <div class="item-card">
-            <div class="item-card-header">
-                <div>
-                    <span class="item-number">${String(index + 1).padStart(2, '0')}</span>
-                    <h3 class="item-title">${collection.title}</h3>
-                    <p class="item-subtitle">${collection.subtitle || ''}</p>
+    container.innerHTML = `
+        <div class="section-hint" style="margin-bottom: 16px; color: var(--text-muted);">
+            These collections appear as Category Hub cards on the main page. Edit to change the card image and text.
+        </div>
+        <div class="items-grid">${state.collections.map((collection, index) => `
+        <div class="item-card collection-card">
+            <div class="collection-card__preview" style="position: relative; aspect-ratio: 4/3; overflow: hidden; border-radius: 8px 8px 0 0; background: var(--bg-input);">
+                ${collection.image
+            ? `<img src="${collection.image}" alt="${collection.title}" style="width: 100%; height: 100%; object-fit: cover;">`
+            : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">No Image</div>`
+        }
+                <div class="collection-card__overlay" style="position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0,0,0,0.8)); pointer-events: none;"></div>
+                <div class="collection-card__label" style="position: absolute; bottom: 12px; left: 12px; right: 12px;">
+                    <span style="font-size: 10px; letter-spacing: 2px; color: var(--gold); opacity: 0.7;">${collection.subtitle || ''}</span>
+                    <h3 style="margin: 4px 0 0; font-size: 18px; color: #fff; font-family: var(--font-display);">${collection.title}</h3>
                 </div>
             </div>
-            <div class="item-meta">
-                <div class="meta-item">
-                    <span class="meta-label">Works</span>
-                    <span class="meta-value">${collection.works?.length || 0} pieces</span>
+            <div class="item-card-header" style="padding: 12px 16px;">
+                <div>
+                    <span class="item-number">${String(index + 1).padStart(2, '0')}</span>
+                    <p class="item-subtitle">${collection.works?.length || 0} works</p>
                 </div>
+            </div>
+            <div class="item-meta" style="padding: 0 16px 12px;">
                 <div class="meta-item" style="grid-column: span 2;">
-                    <span class="meta-label">Description</span>
-                    <span class="meta-value">${collection.description ? collection.description.substring(0, 60) + '...' : '—'}</span>
+                    <span class="meta-value" style="font-size: 12px; opacity: 0.7;">${collection.description ? collection.description.substring(0, 80) + '...' : '—'}</span>
                 </div>
             </div>
             <div class="item-actions">
@@ -1260,6 +1215,18 @@ window.deleteSplat = async function (index) {
         await loadAllData();
     } catch (err) {
         console.error('Delete failed:', err);
+    }
+};
+
+window.deleteCollection = async function (collectionId) {
+    if (!confirm('Are you sure you want to delete this collection? This will also remove it from the Category Hub on the main page.')) return;
+
+    try {
+        await apiFetch(`/collections/${collectionId}`, { method: 'DELETE' });
+        await loadAllData();
+    } catch (err) {
+        console.error('Delete failed:', err);
+        alert('Failed to delete collection');
     }
 };
 

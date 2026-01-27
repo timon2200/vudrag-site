@@ -17,42 +17,50 @@ const FALLBACK_CATEGORIES = [
     {
         id: 'persona',
         title: 'Persona',
-        subtitle: 'NET-WORK SERIES',
-        description: 'Steel lattice faces exploring identity and expression',
-        count: 7,
-        image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=600&q=80'
+        subtitle: 'THE MASK SERIES',
+        description: 'Steel constructs exploring identity and expression',
+        count: 6,
+        image: '/images/collections/persona.jpg'
+    },
+    {
+        id: 'elemental',
+        title: 'Elemental',
+        subtitle: 'AMPHORAS & DROPS',
+        description: 'Vessels exploring water, oil, and earth',
+        count: 4,
+        image: '/images/collections/elemental.jpg'
     },
     {
         id: 'sumerian',
         title: 'Sumerian',
-        subtitle: 'ELEMENTAL WORKS',
+        subtitle: 'SCRIPT & FRAGMENTS',
         description: 'Ancient scripts reimagined in modern steel',
-        count: 5,
-        image: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80'
+        count: 2,
+        image: '/images/collections/sumerian.jpg'
+    },
+    {
+        id: 'nature',
+        title: 'Nature',
+        subtitle: 'FLORA & LANDSCAPE',
+        description: 'Organic forms through industrial precision',
+        count: 3,
+        image: '/images/collections/nature.jpg'
     },
     {
         id: 'portraits',
         title: 'Portraits',
-        subtitle: 'BRONZE & STEEL',
+        subtitle: 'BRONZE BUSTS',
         description: 'Classical busts capturing the private spirit',
-        count: 8,
-        image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&q=80'
-    },
-    {
-        id: 'coins',
-        title: 'Coins & Medals',
-        subtitle: 'NUMISMATIC ART',
-        description: 'Micro-engraved currency and collector pieces',
-        count: 6,
-        image: 'https://images.unsplash.com/photo-1605792657660-596af9009e82?w=600&q=80'
-    },
-    {
-        id: 'monuments',
-        title: 'Monuments',
-        subtitle: 'PUBLIC SCULPTURE',
-        description: 'Monumental works for public spaces',
         count: 4,
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'
+        image: '/images/collections/portraits.jpg'
+    },
+    {
+        id: 'numismatics',
+        title: 'Numismatics',
+        subtitle: 'COINS & MEDALS',
+        description: 'Masterful hand-engraving for currencies',
+        count: 4,
+        image: '/images/collections/numismatics.jpg'
     }
 ];
 
