@@ -6,6 +6,7 @@
  */
 
 import { state, SECTIONS } from '../state.js';
+import { navigateTo } from '../systems/navigation.js';
 
 let overlay = null;
 let isOpen = false;
@@ -93,42 +94,13 @@ export function toggleMenu() {
 /**
  * Handle menu link clicks
  */
+/**
+ * Handle menu link clicks
+ */
 function handleMenuClick(e) {
     e.preventDefault();
     const target = e.target.getAttribute('data-target');
 
     closeMenu();
-
-    // Navigate based on target
-    if (target === 'hero') {
-        // Scroll to top
-        state.targetScrollProgress = 0;
-        state.isScrolling = true;
-    } else if (target === 'category-hub') {
-        // Scroll to end of hero to reveal hub
-        state.targetScrollProgress = 1.2;
-        state.isScrolling = true;
-
-        // Ensure hub is visible
-        setTimeout(() => {
-            const hub = document.getElementById('category-hub');
-            if (hub) hub.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-    } else if (target === 'artist') {
-        // Scroll to artist section
-        state.targetScrollProgress = 1.4; // Ensure content mode
-        state.isScrolling = true;
-
-        setTimeout(() => {
-            const artist = document.getElementById('artist-section');
-            if (artist) artist.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-    } else if (target === 'contact') {
-        // Navigate to contact page
-        window.location.href = '/contact.html';
-        return;
-    }
-
-    // Log for unimplemented sections
-    console.log(`Navigate to: ${target}`);
+    navigateTo(target);
 }

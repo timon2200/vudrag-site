@@ -19,10 +19,9 @@ const FALLBACK_SOCIAL_LINKS = [
 
 // Fallback navigation links
 const FALLBACK_NAV_LINKS = [
-    { label: 'Works', href: '#works-showcase' },
     { label: 'Collections', href: '#category-hub' },
-    { label: 'About', href: '#artist-section' },
-    { label: 'Contact', href: '/contact.html' }
+    { label: 'Artist', href: '#artist-section' },
+    { label: 'Inquire', href: '/contact.html' }
 ];
 
 // Fallback footer content
@@ -112,12 +111,34 @@ function createFooterMarkup() {
             <div class="footer__nav" data-reveal data-reveal-delay="1">
                 <h4 class="footer__heading">Explore</h4>
                 <nav class="footer__links">
-                    ${footerContent.navLinks.map(link => `
-                        <a href="${link.href}" class="footer__link">
-                            <span class="footer__link-text">${link.label}</span>
+                    ${footerContent.navLinks
+            .filter(link => {
+                const lower = link.label.toLowerCase();
+                // Remove Works/Gallery as requested
+                return !lower.includes('work') && !lower.includes('gallery');
+            })
+            .map(link => {
+                // Map labels/hrefs to targets if not present
+                let target = '';
+                let label = link.label;
+                const lowerLabel = link.label.toLowerCase();
+
+                if (lowerLabel.includes('collection')) target = 'category-hub';
+                else if (lowerLabel.includes('about') || lowerLabel.includes('artist')) {
+                    target = 'artist';
+                    label = 'Artist';
+                }
+                else if (lowerLabel.includes('contact') || lowerLabel.includes('inquire')) {
+                    target = 'contact';
+                    label = 'Inquire';
+                }
+
+                return `
+                        <a href="${link.href}" class="footer__link" data-target="${target}">
+                            <span class="footer__link-text">${label}</span>
                             <span class="footer__link-arrow">▸</span>
                         </a>
-                    `).join('')}
+                    `}).join('')}
                 </nav>
             </div>
 
@@ -219,9 +240,10 @@ function setupFooterAnimations(footer) {
         });
     });
 
-    // Link arrow animation
+    // Link arrow animation and click handling
     const navLinks = footer.querySelectorAll('.footer__link');
     navLinks.forEach(link => {
+        // Hover effects
         link.addEventListener('mouseenter', () => {
             const arrow = link.querySelector('.footer__link-arrow');
             if (arrow) arrow.style.transform = 'translateX(8px)';
@@ -229,6 +251,17 @@ function setupFooterAnimations(footer) {
         link.addEventListener('mouseleave', () => {
             const arrow = link.querySelector('.footer__link-arrow');
             if (arrow) arrow.style.transform = '';
+        });
+
+        // Navigation handling
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = link.dataset.target;
+            if (target) {
+                import('../systems/navigation.js').then(({ navigateTo }) => {
+                    navigateTo(target);
+                });
+            }
         });
     });
 
