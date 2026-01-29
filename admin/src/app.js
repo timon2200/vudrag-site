@@ -1975,6 +1975,7 @@ function setupNavigation() {
     elements.navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const section = btn.dataset.section;
+            if (!section) return; // Skip if no section data (defensive)
 
             // Update nav buttons
             elements.navBtns.forEach(b => b.classList.remove('active'));
@@ -1982,9 +1983,39 @@ function setupNavigation() {
 
             // Update sections
             elements.sections.forEach(s => s.classList.remove('active'));
-            document.getElementById(`${section}-section`).classList.add('active');
+            const targetSection = document.getElementById(`${section}-section`);
+            if (targetSection) targetSection.classList.add('active');
 
             state.currentSection = section;
+        });
+    });
+
+    // View Toggles (List vs Grid) in Sculptures section
+    const viewBtns = document.querySelectorAll('.view-btn');
+    const viewContainers = document.querySelectorAll('.view-container');
+    const saveOrderBtn = document.getElementById('save-grid-order');
+    const addSculptureBtn = document.getElementById('add-sculpture-page');
+
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+
+            // Toggle buttons
+            viewBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Toggle containers
+            viewContainers.forEach(c => c.classList.remove('active'));
+            document.getElementById(`sculptures-view-${view}`).classList.add('active');
+
+            // Toggle action buttons
+            if (view === 'grid') {
+                saveOrderBtn.style.display = 'block';
+                addSculptureBtn.style.display = 'none';
+            } else {
+                saveOrderBtn.style.display = 'none';
+                addSculptureBtn.style.display = 'block';
+            }
         });
     });
 }

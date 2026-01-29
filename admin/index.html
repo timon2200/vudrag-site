@@ -38,7 +38,7 @@
                 <nav class="header-nav">
                     <button class="nav-btn active" data-section="splats">Splats</button>
                     <button class="nav-btn" data-section="sculptures">Sculptures</button>
-                    <button class="nav-btn" data-section="grid-order">Grid Order</button>
+
                     <button class="nav-btn" data-section="galleries">Galleries</button>
                     <button class="nav-btn" data-section="collections">Collections</button>
                     <button class="nav-btn" data-section="assets">Assets</button>
@@ -57,23 +57,34 @@
                     <div id="splats-list" class="items-grid"></div>
                 </section>
 
-                <!-- Sculptures Section (Detail Pages) -->
+                <!-- Sculptures Section (Detail Pages + Grid Order) -->
                 <section id="sculptures-section" class="content-section">
                     <div class="section-header">
-                        <h2>Sculpture Pages</h2>
-                        <button class="btn-add" id="add-sculpture-page">+ Add Sculpture</button>
+                        <div class="header-left">
+                            <h2>Sculptures</h2>
+                            <div class="view-toggles">
+                                <button class="view-btn active" data-view="list">List View</button>
+                                <button class="view-btn" data-view="grid">Grid Order</button>
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-primary" id="save-grid-order" style="display: none;">💾 Save
+                                Order</button>
+                            <button class="btn-add" id="add-sculpture-page">+ Add Sculpture</button>
+                        </div>
                     </div>
-                    <div id="sculptures-list" class="items-grid"></div>
-                </section>
 
-                <!-- Grid Order Section -->
-                <section id="grid-order-section" class="content-section">
-                    <div class="section-header">
-                        <h2>Works Showcase Grid Order</h2>
-                        <button class="btn-add" id="save-grid-order">💾 Save Order</button>
+                    <!-- List View -->
+                    <div id="sculptures-view-list" class="view-container active">
+                        <div id="sculptures-list" class="items-grid"></div>
                     </div>
-                    <p class="section-hint">Drag cards to reorder. Changes are applied when you click "Save Order".</p>
-                    <div id="grid-order-preview" class="grid-order-preview"></div>
+
+                    <!-- Grid View -->
+                    <div id="sculptures-view-grid" class="view-container">
+                        <p class="section-hint">Drag cards to reorder how they appear on the main site. Changes are
+                            applied when you click "Save Order".</p>
+                        <div id="grid-order-preview" class="grid-order-preview"></div>
+                    </div>
                 </section>
 
                 <!-- Galleries Section -->

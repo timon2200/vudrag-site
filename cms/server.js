@@ -143,6 +143,12 @@ app.post('/api/sculptures', authMiddleware, (req, res) => {
     const id = req.body.id || `sculpture-${Date.now()}`;
     sculptures[id] = { ...req.body, id };
     saveJSON('sculptures.json', sculptures);
+
+    // Auto-add to grid order
+    const gridOrder = loadJSON('grid-order.json') || [];
+    gridOrder.push({ id, size: 'medium' });
+    saveJSON('grid-order.json', gridOrder);
+
     res.json(sculptures[id]);
 });
 
@@ -164,6 +170,12 @@ app.delete('/api/sculptures/:id', authMiddleware, (req, res) => {
     const deleted = sculptures[req.params.id];
     delete sculptures[req.params.id];
     saveJSON('sculptures.json', sculptures);
+
+    // Auto-remove from grid order
+    const gridOrder = loadJSON('grid-order.json') || [];
+    const newGridOrder = gridOrder.filter(item => item.id !== req.params.id);
+    saveJSON('grid-order.json', newGridOrder);
+
     res.json({ deleted });
 });
 

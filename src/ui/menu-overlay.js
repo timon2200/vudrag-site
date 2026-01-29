@@ -100,16 +100,29 @@ function handleMenuClick(e) {
     closeMenu();
 
     // Navigate based on target
-    // For now, we mainly have hero/gallery logic
     if (target === 'hero') {
         // Scroll to top
         state.targetScrollProgress = 0;
         state.isScrolling = true;
     } else if (target === 'category-hub') {
         // Scroll to end of hero to reveal hub
-        // Assuming hub reveals after scroll progress 1.0
         state.targetScrollProgress = 1.2;
         state.isScrolling = true;
+
+        // Ensure hub is visible
+        setTimeout(() => {
+            const hub = document.getElementById('category-hub');
+            if (hub) hub.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    } else if (target === 'artist') {
+        // Scroll to artist section
+        state.targetScrollProgress = 1.4; // Ensure content mode
+        state.isScrolling = true;
+
+        setTimeout(() => {
+            const artist = document.getElementById('artist-section');
+            if (artist) artist.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
     } else if (target === 'contact') {
         // Navigate to contact page
         window.location.href = '/contact.html';
