@@ -32,6 +32,7 @@ export function createMenuOverlay() {
             <a href="#" class="menu-link" data-target="category-hub">Collections</a>
             <a href="#" class="menu-link" data-target="artist">Artist</a>
             <a href="#" class="menu-link" data-target="contact">Inquire</a>
+            <a href="/login.html" class="menu-link">The Archive</a>
             
             <div class="menu-info">
                 Nikola Vudrag<br>
@@ -98,9 +99,12 @@ export function toggleMenu() {
  * Handle menu link clicks
  */
 function handleMenuClick(e) {
-    e.preventDefault();
     const target = e.target.getAttribute('data-target');
 
-    closeMenu();
-    navigateTo(target);
+    if (target) {
+        e.preventDefault();
+        closeMenu();
+        navigateTo(target);
+    }
+    // If no target, allow default link behavior (e.g. /login.html)
 }

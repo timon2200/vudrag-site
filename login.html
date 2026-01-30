@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive | Nikola Vudrag</title>
+    <meta name="description" content="Exclusive member access to the Nikola Vudrag private archive.">
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&family=Mrs+Saint+Delafield&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/login.css">
+</head>
+
+<body>
+    <!-- Ambient background effects -->
+    <div class="login-bg">
+        <div class="spotlight-mask"></div>
+        <div class="login-bg__noise"></div>
+        <div class="login-bg__glow"></div>
+        <div class="shaft-of-light"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation back -->
+    <nav class="login-nav">
+        <a href="/" class="login-nav__back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>Return to Gallery</span>
+        </a>
+    </nav>
+
+    <!-- Main sculpture-style content -->
+    <main class="login-sculpture">
+        <!-- Decorative top element -->
+        <div class="sculpture__crown">
+            <div class="sculpture__line sculpture__line--left"></div>
+            <div class="sculpture__diamond"></div>
+            <div class="sculpture__line sculpture__line--right"></div>
+        </div>
+
+        <!-- The pedestal - where the "sculpture" sits -->
+        <div class="sculpture__pedestal">
+            <!-- Label above -->
+            <span class="sculpture__label">Restricted Access</span>
+
+            <!-- Main title - the sculpture itself -->
+            <h1 class="sculpture__title">
+                <span class="sculpture__title-word">The</span>
+                <span class="sculpture__title-accent">Archive</span>
+            </h1>
+
+            <!-- Ornamental divider -->
+            <div class="sculpture__ornament">
+                <span class="ornament__wing ornament__wing--left"></span>
+                <span class="ornament__center">◈</span>
+                <span class="ornament__wing ornament__wing--right"></span>
+            </div>
+
+            <!-- The invitation text -->
+            <p class="sculpture__text">
+                Enter the private vault to view provenance documents, installation guides, and exclusive past works.
+            </p>
+
+            <!-- Login Form -->
+            <form id="login-form" class="login-form" novalidate>
+                <div class="form-group">
+                    <input type="email" id="email" required placeholder=" " autocomplete="email">
+                    <label for="email">Email Address</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" required placeholder=" " autocomplete="current-password">
+                    <label for="password">Password</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <span class="btn-text">Unlock Archive</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </form>
+
+            <div class="login-footer">
+                <p>Not a member? <a href="/contact.html" class="link-gold">Request Access</a></p>
+                <p style="margin-top: 0.8rem;"><a href="#" id="forgot-link" class="link-forgot">Forgot Password?</a></p>
+            </div>
+        </div>
+
+        <!-- Recovery Form (Hidden by default) -->
+        <div id="recovery-panel" class="sculpture__pedestal" style="display: none;">
+            <span class="sculpture__label">Account Recovery</span>
+            <h1 class="sculpture__title" style="font-size: 2.5rem; margin-bottom: 2rem;">
+                <span class="sculpture__title-accent">Reset Access</span>
+            </h1>
+
+            <form id="recovery-form" class="login-form" novalidate>
+                <div class="form-group">
+                    <input type="email" id="recovery-email" required placeholder=" " autocomplete="email">
+                    <label for="recovery-email">Email Address</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <span class="btn-text">Send Reset Link</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button type="button" id="back-to-login"
+                        style="margin-top: 1rem; background: transparent; border: none; color: #666; cursor: pointer;">Cancel</button>
+                </div>
+                <div id="recovery-message" style="margin-top: 1rem; font-size: 0.9rem; min-height: 1.2em;"></div>
+            </form>
+        </div>
+
+        <!-- Decorative base element -->
+        <div class="sculpture__base">
+            <div class="sculpture__base-line"></div>
+        </div>
+    </main>
+
+    <!-- Floating accent elements -->
+    <div class="floating-accents">
+        <div class="accent accent--1"></div>
+        <div class="accent accent--2"></div>
+        <div class="accent accent--3"></div>
+    </div>
+
+    <script type="module" src="/src/login.js"></script>
+</body>
+
+</html>

@@ -13,6 +13,7 @@ const state = {
     sculptures: {},
     galleries: { galleries: [] },
     collections: [],
+    users: [],
     assets: [],
     gridOrder: [],
     siteContent: {},
@@ -23,7 +24,9 @@ const state = {
     tempTitleTexture: null,
     tempGalleryImages: [],
     // Generic temp image for collections/works
-    tempImage: null
+    // Generic temp image for collections/works
+    tempImage: null,
+    settings: {}
 };
 
 // === DOM Elements ===
@@ -67,11 +70,11 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 // === Auth Functions ===
-async function login(password) {
+async function login(email, password) {
     try {
         const result = await apiFetch('/login', {
             method: 'POST',
-            body: JSON.stringify({ password })
+            body: JSON.stringify({ email, password })
         });
 
         if (result.token) {
@@ -81,7 +84,7 @@ async function login(password) {
             loadAllData();
         }
     } catch (err) {
-        elements.loginError.textContent = 'Invalid password';
+        elements.loginError.textContent = 'Invalid credentials';
     }
 }
 
@@ -104,28 +107,34 @@ function showDashboard() {
 // === Data Loading ===
 async function loadAllData() {
     try {
-        const [splats, sculptures, galleries, collections, gridOrder, siteContent] = await Promise.all([
+        const [splats, sculptures, galleries, collections, users, gridOrder, siteContent, settings] = await Promise.all([
             apiFetch('/splats'),
             apiFetch('/sculptures'),
             apiFetch('/galleries'),
             apiFetch('/collections'),
+            apiFetch('/users'),
             loadGridOrder(),
-            loadSiteContent()
+            loadSiteContent(),
+            apiFetch('/settings')
         ]);
 
         state.splats = splats || [];
         state.sculptures = sculptures || {};
         state.galleries = galleries || { galleries: [] };
         state.collections = collections || [];
+        state.users = users || [];
         state.gridOrder = gridOrder || [];
         state.siteContent = siteContent || {};
+        state.settings = settings || {};
 
         renderSplats();
         renderSculptures();
         renderGalleries();
         renderCollections();
+        renderUsers();
         renderGridOrder();
         renderSiteContent();
+        renderSettings();
         loadAssets();
     } catch (err) {
         console.error('Failed to load data:', err);
@@ -607,6 +616,74 @@ function renderCollections() {
         </div>
     `).join('')}</div>`;
 }
+
+function renderUsers() {
+    const container = document.getElementById('users-grid');
+    if (!container) return;
+
+    if (state.users.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); padding: 20px;">No users found.</p>';
+        return;
+    }
+
+    container.innerHTML = state.users.map((user, index) => `
+        <div class="item-card">
+            <div class="item-card-header">
+                <div>
+                    <h3 class="item-title">${user.name || user.email}</h3>
+                    <p class="item-subtitle">${user.role} • ${user.email}</p>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button class="btn-delete" onclick="deleteUser('${user.id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// === User Functions ===
+window.addUser = function () {
+    state.editingItem = { _isNew: true };
+    state.editingType = 'user';
+
+    elements.modalTitle.textContent = 'Add New User';
+    elements.modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" required placeholder="Full Name">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required placeholder="user@vudrag.com">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required placeholder="Initial Password">
+        </div>
+        <div class="form-group">
+            <label>Role</label>
+            <select name="role">
+                <option value="member">Member</option>
+                <option value="editor">Editor</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+    `;
+
+    openModal();
+};
+
+window.deleteUser = async function (userId) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+
+    try {
+        await apiFetch(`/users/${userId}`, { method: 'DELETE' });
+        await loadAllData();
+    } catch (err) {
+        console.error('Failed to delete user:', err);
+        alert('Failed to delete user');
+    }
+};
 
 function renderAssets() {
     const container = document.getElementById('assets-list');
@@ -1906,6 +1983,18 @@ async function saveChanges() {
                     body: JSON.stringify(sculptureData)
                 });
             }
+        } else if (state.editingType === 'user') {
+            const userData = {
+                name: data.name,
+                email: data.email,
+                password: data.password,
+                role: data.role
+            };
+
+            await apiFetch('/users', {
+                method: 'POST',
+                body: JSON.stringify(userData)
+            });
         }
 
         closeModal();
@@ -2023,8 +2112,9 @@ function setupNavigation() {
 // === Event Listeners ===
 elements.loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    login(password);
+    login(email, password);
 });
 
 elements.logoutBtn.addEventListener('click', logout);
@@ -2044,6 +2134,7 @@ function init() {
     document.getElementById('add-collection')?.addEventListener('click', window.addCollection);
     document.getElementById('save-grid-order')?.addEventListener('click', saveGridOrder);
     document.getElementById('save-site-content')?.addEventListener('click', saveSiteContent);
+    document.getElementById('add-user')?.addEventListener('click', window.addUser);
 
     if (state.token) {
         // Verify token is still valid
@@ -2061,3 +2152,63 @@ function init() {
 }
 
 init();
+
+// === Settings Functions ===
+function renderSettings() {
+    const s = state.settings.email || {};
+
+    // Set values or defaults
+    document.getElementById('setting-fromName').value = s.fromName || 'Nikola Vudrag Archive';
+    document.getElementById('setting-fromEmail').value = s.fromEmail || 'onboarding@resend.dev';
+    document.getElementById('setting-resetSubject').value = s.resetSubject || 'Reset your password';
+    document.getElementById('setting-resetBody').value = s.resetBody || `
+<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; color: #333;">
+    <h1 style="color: #c9a77a; text-align: center;">Password Reset Request</h1>
+    <p>You requested to reset your password for the Nikola Vudrag Archive.</p>
+    <p>Click the button below to reset it (valid for 1 hour):</p>
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{link}}" style="background: #c9a77a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">Reset Password</a>
+    </div>
+    <p style="font-size: 12px; color: #666;">If you didn't request this, purely ignore this email.</p>
+</div>`;
+}
+
+async function saveSettings() {
+    const saveBtn = document.querySelector('#settings-section .action-btn');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+
+    const emailSettings = {
+        fromName: document.getElementById('setting-fromName').value,
+        fromEmail: document.getElementById('setting-fromEmail').value,
+        resetSubject: document.getElementById('setting-resetSubject').value,
+        resetBody: document.getElementById('setting-resetBody').value
+    };
+
+    const newSettings = {
+        ...state.settings,
+        email: emailSettings
+    };
+
+    try {
+        await apiFetch('/settings', {
+            method: 'POST',
+            body: JSON.stringify(newSettings)
+        });
+
+        state.settings = newSettings;
+        alert('Settings saved successfully');
+    } catch (err) {
+        console.error('Failed to save settings:', err);
+        alert('Failed to save settings');
+    } finally {
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+    }
+}
+
+// Make globally available
+window.saveSettings = saveSettings;
+window.addUser = addUser; // Ensure this is also global as used in HTML
+window.deleteUser = deleteUser; // Ensure this is also global as used in HTML

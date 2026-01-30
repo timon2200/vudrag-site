@@ -1,0 +1,16 @@
+[
+  {
+    "id": "admin",
+    "email": "admin@vudrag.com",
+    "password": "$2a$10$ChwKzhruVR5Zb6eyRBshCu6Y4qq23uiswWs.Wfc5YtfpFXaIjh2ti",
+    "role": "admin",
+    "name": "Administrator"
+  },
+  {
+    "id": "user-1769728143573",
+    "email": "timon.terzic@gmail.com",
+    "password": "$2a$10$JNrUBP9uTvakNy6sAv3RC.J0N/OZ4YeYvjj2jNl/xcDiSuH5NKm0q",
+    "role": "admin",
+    "name": "Timon"
+  }
+]

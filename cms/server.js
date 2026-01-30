@@ -11,6 +11,8 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import multer from 'multer';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
+import { sendPasswordResetEmail } from './services/mailer.js';
 
 // Load environment variables immediately
 dotenv.config();
@@ -73,13 +75,237 @@ function authMiddleware(req, res, next) {
 }
 
 // === Auth Routes ===
-app.post('/api/login', async (req, res) => {
-    const { password } = req.body;
-    if (password === ADMIN_PASSWORD) {
-        const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
-        return res.json({ token, expiresIn: 86400 });
+// === User Management & Auth ===
+
+// Initialize default admin if no users exist
+function initUsers() {
+    const users = loadJSON('users.json') || [];
+    if (users.length === 0) {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(ADMIN_PASSWORD, salt);
+        users.push({
+            id: 'admin',
+            email: 'admin@vudrag.com',
+            password: hash,
+            role: 'admin',
+            name: 'Administrator'
+        });
+        saveJSON('users.json', users);
+        console.log('Initialized default admin user');
     }
-    return res.status(401).json({ error: 'Invalid password' });
+}
+initUsers();
+
+// Login
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    const users = loadJSON('users.json') || [];
+
+    // Find user (support login by email)
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Verify password
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (!validPassword) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Generate token
+    const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+    );
+
+    res.json({
+        token,
+        expiresIn: 86400,
+        user: {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            name: user.name
+        }
+    });
+});
+
+// === Settings Routes ===
+app.get('/api/settings', authMiddleware, (req, res) => {
+    // Check role if needed, but for now allow all auth users or restrict to admin
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const settings = loadJSON('settings.json') || {};
+    res.json(settings);
+});
+
+app.post('/api/settings', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const settings = req.body;
+    saveJSON('settings.json', settings);
+    res.json({ message: 'Settings saved' });
+});
+
+// Request Password Reset
+app.post('/api/request-reset', async (req, res) => {
+    const { email } = req.body;
+    const users = loadJSON('users.json') || [];
+
+    // Find user
+    const user = users.find(u => u.email === email);
+
+    // Always return success to prevent email enumeration, unless dev mode
+    if (!user) {
+        return res.json({ message: 'If account exists, email sent' });
+    }
+
+    // Generate token
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiry = Date.now() + 3600000; // 1 hour
+
+    // Save token to user
+    user.resetToken = token;
+    user.resetTokenExpiry = expiry;
+    saveJSON('users.json', users);
+
+    // Send email
+    // Use requesting host for link
+    const protocol = req.protocol;
+    const host = req.get('host'); // e.g. localhost:3000
+    // Simplify for now: assume frontend is on port 3000, API is on 3001
+    // Ideally user provides frontend URL in .env, but we'll infer or hardcode for now
+    const frontendHost = req.get('referer') ? new URL(req.get('referer')).origin : 'http://localhost:3000';
+
+    const settings = loadJSON('settings.json') || {};
+    const sent = await sendPasswordResetEmail(email, token, frontendHost, settings);
+
+    if (sent) {
+        res.json({ message: 'Email sent' });
+    } else {
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+});
+
+// Reset Password with Token
+app.post('/api/reset-password', (req, res) => {
+    const { token, newPassword } = req.body;
+    const users = loadJSON('users.json') || [];
+
+    const user = users.find(u =>
+        u.resetToken === token &&
+        u.resetTokenExpiry > Date.now()
+    );
+
+    if (!user) {
+        return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+
+    // Hash new password
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newPassword, salt);
+
+    // Update user
+    user.password = hash;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    saveJSON('users.json', users);
+
+    res.json({ message: 'Password reset successful' });
+});
+
+// Change Password (Authenticated)
+app.post('/api/change-password', authMiddleware, (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const users = loadJSON('users.json') || [];
+    const user = users.find(u => u.id === req.user.id);
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // Verify current
+    const valid = bcrypt.compareSync(currentPassword, user.password);
+    if (!valid) {
+        return res.status(400).json({ error: 'Incorrect current password' });
+    }
+
+    // Update
+    const salt = bcrypt.genSaltSync(10);
+    user.password = bcrypt.hashSync(newPassword, salt);
+    saveJSON('users.json', users);
+
+    res.json({ message: 'Password updated' });
+});
+
+// === Account Management Routes ===
+
+// List users (Admin only)
+app.get('/api/users', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const users = loadJSON('users.json') || [];
+    // Return users without passwords
+    const safeUsers = users.map(({ password, ...u }) => u);
+    res.json(safeUsers);
+});
+
+// Create user (Admin only)
+app.post('/api/users', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const users = loadJSON('users.json') || [];
+    const { email, password, role, name } = req.body;
+
+    if (users.find(u => u.email === email)) {
+        return res.status(400).json({ error: 'User already exists' });
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    const newUser = {
+        id: `user-${Date.now()}`,
+        email,
+        password: hash,
+        role: role || 'member',
+        name: name || 'New Member'
+    };
+
+    users.push(newUser);
+    saveJSON('users.json', users);
+
+    const { password: _, ...safeUser } = newUser;
+    res.json(safeUser);
+});
+
+// Delete user (Admin only)
+app.delete('/api/users/:id', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const users = loadJSON('users.json') || [];
+    const index = users.findIndex(u => u.id === req.params.id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Prevent deleting self (optional safety)
+    if (users[index].id === req.user.id) {
+        return res.status(400).json({ error: 'Cannot delete yourself' });
+    }
+
+    const deleted = users.splice(index, 1)[0];
+    saveJSON('users.json', users);
+
+    const { password: _, ...safeDeleted } = deleted;
+    res.json({ deleted: safeDeleted });
 });
 
 app.get('/api/me', authMiddleware, (req, res) => {
@@ -504,3 +730,5 @@ app.listen(PORT, () => {
 ╚═══════════════════════════════════════════════════════════╝
     `);
 });
+
+// Trigger restart for initUsers

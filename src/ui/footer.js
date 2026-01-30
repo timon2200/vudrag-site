@@ -21,7 +21,8 @@ const FALLBACK_SOCIAL_LINKS = [
 const FALLBACK_NAV_LINKS = [
     { label: 'Collections', href: '#category-hub' },
     { label: 'Artist', href: '#artist-section' },
-    { label: 'Inquire', href: '/contact.html' }
+    { label: 'Inquire', href: '/contact.html' },
+    { label: 'The Archive', href: '/login.html' }
 ];
 
 // Fallback footer content
@@ -131,6 +132,9 @@ function createFooterMarkup() {
                 else if (lowerLabel.includes('contact') || lowerLabel.includes('inquire')) {
                     target = 'contact';
                     label = 'Inquire';
+                }
+                else if (lowerLabel.includes('archive')) {
+                    target = ''; // No SPA target, use href
                 }
 
                 return `
@@ -261,6 +265,10 @@ function setupFooterAnimations(footer) {
                 import('../systems/navigation.js').then(({ navigateTo }) => {
                     navigateTo(target);
                 });
+            } else {
+                // Allow default navigation (e.g. for /login.html)
+                const href = link.getAttribute('href');
+                if (href) window.location.href = href;
             }
         });
     });

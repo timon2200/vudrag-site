@@ -12,7 +12,9 @@ export default defineConfig({
             input: {
                 main: 'index.html',
                 gallery: 'gallery.html',
-                sculpture: 'sculpture.html'
+                sculpture: 'sculpture.html',
+                contact: 'contact.html',
+                login: 'login.html'
             },
             output: {
                 manualChunks: {
