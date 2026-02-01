@@ -39,11 +39,13 @@ export function createInteractionHint() {
     labelElement.textContent = 'THE COLLECTION';
     labelElement.style.cssText = `
         font-family: 'Inter', sans-serif;
-        font-size: 0.75rem;
-        font-weight: 400;
+        font-size: 0.9rem;
+        font-weight: 500;
         letter-spacing: 0.3em;
-        color: rgba(201, 167, 122, 0.8);
+        color: #c9a77a;
         text-transform: uppercase;
+        text-shadow: 0 0 20px rgba(201, 167, 122, 0.6),
+                     0 0 40px rgba(201, 167, 122, 0.4);
         transform: translateY(0);
         transition: transform 0.1s linear;
     `;

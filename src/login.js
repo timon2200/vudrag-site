@@ -1,4 +1,3 @@
-
 /**
  * Login Page - Interactive Effects
  * 
@@ -6,8 +5,25 @@
  * and form interaction logic.
  */
 
+// API Base URL - uses environment variable in production
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+
+// Check if user is already logged in - redirect to archive
+function checkAuthAndRedirect() {
+    const token = localStorage.getItem('vudrag_token');
+    if (token) {
+        // User is already authenticated, go directly to archive
+        window.location.href = '/archive.html';
+        return true;
+    }
+    return false;
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    // If already logged in, skip to archive
+    if (checkAuthAndRedirect()) return;
+
     // Setup interactive effects
     const particleSystem = new ParticleSystem();
     particleSystem.init();
@@ -100,7 +116,7 @@ function setupFormInteraction(particleSystem) {
 
         try {
             // Real Authentication Call
-            const response = await fetch('/api/login', {
+            const response = await fetch(`${API_BASE}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -113,16 +129,33 @@ function setupFormInteraction(particleSystem) {
                 localStorage.setItem('vudrag_token', data.token);
                 localStorage.setItem('vudrag_user', JSON.stringify(data.user)); // Optional: store user info
 
-                // Success Visuals
-                btnText.textContent = 'Access Granted';
-                btn.style.borderColor = 'var(--color-gold)';
-                btnText.style.color = 'var(--color-gold)';
+                // === Vault Unlock Animation Sequence ===
 
-                // Redirect to Archive (Private Vault)
+                // 1. Trigger button animation
+                btn.classList.add('access-granted');
+                btnText.textContent = 'Access Granted';
+
+                // 2. Create screen flash overlay
+                const flash = document.createElement('div');
+                flash.className = 'screen-flash';
+                document.body.appendChild(flash);
+
+                // 3. Trigger particle surge
+                const particles = document.getElementById('particles');
+                if (particles) {
+                    particles.classList.add('access-surge');
+                }
+
+                // 4. Clean up flash and redirect
+                setTimeout(() => {
+                    flash.remove();
+                }, 1500);
+
+                // Redirect to Archive (Private Vault) after animation completes
                 setTimeout(() => {
                     // Ideally check role, but for now redirect all valid users
                     window.location.href = '/archive.html';
-                }, 800);
+                }, 1800);
 
             } else {
                 throw new Error('Invalid credentials');
@@ -157,7 +190,7 @@ class ParticleSystem {
     constructor() {
         this.container = document.getElementById('particles');
         this.settings = {
-            count: 50,
+            count: 25, // Reduced from 50
             minSize: 1,
             maxSize: 3,
             baseDuration: 41
@@ -305,7 +338,7 @@ function setupRecoveryInteraction() {
         btn.style.opacity = '0.7';
 
         try {
-            const res = await fetch('/api/request-reset', {
+            const res = await fetch(`${API_BASE}/request-reset`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })

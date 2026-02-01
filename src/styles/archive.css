@@ -1,0 +1,677 @@
+/* Global Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Archive / Feed Styles */
+:root {
+    --archive-bg: #0a0a0c;
+    --card-bg: #141416;
+    --card-border: rgba(201, 167, 122, 0.1);
+    --gold: #c9a77a;
+    --gold-dim: rgba(201, 167, 122, 0.6);
+    --text-primary: #f0f0f0;
+    --text-secondary: #b0b0b8;
+    --font-signature: 'Mrs Saint Delafield', cursive;
+    /* Lighter for readability */
+}
+
+body {
+    background-color: var(--archive-bg);
+    color: var(--text-primary);
+    font-family: var(--font-secondary);
+    margin: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.archive-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.9);
+    backdrop-filter: blur(12px);
+    transition: all 0.5s ease;
+}
+
+/* Glowing border bottom - animated */
+.archive-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--gold-dim) 50%,
+            transparent 100%);
+    opacity: 0.6;
+    animation: pulseBorder 4s ease-in-out infinite;
+    background-size: 200% 100%;
+    background-position: 50% 0;
+}
+
+@keyframes pulseBorder {
+    0% {
+        opacity: 0.3;
+        background-position: 0% 0;
+    }
+
+    50% {
+        opacity: 0.8;
+        background-position: 100% 0;
+    }
+
+    100% {
+        opacity: 0.3;
+        background-position: 200% 0;
+    }
+}
+
+.brand {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-shadow: 0 0 10px rgba(201, 167, 122, 0.2);
+    transition: text-shadow 0.3s ease;
+}
+
+.brand:hover {
+    text-shadow: 0 0 20px rgba(201, 167, 122, 0.5);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+/* User Display (Member) */
+.user-badge {
+    color: var(--gold-dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid rgba(201, 167, 122, 0.2);
+    padding: 6px 12px;
+    border-radius: 2px;
+    background: rgba(201, 167, 122, 0.05);
+}
+
+/* Elegant Text Button (No Border) */
+.btn-ghost {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.7;
+}
+
+.btn-ghost:hover {
+    opacity: 1;
+    color: var(--gold);
+}
+
+.btn-ghost svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+    stroke: currentColor;
+}
+
+.btn-ghost:hover svg {
+    transform: translateX(4px);
+}
+
+/* Hero */
+.archive-hero {
+    min-height: 60vh;
+    /* Increased from height: 50vh to prevent clipping */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* Improved gradient to blend with body */
+    background: radial-gradient(circle at center, #1f1f24 0%, #0a0a0c 80%);
+    position: relative;
+    overflow: visible;
+    /* Ensure animations/elements aren't clipped */
+    margin-top: 80px;
+    padding: 60px 0;
+    /* Add vertical padding for breathing room */
+    /* Soft fade at bottom to avoid cutoff */
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+/* === Sculpture Hero Styles (Ported from Login) === */
+.sculpture__crown {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: reveal-down 1.2s ease forwards 0.3s;
+}
+
+.sculpture__line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+.sculpture__diamond {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    transform: rotate(45deg);
+    animation: pulse-diamond 3s ease-in-out infinite;
+}
+
+@keyframes pulse-diamond {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(201, 167, 122, 0.2);
+        opacity: 0.6;
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(201, 167, 122, 0.5);
+        opacity: 1;
+    }
+}
+
+.sculpture__label {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: reveal-up 1s ease forwards 0.4s;
+}
+
+.sculpture__title {
+    font-family: var(--font-primary);
+    font-size: clamp(3.5rem, 8vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: reveal-up 1s ease forwards 0.2s;
+}
+
+.sculpture__title-word {
+    display: block;
+    color: var(--text-primary);
+}
+
+.sculpture__title-accent {
+    display: block;
+    font-style: italic;
+    background: linear-gradient(135deg,
+            var(--gold) 0%,
+            #e5d4b8 40%,
+            white 50%,
+            #e5d4b8 60%,
+            var(--gold) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sheen 8s ease-in-out infinite;
+}
+
+@keyframes sheen {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.sculpture__ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: reveal-up 1s ease forwards 0.6s;
+}
+
+.ornament__wing {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dim), transparent);
+}
+
+.ornament__wing--right {
+    background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+
+.ornament__center {
+    color: var(--gold);
+    font-size: 0.8rem;
+}
+
+.sculpture__text {
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    animation: reveal-up 1s ease forwards 0.8s;
+}
+
+@keyframes reveal-up {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes reveal-down {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Feed */
+.feed-container {
+    max-width: 760px;
+    /* Narrower for better reading */
+    margin: -60px auto 100px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.feed-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    /* More spacing */
+}
+
+.post-card {
+    /* Exclusive Look with Texture */
+    background-color: rgba(20, 20, 22, 0.9);
+    /* Finer texture: baseFrequency increased */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+    /* Ensure line doesn't overflow */
+}
+
+/* Subtle glow on card hover - Reduced intensity */
+.post-card:hover {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Animated Line Effect (Similar to Header) */
+.post-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    /* Subtle Gold Gradient */
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(201, 167, 122, 0.2) 20%,
+            var(--gold) 50%,
+            rgba(201, 167, 122, 0.2) 80%,
+            transparent 100%);
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 0.6s ease;
+    background-size: 200% 100%;
+}
+
+.post-card:hover::after {
+    opacity: 0.8;
+    transform: translateX(0);
+    animation: shimmerLine 3s infinite linear;
+}
+
+@keyframes shimmerLine {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* Remove old corner borders */
+.post-card::before {
+    display: none;
+}
+
+.post-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.post-header {
+    padding: 0 0 32px 0;
+    text-align: center;
+    /* Center headers for more editorial look */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* Subtle divider */
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.post-meta {
+    display: inline-flex;
+    align-items: center;
+    /* Center items vertically */
+    gap: 15px;
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0.8;
+}
+
+.post-title {
+    font-family: var(--font-primary);
+    font-size: 2.8rem;
+    /* Slightly larger */
+    font-weight: 300;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
+
+.post-content {
+    padding: 0;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.9;
+    /* More breathing room */
+    font-weight: 300;
+}
+
+/* Signature */
+.post-signature {
+    margin-top: 60px;
+    text-align: right;
+    opacity: 0.8;
+}
+
+.signature-text {
+    font-family: var(--font-signature);
+    font-size: 2.5rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    /* Simulate ink texture/variation */
+    background: linear-gradient(135deg, var(--gold) 0%, #e5d4b8 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 2px rgba(201, 167, 122, 0.2);
+}
+
+/* === Particles (Global Dust) === */
+.particles {
+    position: absolute;
+    /* Absolute within hero */
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+    /* Control Variables (Default values) */
+    --p-base-size: 1;
+    --p-glow-blur: 3px;
+    --p-glow-spread: 4.5px;
+    --p-drift-x: 200px;
+    --p-lift-y: -100px;
+
+    /* Shaft of Light Effect (Default for Hero) */
+    mask-image: radial-gradient(ellipse 80% 120% at 50% -10%,
+            black 40%,
+            rgba(0, 0, 0, 0.8) 60%,
+            transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 120% at 50% -10%,
+            black 40%,
+            rgba(0, 0, 0, 0.8) 60%,
+            transparent 90%);
+
+    transform-style: preserve-3d;
+}
+
+/* Specific Footer Particles Override */
+#footer-particles {
+    height: 100vh;
+    /* Extend significantly upwards */
+    top: auto;
+    bottom: 0;
+    z-index: -1;
+    /* Ensure it stays behind content */
+
+    /* Fade out as they go up */
+    mask-image: linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+}
+
+.particle {
+    position: absolute;
+    background: #e5d4b8;
+    border-radius: 50%;
+    /* Double-layered glow for intensity */
+    box-shadow:
+        0 0 4px 1px rgba(229, 212, 184, 0.9),
+        0 0 8px 2px rgba(201, 167, 122, 0.5);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* Three variations of movement for "natural" feel */
+.particle--1 {
+    animation: float-rise 15s ease-in-out infinite;
+}
+
+.particle--2 {
+    animation: float-drift 20s ease-in-out infinite;
+}
+
+.particle--3 {
+    animation: float-wander 18s ease-in-out infinite;
+}
+
+@keyframes float-rise {
+    0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) scale(0.8);
+    }
+
+    15% {
+        opacity: 0.8;
+        transform: translateY(-20px) translateX(5px) scale(1);
+    }
+
+    85% {
+        opacity: 0.5;
+        transform: translateY(-120px) translateX(-10px) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-150px) translateX(15px) scale(0.8);
+    }
+}
+
+@keyframes float-drift {
+    0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0);
+    }
+
+    20% {
+        opacity: 0.7;
+        transform: translateY(10px) translateX(15px);
+    }
+
+    60% {
+        opacity: 0.6;
+        transform: translateY(-20px) translateX(25px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) translateX(40px);
+    }
+}
+
+@keyframes float-wander {
+    0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0);
+    }
+
+    10% {
+        opacity: 0.8;
+        transform: translateY(-10px) translateX(-10px);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: translateY(-30px) translateX(10px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) translateX(-20px);
+    }
+}
+
+/* Content Blocks */
+.content-block {
+    margin-bottom: 40px;
+}
+
+.content-block:last-child {
+    margin-bottom: 0;
+}
+
+.block-text {
+    white-space: pre-wrap;
+}
+
+.block-image {
+    width: 100%;
+    /* Full bleed inside padding */
+    margin: 40px 0;
+}
+
+.block-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0.9;
+    transition: opacity 0.5s;
+}
+
+.block-image img:hover {
+    opacity: 1;
+}
+
+.block-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    height: 0;
+    margin: 40px 0;
+    background: #000;
+}
+
+.block-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Response */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .post-title {
+        font-size: 2rem;
+    }
+}

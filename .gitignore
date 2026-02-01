@@ -3,6 +3,12 @@ dist/
 .DS_Store
 *.log
 
+# Environment files
+# .env and .env.production are committed (contain defaults/placeholders)
+# .env.local is for personal overrides and should NEVER be committed
+.env.local
+.env*.local
+
 # CMS
 cms/.env
 cms/node_modules/

@@ -6,7 +6,7 @@
  */
 
 // CMS API URL
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // Fallback content (used if CMS unavailable)
 const FALLBACK_CONTENT = {

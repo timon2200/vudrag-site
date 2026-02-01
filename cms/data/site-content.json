@@ -7,37 +7,37 @@
     "location": "Varaždin, Croatia",
     "navLinks": [
       {
-        "label": "Works",
-        "href": "#works-showcase"
-      },
-      {
         "label": "Collections",
         "href": "#category-hub"
       },
       {
-        "label": "About",
+        "label": "Artist",
         "href": "#artist-section"
       },
       {
-        "label": "Contact",
+        "label": "Inquire",
         "href": "/contact.html"
+      },
+      {
+        "label": "The Archive",
+        "href": "/login.html"
       }
     ],
     "socialLinks": [
       {
         "name": "Instagram",
         "icon": "instagram",
-        "url": "https://instagram.com/nikola.vudrag"
+        "url": "https://www.instagram.com/vudrag_art/"
       },
       {
-        "name": "LinkedIn",
-        "icon": "linkedin",
-        "url": "https://linkedin.com/in/nikolavudrag"
+        "name": "Facebook",
+        "icon": "facebook",
+        "url": "https://web.facebook.com/nikola.vudrag.77"
       },
       {
-        "name": "Artsy",
-        "icon": "artsy",
-        "url": "https://artsy.net/artist/nikola-vudrag"
+        "name": "Interview",
+        "icon": "article",
+        "url": "https://www.contemporaryartissue.com/a-conversation-with-nikola-vudrag/"
       }
     ]
   },

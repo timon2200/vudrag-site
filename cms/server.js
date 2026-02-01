@@ -688,6 +688,56 @@ app.put('/api/grid-order', authMiddleware, (req, res) => {
     res.json(req.body);
 });
 
+// === Archive Routes ===
+app.get('/api/archive-posts', authMiddleware, (req, res) => {
+    const posts = loadJSON('archive-posts.json') || [];
+    res.json(posts);
+});
+
+app.post('/api/archive-posts', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin' && req.user.role !== 'editor') {
+        return res.status(403).json({ error: 'Admin/Editor access required' });
+    }
+    const posts = loadJSON('archive-posts.json') || [];
+    const newPost = {
+        id: req.body.id || `post-${Date.now()}`,
+        title: req.body.title || 'New Post',
+        date: req.body.date || new Date().toISOString(),
+        content: req.body.content || [], // Blocks: { type: 'text'|'image'|'video', value: '' }
+        tags: req.body.tags || [],
+        isLocked: req.body.isLocked !== undefined ? req.body.isLocked : true
+    };
+    posts.unshift(newPost); // Add to top
+    saveJSON('archive-posts.json', posts);
+    res.json(newPost);
+});
+
+app.put('/api/archive-posts/:id', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin' && req.user.role !== 'editor') {
+        return res.status(403).json({ error: 'Admin/Editor access required' });
+    }
+    const posts = loadJSON('archive-posts.json') || [];
+    const index = posts.findIndex(p => p.id === req.params.id);
+    if (index === -1) return res.status(404).json({ error: 'Post not found' });
+
+    posts[index] = { ...posts[index], ...req.body };
+    saveJSON('archive-posts.json', posts);
+    res.json(posts[index]);
+});
+
+app.delete('/api/archive-posts/:id', authMiddleware, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    const posts = loadJSON('archive-posts.json') || [];
+    const index = posts.findIndex(p => p.id === req.params.id);
+    if (index === -1) return res.status(404).json({ error: 'Post not found' });
+
+    const deleted = posts.splice(index, 1)[0];
+    saveJSON('archive-posts.json', posts);
+    res.json({ deleted });
+});
+
 // === Public Config Endpoint (for frontend) ===
 app.get('/api/config.json', (req, res) => {
     const splats = loadJSON('splats.json') || [];

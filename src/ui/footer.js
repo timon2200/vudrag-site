@@ -8,13 +8,13 @@
 import { observeElement } from './scroll-reveal.js';
 
 // CMS API URL
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // Fallback social links (used if CMS unavailable)
 const FALLBACK_SOCIAL_LINKS = [
-    { name: 'Instagram', icon: 'instagram', url: 'https://instagram.com/nikola.vudrag' },
-    { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/nikolavudrag' },
-    { name: 'Artsy', icon: 'artsy', url: 'https://artsy.net/artist/nikola-vudrag' }
+    { name: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/vudrag_art/' },
+    { name: 'Facebook', icon: 'facebook', url: 'https://web.facebook.com/nikola.vudrag.77' },
+    { name: 'Interview', icon: 'article', url: 'https://www.contemporaryartissue.com/a-conversation-with-nikola-vudrag/' }
 ];
 
 // Fallback navigation links
@@ -25,176 +25,124 @@ const FALLBACK_NAV_LINKS = [
     { label: 'The Archive', href: '/login.html' }
 ];
 
-// Fallback footer content
-const FALLBACK_CONTENT = {
-    brand: 'VUDRAG',
-    tagline: 'Sculptures in Light',
-    description: 'Creating photorealistic bronze sculptures that bridge classical mastery with contemporary vision.',
-    email: 'studio@nikolavudrag.com',
-    location: 'Varaždin, Croatia',
-    navLinks: FALLBACK_NAV_LINKS,
-    socialLinks: FALLBACK_SOCIAL_LINKS
-};
-
-// Module-level content variable
-let footerContent = FALLBACK_CONTENT;
-
 /**
- * Fetch footer content from CMS
- */
-async function fetchFooterContent() {
-    try {
-        const response = await fetch(`${CMS_API}/site-content`);
-        if (!response.ok) throw new Error('CMS unavailable');
-        const data = await response.json();
-        return {
-            brand: data.footer?.brand || FALLBACK_CONTENT.brand,
-            tagline: data.footer?.tagline || FALLBACK_CONTENT.tagline,
-            description: data.footer?.description || FALLBACK_CONTENT.description,
-            email: data.footer?.email || FALLBACK_CONTENT.email,
-            location: data.footer?.location || FALLBACK_CONTENT.location,
-            navLinks: data.footer?.navLinks || FALLBACK_NAV_LINKS,
-            socialLinks: data.footer?.socialLinks || FALLBACK_SOCIAL_LINKS
-        };
-    } catch (err) {
-        console.warn('⚠️ CMS unavailable, using fallback footer content');
-        return FALLBACK_CONTENT;
-    }
-}
-
-/**
- * Create the footer section
+ * Setup and render the global footer
  */
 export async function setupFooter() {
     const contentArea = document.getElementById('content-area');
-    if (!contentArea) {
-        console.warn('⚠️ Content area not found for footer');
-        return null;
-    }
+    if (!contentArea) return;
 
-    // Fetch content from CMS
-    footerContent = await fetchFooterContent();
+    // Check if footer already exists
+    if (document.getElementById('main-footer')) return;
 
+    // Create footer element
     const footer = document.createElement('footer');
+    footer.id = 'main-footer';
     footer.className = 'site-footer';
-    footer.innerHTML = createFooterMarkup();
 
-    contentArea.appendChild(footer);
-
-    // Setup animations and reveals
-    setupFooterAnimations(footer);
-
-    console.log('✨ Footer section initialized');
-    return footer;
-}
-
-/**
- * Generate footer HTML structure
- */
-function createFooterMarkup() {
-    return `
-        <!-- Decorative top border -->
+    // Render structure matching footer.css
+    footer.innerHTML = `
         <div class="footer__border-accent"></div>
-
-        <!-- Main footer content -->
+        
         <div class="footer__container">
-            <!-- Brand column -->
+            <!-- Brand Column -->
             <div class="footer__brand" data-reveal>
                 <div class="footer__logo">
-                    <span class="footer__logo-text">${footerContent.brand}</span>
+                    <span class="footer__logo-text">VUDRAG</span>
                     <span class="footer__logo-dot"></span>
                 </div>
-                <p class="footer__tagline">${footerContent.tagline}</p>
-                <p class="footer__description">${footerContent.description}</p>
+                <div class="footer__tagline">Sculpting in Light & Shadow</div>
+                <p class="footer__description">
+                    Exploring the intersection of classical craftsmanship and modern industrial art. 
+                    Each piece tells a story of transformation, resilience, and raw power.
+                </p>
             </div>
 
-            <!-- Navigation column -->
-            <div class="footer__nav" data-reveal data-reveal-delay="1">
+            <!-- Navigation Column -->
+            <div class="footer__navigation" data-reveal data-reveal-delay="1">
                 <h4 class="footer__heading">Explore</h4>
-                <nav class="footer__links">
-                    ${footerContent.navLinks
-            .filter(link => {
-                const lower = link.label.toLowerCase();
-                // Remove Works/Gallery as requested
-                return !lower.includes('work') && !lower.includes('gallery');
-            })
-            .map(link => {
-                // Map labels/hrefs to targets if not present
-                let target = '';
-                let label = link.label;
-                const lowerLabel = link.label.toLowerCase();
-
-                if (lowerLabel.includes('collection')) target = 'category-hub';
-                else if (lowerLabel.includes('about') || lowerLabel.includes('artist')) {
-                    target = 'artist';
-                    label = 'Artist';
-                }
-                else if (lowerLabel.includes('contact') || lowerLabel.includes('inquire')) {
-                    target = 'contact';
-                    label = 'Inquire';
-                }
-                else if (lowerLabel.includes('archive')) {
-                    target = ''; // No SPA target, use href
-                }
-
-                return `
-                        <a href="${link.href}" class="footer__link" data-target="${target}">
-                            <span class="footer__link-text">${label}</span>
-                            <span class="footer__link-arrow">▸</span>
-                        </a>
-                    `}).join('')}
-                </nav>
+                <div class="footer__links">
+                    <!-- Links injected via JS -->
+                </div>
             </div>
 
-            <!-- Contact column -->
+            <!-- Contact Column -->
             <div class="footer__contact" data-reveal data-reveal-delay="2">
-                <h4 class="footer__heading">Contact</h4>
+                <h4 class="footer__heading">Connect</h4>
                 <div class="footer__contact-info">
-                    <a href="mailto:${footerContent.email}" class="footer__email">
-                        ${footerContent.email}
-                    </a>
-                    <p class="footer__location">${footerContent.location}</p>
+                    <a href="mailto:studio@vudrag.com" class="footer__email">studio@vudrag.com</a>
+                    <div class="footer__location">Varaždin • Zagreb • Dubai</div>
                 </div>
-                
-                <!-- Social links -->
                 <div class="footer__social">
-                    ${footerContent.socialLinks.map(social => `
-                        <a href="${social.url}" 
-                           class="footer__social-link" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           aria-label="${social.name}">
-                            ${getSocialIcon(social.icon)}
-                            <span class="footer__social-glow"></span>
-                        </a>
-                    `).join('')}
+                    <!-- Social icons injected via JS -->
                 </div>
             </div>
         </div>
 
-        <!-- Decorative signature element -->
-        <div class="footer__signature" data-reveal data-reveal-delay="3">
+        <!-- Signature Section -->
+        <div class="footer__signature" data-reveal>
             <div class="footer__signature-line"></div>
-            <span class="footer__monogram">NV</span>
+            <div class="footer__monogram">NV</div>
             <div class="footer__signature-line"></div>
         </div>
-
-        <!-- Bottom bar -->
+        
+        <!-- Bottom Bar -->
         <div class="footer__bottom">
-            <p class="footer__copyright">
-                © ${new Date().getFullYear()} Nikola Vudrag. All rights reserved.
-            </p>
-            <p class="footer__crafted">
-                <span class="footer__crafted-icon">◈</span>
-                Crafted by <a href="https://studio.varazdin" class="footer__studio-link" target="_blank" rel="noopener">studio.varaždin</a>
-            </p>
+            <div class="footer__copyright">
+                &copy; ${new Date().getFullYear()} Nikola Vudrag. All Rights Reserved.
+            </div>
+            <div class="footer__crafted">
+                Crafted with <span class="footer__crafted-icon">✦</span> by varazdin.studio
+            </div>
         </div>
 
-        <!-- Ambient glow effects -->
+        <!-- Ambient Glows -->
         <div class="footer__glow footer__glow--left"></div>
         <div class="footer__glow footer__glow--right"></div>
     `;
+
+    // Append to content area
+    contentArea.appendChild(footer);
+
+    // Populate links
+    const linksContainer = footer.querySelector('.footer__links');
+    FALLBACK_NAV_LINKS.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.className = 'footer__link';
+        if (link.href.startsWith('#')) {
+            a.dataset.target = link.href.substring(1);
+        }
+        a.innerHTML = `
+            ${link.label}
+            <span class="footer__link-arrow">→</span>
+        `;
+        linksContainer.appendChild(a);
+    });
+
+    // Populate social icons
+    const socialContainer = footer.querySelector('.footer__social');
+    FALLBACK_SOCIAL_LINKS.forEach(social => {
+        const a = document.createElement('a');
+        a.href = social.url;
+        a.className = 'footer__social-link';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.ariaLabel = social.name;
+        a.innerHTML = `
+            ${getSocialIcon(social.icon)}
+            <div class="footer__social-glow"></div>
+        `;
+        socialContainer.appendChild(a);
+    });
+
+    // Initialize animations
+    setupFooterAnimations(footer);
+
+    console.log('✅ Footer initialized');
 }
+
+// ... (existing code) ...
 
 /**
  * Get SVG icon for social platform
@@ -214,6 +162,13 @@ function getSocialIcon(platform) {
             <path d="M12 2L2 7l10 5 10-5-10-5z"/>
             <path d="M2 17l10 5 10-5"/>
             <path d="M2 12l10 5 10-5"/>
+        </svg>`,
+        facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>`,
+        article: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
         </svg>`
     };
     return icons[platform] || '';

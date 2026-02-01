@@ -24,6 +24,7 @@ Create a `.env` file in the `cms/` directory:
 ```env
 ADMIN_PASSWORD=your-secure-password
 JWT_SECRET=your-jwt-secret
+RESEND_API_KEY=re_123456789
 ```
 
 ### Running the Server
@@ -57,11 +58,25 @@ The CMS uses **JWT Bearer tokens** for protected endpoints.
 
 ### Protected vs Public Endpoints
 - **Protected** (require JWT): All `POST`, `PUT`, `DELETE` operations
-- **Public** (no auth): `GET /api/sculptures/:id`, `GET /api/config.json`
+- **Public** (no auth): `GET /api/sculptures/:id`, `GET /api/config.json`, `POST /api/request-reset`, `POST /api/reset-password`
 
 ---
 
 ## 📡 API Reference
+
+### System Settings
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/settings` | Get global settings (email, system) |
+| `POST` | `/api/settings` | Update global settings |
+
+### Authentication & Passwords
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/login` | Authenticate and get JWT |
+| `POST` | `/api/request-reset` | Send password reset email |
+| `POST` | `/api/reset-password` | Set new password with token |
+| `POST` | `/api/change-password` | Update password (authenticated) |
 
 ### Splats
 
@@ -126,7 +141,9 @@ cms/data/
 ├── splats.json        # 3D splat transforms & color grading
 ├── galleries.json     # Gallery definitions & metadata
 ├── collections.json   # Category hub & nested works
-└── sculptures.json    # Rich narrative content for detail pages
+├── sculptures.json    # Rich narrative content for detail pages
+├── users.json         # Admin user accounts [NEW]
+└── settings.json      # Global system configuration [NEW]
 ```
 
 ### Sculpture Schema (sculptures.json)

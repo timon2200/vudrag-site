@@ -8,7 +8,7 @@
 import { observeElement } from './scroll-reveal.js';
 
 // CMS API Base URL
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // Fallback works data - used when CMS is unavailable
 // Order matters for bento grid layout! Cards are placed left-to-right, top-to-bottom.

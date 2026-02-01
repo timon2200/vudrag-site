@@ -189,23 +189,8 @@
     position: relative;
 }
 
-.footer__email::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--color-gold);
-    transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
 .footer__email:hover {
     color: var(--color-gold);
-}
-
-.footer__email:hover::after {
-    width: 100%;
 }
 
 .footer__location {

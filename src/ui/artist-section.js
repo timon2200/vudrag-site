@@ -9,7 +9,7 @@
 import { observeElement } from './scroll-reveal.js';
 
 // CMS API URL
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // Fallback artist content
 const FALLBACK_ARTIST_DATA = {

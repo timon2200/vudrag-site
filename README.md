@@ -62,6 +62,11 @@ Sculptural presentation of contact information:
 - Interactive email link with hover glow effects
 - Decorative crown and base ornaments
 
+### 🔒 Authentication & Security
+- **Secure Password Recovery**: Automated email flow via Resend.
+- **JWT Protection**: Stateless authentication for all admin routes.
+- **Dynamic Email Settings**: Customize sender details and templates via CMS.
+
 ### 🎥 Video Integration
 Atmospheric video elements throughout the experience:
 - **Video Dividers**: Cinematic section transitions
@@ -206,6 +211,8 @@ Login uses the password defined in `cms/.env` as `ADMIN_PASSWORD`.
 | **Collections** | Category hub content and nested works |
 | **Sculptures** | Rich narrative content for detail pages |
 | **Assets** | Upload/manage `.sog` files, images, and environments |
+| **Users** | Manage admin access and role-based permissions |
+| **Settings** | Configure email templates and system preferences |
 | **Site Content** | Footer, contact page text, artist section, and social links |
 
 ### Site Content Editor

@@ -13,7 +13,7 @@ import './styles/variables.css';
 import './styles/sculpture-page.css';
 
 // CMS API Base
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // State
 let currentSculpture = null;

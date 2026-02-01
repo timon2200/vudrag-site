@@ -10,7 +10,7 @@ import { isInContentMode } from '../systems/scroll.js';
 import { state } from '../state.js';
 
 // CMS API URL
-const CMS_API = '/api';
+const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
 // Fallback category data (used if CMS unavailable)
 const FALLBACK_CATEGORIES = [

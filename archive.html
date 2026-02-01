@@ -2,135 +2,90 @@
 <html lang="en">
 
 <head>
+    <script>
+        if (!localStorage.getItem('vudrag_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Archive | Protected Access</title>
-    <link rel="stylesheet" href="/src/styles/design-system.css">
-    <style>
-        body {
-            background-color: #050508;
-            color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: 'Inter', sans-serif;
-            text-align: center;
-        }
+    <title>The Archive | Nikola Vudrag</title>
 
-        .archive-status {
-            color: #c9a77a;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400&display=swap"
+        rel="stylesheet">
 
-        .archive-note {
-            opacity: 0.6;
-            max-width: 400px;
-            line-height: 1.6;
-        }
-
-        .logout-btn {
-            margin-top: 2rem;
-            padding: 0.8rem 1.5rem;
-            background: transparent;
-            border: 1px solid rgba(201, 167, 122, 0.4);
-            color: #c9a77a;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logout-btn:hover {
-            border-color: #c9a77a;
-            background: rgba(201, 167, 122, 0.1);
-        }
-    </style>
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="/src/styles/variables.css">
+    <link rel="stylesheet" href="/src/styles/luxury-typography.css">
+    <link rel="stylesheet" href="/src/styles/archive.css">
 </head>
 
 <body>
-    <div class="archive-status">Authorized Personnel Only</div>
-    <h1>The Archive</h1>
-    <p class="archive-note">Welcome to the private vault. Access granted via secure credentials.</p>
+    <header class="archive-header">
+        <a href="/" class="brand">VUDRAG</a>
+        <nav class="nav-user">
+            <span id="user-display" class="user-badge">Member</span>
+            <button class="btn-ghost" id="logout-btn">
+                Exit Vault
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
-    <button class="logout-btn" onclick="togglePasswordForm()">Change Password</button>
-    <button class="logout-btn" onclick="logout()">Close Archives</button>
+    <section class="archive-hero">
+        <div class="particles" id="particles"></div>
 
-    <!-- Change Password Form -->
-    <div id="password-form"
-        style="display: none; margin-top: 2rem; background: rgba(255, 255, 255, 0.05); padding: 2rem; border: 1px solid rgba(201, 167, 122, 0.2); border-radius: 4px;">
-        <h3 style="color: #c9a77a; margin-bottom: 1rem; font-family: 'Cormorant Garamond', serif;">Update Credentials
-        </h3>
-        <form onsubmit="changePassword(event)" style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-            <input type="password" id="current-password" placeholder="Current Password" required
-                style="padding: 0.8rem; background: rgba(0,0,0,0.3); border: 1px solid #333; color: white;">
-            <input type="password" id="new-password" placeholder="New Password" required
-                style="padding: 0.8rem; background: rgba(0,0,0,0.3); border: 1px solid #333; color: white;">
-            <button type="submit"
-                style="padding: 0.8rem; background: #c9a77a; color: black; border: none; cursor: pointer; font-weight: bold;">Update</button>
-        </form>
-        <p id="password-msg" style="margin-top: 1rem; font-size: 0.9rem;"></p>
-    </div>
+        <!-- Decorative top element -->
+        <div class="sculpture__crown">
+            <div class="sculpture__line sculpture__line--left"></div>
+            <div class="sculpture__diamond"></div>
+            <div class="sculpture__line sculpture__line--right"></div>
+        </div>
 
-    <script>
-        // Basic protection check
-        const token = localStorage.getItem('vudrag_token');
-        if (!token) {
-            window.location.href = '/login.html';
-        }
 
-        function logout() {
-            localStorage.removeItem('vudrag_token');
-            localStorage.removeItem('vudrag_user');
-            window.location.href = '/login.html';
-        }
 
-        function togglePasswordForm() {
-            const form = document.getElementById('password-form');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
+        <!-- Main title -->
+        <h1 class="sculpture__title">
+            <span class="sculpture__title-word">The</span>
+            <span class="sculpture__title-accent">Archive</span>
+        </h1>
 
-        async function changePassword(e) {
-            e.preventDefault();
-            const currentPassword = document.getElementById('current-password').value;
-            const newPassword = document.getElementById('new-password').value;
-            const msg = document.getElementById('password-msg');
+        <!-- Subtitle -->
+        <p class="sculpture__text">Provenance • Sketches • Private Collection</p>
 
-            msg.textContent = 'Updating...';
-            msg.style.color = '#ccc';
+        <!-- Ornamental divider -->
+        <div class="sculpture__ornament">
+            <span class="ornament__wing ornament__wing--left"></span>
+            <span class="ornament__center">◈</span>
+            <span class="ornament__wing ornament__wing--right"></span>
+        </div>
+    </section>
 
-            try {
-                const res = await fetch('/api/change-password', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ currentPassword, newPassword })
-                });
+    <main class="feed-container">
+        <div id="feed-grid" class="feed-grid">
+            <!-- Posts injected here -->
+            <div
+                style="text-align: center; color: rgba(255,255,255,0.2); margin-top: 40px; font-weight: 300; letter-spacing: 1px;">
+                Decrypting archive data...</div>
+        </div>
+    </main>
 
-                const data = await res.json();
+    <footer
+        style="text-align: center; padding: 60px 0; color: #444; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; position: relative;">
+        <div class="particles" id="footer-particles"></div>
+        Restricted Access • Nikola Vudrag Studio
+    </footer>
 
-                if (res.ok) {
-                    msg.textContent = 'Password updated successfully.';
-                    msg.style.color = '#c9a77a';
-                    document.getElementById('current-password').value = '';
-                    document.getElementById('new-password').value = '';
-                    setTimeout(() => {
-                        document.getElementById('password-form').style.display = 'none';
-                        msg.textContent = '';
-                    }, 2000);
-                } else {
-                    msg.textContent = data.error || 'Failed to update password';
-                    msg.style.color = '#ff6b6b';
-                }
-            } catch (err) {
-                msg.textContent = 'Server error';
-                msg.style.color = '#ff6b6b';
-            }
-        }
-    </script>
+    <script type="module" src="/src/archive.js"></script>
 </body>
 
 </html>

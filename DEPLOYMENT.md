@@ -1,80 +1,217 @@
-# Deployment Guide: Digital Ocean App Platform
+# Deployment Guide: Vercel (Frontend) + Render (Backend/CMS)
 
-This guide explains how to deploy the Vudrag Portfolio to Digital Ocean App Platform. The application consists of two parts that need to be deployed together:
+This guide explains how to deploy the Vudrag Portfolio using **Vercel** for the static frontend and **Render** for the CMS backend.
 
-1.  **Backend (CMS)**: A Node.js server that manages content and files.
-2.  **Frontend (Website)**: A text/image/3D splat static site built with Vite.
+## Architecture Overview
+
+```
+┌─────────────────┐       API calls        ┌─────────────────┐
+│   VERCEL        │ ────────────────────▶  │    RENDER       │
+│   (Frontend)    │                        │    (CMS API)    │
+│                 │                        │                 │
+│   index.html    │                        │   server.js     │
+│   gallery.html  │ ◀──── JSON data ────── │   /api/*        │
+│   sculpture.html│                        │   /admin        │
+│   + JS/CSS/Splats                        │   data/*.json   │
+└─────────────────┘                        └─────────────────┘
+     FREE tier                                 FREE tier
+```
+
+---
 
 ## Prerequisites
 
-1.  A Digital Ocean account.
-2.  This code pushed to a GitHub repository (public or private).
+1. GitHub account with this repository pushed
+2. Vercel account (free): https://vercel.com
+3. Render account (free): https://render.com
 
 ---
 
-## Step 1: Create App
+## Part 1: Deploy CMS to Render
 
-1.  Log in to Digital Ocean and click **Create** -> **Apps**.
-2.  Choose **GitHub** as your source.
-3.  Select the repository `vudrag-site-2` (or whatever you named it).
-4.  **Source Directory**: Keep this as `/` (root).
-5.  Click **Next**.
+### Step 1: Create Render Account & New Web Service
 
-## Step 2: Configure Resources
+1. Go to https://render.com and sign up
+2. Click **New +** → **Web Service**
+3. Connect your GitHub repository
 
-Digital Ocean will try to auto-detect the resources. We need to manually configure them to split the backend and frontend.
+### Step 2: Configure the Service
 
-### Resource 1: The Backend (Web Service)
+| Setting | Value |
+|---------|-------|
+| **Name** | `vudrag-cms` (or any name you prefer) |
+| **Region** | Frankfurt (EU) or closest to you |
+| **Branch** | `main` |
+| **Root Directory** | `cms` |
+| **Runtime** | Node |
+| **Build Command** | `npm install` |
+| **Start Command** | `npm start` |
+| **Instance Type** | Free |
 
-1.  Click **Edit** next to the detected service (or "Add Resource" -> "Web Service").
-2.  **Name**: `vudrag-cms`
-3.  **Source Directory**: `cms` (Important! This tells it to look in the cms folder).
-4.  **Environment Variables**:
-    *   `CMS_PORT`: `8080` (Digital Ocean automatically exposes port 8080).
-    *   `JWT_SECRET`: Generate a random string (e.g., `my-super-secret-key-123`).
-    *   `ADMIN_PASSWORD`: Your desired admin password.
-    *   `CORS_ORIGIN`: `*` (or your final domain name, e.g., `https://vudrag-portfolio.ondigitalocean.app`).
-5.  **Build Command**: `npm install` (default is usually fine).
-6.  **Run Command**: `npm start` (which runs `node server.js`).
-7.  **HTTP Port**: `8080`.
+### Step 3: Add Environment Variables
 
-### Resource 2: The Frontend (Static Site)
+In the Render dashboard, go to **Environment** and add:
 
-1.  Click **Add Resource** -> **Static Site**.
-2.  **Name**: `vudrag-frontend`
-3.  **Source Directory**: `/` (Root).
-4.  **Build Command**: `npm run build`.
-5.  **Output Directory**: `dist`.
-6.  **Routes** (Crucial Step):
-    *   You need to tell the static site to send API requests to the Backend service.
-    *   Find the **Routes** or **HTTP Request Routes** section.
-    *   Add a route:
-        *   **Path**: `/api`
-        *   **Proxy to**: `vudrag-cms` (the name of your backend service).
+| Key | Value |
+|-----|-------|
+| `CMS_PORT` | `10000` (Render uses this port) |
+| `JWT_SECRET` | Generate a random string (e.g., `your-super-secret-key-change-this-123`) |
+| `ADMIN_PASSWORD` | Your admin password |
+| `CORS_ORIGIN` | `*` (we'll restrict this later) |
+| `RESEND_API_KEY` | Your Resend API key (for password reset emails) |
 
-## Step 3: Global Review
+### Step 4: Deploy
 
-1.  **Region**: frankfurt or closest to you.
-2.  **Plan**: Basic ($5/mo) is usually sufficient for starting.
-3.  Click **Create Resources**.
+Click **Create Web Service**. Render will:
+1. Clone your repo
+2. Run `npm install` in the `cms` folder
+3. Start `npm start`
+4. Give you a URL like: `https://vudrag-cms.onrender.com`
+
+**📝 Copy this URL!** You'll need it for the next step.
+
+### Step 5: Verify CMS
+
+Visit `https://YOUR-RENDER-URL.onrender.com/api/config.json`
+
+You should see JSON data with your splats, galleries, and collections.
 
 ---
 
-## Verifying Deployment
+## Part 2: Deploy Frontend to Vercel
 
-Once the build finishes (it may take a few minutes):
+### Step 1: Update Production Environment
 
-1.  Click the **Live URL** provided by Digital Ocean.
-2.  The site should load.
-3.  Go to `/admin` (e.g., `https://your-app.ondigitalocean.app/admin`).
-4.  Login with the password you set in Environment Variables.
-5.  Upload an image to test that persistence works.
+Edit `.env.production` in your project root:
 
-> **Note on Storage**: The App Platform file system is ephemeral, meaning files uploaded to `cms/public` (images/splats) will disappear if the app restarts/redeploys.
-> **Production Recommendation**: For a serious live site, you should use **Digital Ocean Spaces (S3)** for storing the splats and images, or attach a **Mountable Volume** to the CMS service (available on Pro/Growth plans) essentially giving it a permanent hard drive.
+```bash
+VITE_API_BASE=https://YOUR-RENDER-URL.onrender.com/api
+```
+
+Replace `YOUR-RENDER-URL` with your actual Render service URL.
+
+**Commit and push this change:**
+```bash
+git add .env.production
+git commit -m "Configure production API URL"
+git push
+```
+
+### Step 2: Create Vercel Project
+
+1. Go to https://vercel.com and sign in
+2. Click **Add New...** → **Project**
+3. Import your GitHub repository
+
+### Step 3: Configure Vercel
+
+Vercel will auto-detect Vite. Verify these settings:
+
+| Setting | Value |
+|---------|-------|
+| **Framework Preset** | Vite |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `dist` |
+| **Install Command** | `npm install` |
+
+Click **Deploy**.
+
+### Step 4: Verify Deployment
+
+1. Visit your Vercel URL (e.g., `https://vudrag-portfolio.vercel.app`)
+2. The site should load and fetch data from your Render CMS
+3. Visit `/login.html` and log in with your admin credentials
+
+---
+
+## Part 3: Configure CORS (Security)
+
+Once both are deployed, update Render's CORS setting:
+
+1. Go to Render Dashboard → Your CMS Service → Environment
+2. Update `CORS_ORIGIN` to your Vercel domain:
+   ```
+   https://vudrag-portfolio.vercel.app
+   ```
+3. Click **Save Changes** (this will trigger a redeploy)
+
+---
+
+## Daily Workflow
+
+### Making Code Changes
+
+```bash
+# 1. Make changes locally
+# 2. Test locally
+npm run dev                    # Frontend on localhost:3000
+cd cms && npm start            # CMS on localhost:3001
+
+# 3. Commit and push
+git add .
+git commit -m "Your changes"
+git push origin main
+
+# 4. Wait 1-3 minutes
+# Both Vercel and Render auto-deploy!
+```
+
+### Managing Content
+
+Use the Admin Panel at:
+```
+https://YOUR-RENDER-URL.onrender.com/admin
+```
+
+Changes via admin panel are saved directly to Render - no git push needed.
+
+---
 
 ## Troubleshooting
 
--   **502 Bad Gateway**: Check the CMS logs. Did it start successfully? Is it listening on port 8080?
--   **CORS Errors**: Check the `CORS_ORIGIN` env var in the CMS service. Set it to the full URL of your frontend (e.g. `https://your-app.ondigitalocean.app`).
--   **Images not loading**: Check the Routes configuration for `/api`. It must point to the CMS service.
+### "API calls failing"
+- Check browser console for CORS errors
+- Verify `CORS_ORIGIN` in Render matches your Vercel domain exactly
+- Check that `.env.production` has the correct Render URL
+
+### "Admin panel not loading"
+- Visit `https://YOUR-RENDER-URL.onrender.com/admin` directly
+- Check Render logs for errors
+
+### "Free tier sleeping"
+- Render free tier spins down after 15 minutes of inactivity
+- First request after sleep takes ~30 seconds (cold start)
+- Consider upgrading to Starter ($7/mo) for always-on
+
+### "Images/splats not showing"
+- Verify files exist in `public/` folder
+- Check that Vercel deployed the `dist` folder correctly
+- Large splat files may need a CDN (Cloudflare R2 recommended)
+
+---
+
+## Costs
+
+| Service | Tier | Monthly Cost |
+|---------|------|--------------|
+| Vercel | Hobby | **FREE** |
+| Render | Free | **FREE** |
+
+**Total: $0/month** for basic usage!
+
+### When to Upgrade
+
+- **Render Starter ($7/mo)**: Always-on, no cold starts
+- **Vercel Pro ($20/mo)**: Team features, analytics
+- **Cloudflare R2**: Free 10GB for large splat/media files
+
+---
+
+## Quick Reference
+
+| What | URL |
+|------|-----|
+| **Live Site** | `https://your-project.vercel.app` |
+| **CMS API** | `https://your-cms.onrender.com/api` |
+| **Admin Panel** | `https://your-cms.onrender.com/admin` |
+| **API Health Check** | `https://your-cms.onrender.com/api/config.json` |

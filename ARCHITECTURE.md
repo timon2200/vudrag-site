@@ -21,6 +21,10 @@ vudrag-site-2/
 │   ├── main.js              # Entry point - orchestrates all modules
 │   ├── config.js            # Centralized configuration
 │   ├── state.js             # Global application state
+│   ├── cms/
+│   │   ├── server.js        # Express API server
+│   │   └── services/
+│   │       └── mailer.js    # Resend email service wrapper
 │   ├── shaders/
 │   │   └── plasma.glsl.js   # Custom GLSL plasma transition shader
 │   ├── systems/
@@ -222,6 +226,14 @@ Orchestrates initialization and the update loop:
 - **Particle Panel** (`debug-panel.js`) - Tune particle radius, scale, count, lifetime
 - **Splat Panel** (`splat-debug-panel.js`) - Tune camera sway, splat positions
 - **Post-Effects Panel** - Tune bloom, vignette, color grading
+
+### Email Service (`cms/services/mailer.js`)
+- **Provider**: Resend API
+- **Dynamic Configuration**: Loads settings from `cms/data/settings.json`
+- **Features**:
+  - HTML body injection with variable replacement (`{{link}}`)
+  - Configurable Sender Name and Email
+  - Error handling and logging
 
 ---
 

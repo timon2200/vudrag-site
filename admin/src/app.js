@@ -3,6 +3,7 @@
  * Client-side JavaScript for content management
  */
 
+// API_BASE is relative for admin since it's served by the same CMS server
 const API_BASE = '/api';
 
 // === State Management ===
@@ -26,7 +27,8 @@ const state = {
     // Generic temp image for collections/works
     // Generic temp image for collections/works
     tempImage: null,
-    settings: {}
+    settings: {},
+    archivePosts: []
 };
 
 // === DOM Elements ===
@@ -107,7 +109,7 @@ function showDashboard() {
 // === Data Loading ===
 async function loadAllData() {
     try {
-        const [splats, sculptures, galleries, collections, users, gridOrder, siteContent, settings] = await Promise.all([
+        const [splats, sculptures, galleries, collections, users, gridOrder, siteContent, settings, archivePosts] = await Promise.all([
             apiFetch('/splats'),
             apiFetch('/sculptures'),
             apiFetch('/galleries'),
@@ -115,7 +117,8 @@ async function loadAllData() {
             apiFetch('/users'),
             loadGridOrder(),
             loadSiteContent(),
-            apiFetch('/settings')
+            apiFetch('/settings'),
+            apiFetch('/archive-posts')
         ]);
 
         state.splats = splats || [];
@@ -126,6 +129,7 @@ async function loadAllData() {
         state.gridOrder = gridOrder || [];
         state.siteContent = siteContent || {};
         state.settings = settings || {};
+        state.archivePosts = archivePosts || [];
 
         renderSplats();
         renderSculptures();
@@ -135,6 +139,7 @@ async function loadAllData() {
         renderGridOrder();
         renderSiteContent();
         renderSettings();
+        renderArchivePosts();
         loadAssets();
     } catch (err) {
         console.error('Failed to load data:', err);
@@ -1995,6 +2000,30 @@ async function saveChanges() {
                 method: 'POST',
                 body: JSON.stringify(userData)
             });
+        } else if (state.editingType === 'archivePost') {
+            const content = [];
+            let i = 0;
+            while (data[`block-${i}-type`]) {
+                content.push({
+                    type: data[`block-${i}-type`],
+                    value: data[`block-${i}-value`]
+                });
+                i++;
+            }
+
+            const postData = {
+                title: data.title,
+                date: data.date,
+                tags: data.tags ? data.tags.split(',').map(s => s.trim()).filter(Boolean) : [],
+                isLocked: data.isLocked === 'true',
+                content: content
+            };
+
+            if (state.editingItem._isNew) {
+                await apiFetch('/archive-posts', { method: 'POST', body: JSON.stringify(postData) });
+            } else {
+                await apiFetch(`/archive-posts/${state.editingItem.id}`, { method: 'PUT', body: JSON.stringify(postData) });
+            }
         }
 
         closeModal();
@@ -2212,3 +2241,162 @@ async function saveSettings() {
 window.saveSettings = saveSettings;
 window.addUser = addUser; // Ensure this is also global as used in HTML
 window.deleteUser = deleteUser; // Ensure this is also global as used in HTML
+
+// === Archive Functions ===
+function renderArchivePosts() {
+    const container = document.getElementById('archive-list');
+    if (!container) return;
+
+    if (state.archivePosts.length === 0) {
+        container.innerHTML = '<p class="section-hint">No posts yet.</p>';
+        return;
+    }
+
+    container.innerHTML = state.archivePosts.map(post => `
+        <div class="item-card">
+            <div class="item-card-header">
+                <div>
+                    <span class="item-subtitle" style="font-size: 12px; opacity: 0.7;">${new Date(post.date).toLocaleDateString()}</span>
+                    <h3 class="item-title">${post.title}</h3>
+                    <p class="item-subtitle">${post.tags?.join(', ') || ''} ${post.isLocked ? '🔒' : ''}</p>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button class="btn-edit" onclick="editArchivePost('${post.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteArchivePost('${post.id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.addArchivePost = function () {
+    state.editingItem = {
+        _isNew: true,
+        content: [],
+        date: new Date().toISOString().split('T')[0],
+        isLocked: true
+    };
+    state.editingType = 'archivePost';
+    renderPostModal();
+    openModal();
+};
+
+window.editArchivePost = function (id) {
+    const post = state.archivePosts.find(p => p.id === id);
+    if (!post) return;
+    state.editingItem = JSON.parse(JSON.stringify(post)); // Deep copy
+    state.editingType = 'archivePost';
+    renderPostModal();
+    openModal();
+};
+
+window.deleteArchivePost = async function (id) {
+    if (!confirm('Delete this post?')) return;
+    try {
+        await apiFetch(`/archive-posts/${id}`, { method: 'DELETE' });
+        await loadAllData();
+    } catch (err) {
+        console.error(err);
+        alert('Failed to delete post');
+    }
+};
+
+function renderPostModal() {
+    elements.modalTitle.textContent = state.editingItem._isNew ? 'New Archive Post' : 'Edit Post';
+
+    const blocksHtml = state.editingItem.content.map((block, index) => renderBlockInput(block, index)).join('');
+
+    elements.modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" value="${state.editingItem.title || ''}" required placeholder="Post Title">
+        </div>
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" name="date" value="${state.editingItem.date ? new Date(state.editingItem.date).toISOString().split('T')[0] : ''}">
+        </div>
+        <div class="form-group">
+             <label>Tags (comma separated)</label>
+             <input type="text" name="tags" value="${state.editingItem.tags?.join(', ') || ''}" placeholder="news, process, update">
+        </div>
+        <div class="form-group">
+             <label>Access</label>
+             <select name="isLocked" style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">
+                 <option value="true" ${state.editingItem.isLocked ? 'selected' : ''}>🔒 Locked (Members Only)</option>
+                 <option value="false" ${!state.editingItem.isLocked ? 'selected' : ''}>🌍 Public Preview</option>
+             </select>
+        </div>
+        
+        <div style="margin: 24px 0; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <label style="display: block; margin-bottom: 12px; color: var(--gold);">Content Components</label>
+            
+            <div id="post-blocks-container" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                ${blocksHtml}
+            </div>
+            
+            <div class="item-actions" style="justify-content: flex-start;">
+                <button type="button" class="btn-secondary" onclick="addPostBlock('text')">+ Text</button>
+                <button type="button" class="btn-secondary" onclick="addPostBlock('image')">+ Image</button>
+                <button type="button" class="btn-secondary" onclick="addPostBlock('video')">+ Video</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderBlockInput(block, index) {
+    let inputHtml = '';
+    if (block.type === 'text') {
+        inputHtml = `<textarea name="block-${index}-value" rows="4" placeholder="Write something..." style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">${block.value || ''}</textarea>`;
+    } else if (block.type === 'image') {
+        inputHtml = createImageUploader(`block-${index}-value`, 'Image', block.value || '');
+        // Note: We need to initialize this after render
+        setTimeout(() => initializeImageUploader(`block-${index}-value`), 50);
+    } else if (block.type === 'video') {
+        inputHtml = `<input type="text" name="block-${index}-value" value="${block.value || ''}" placeholder="YouTube URL or /path/to/video.mp4" style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">`;
+    }
+
+    return `
+    <div class="block-item" style="background: var(--bg-card); padding: 16px; border: 1px solid var(--border-color); border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center;">
+            <span style="color: var(--gold); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; font-weight: 600;">${block.type} BLOCK</span>
+            <button type="button" style="color: var(--color-error); background: none; border: none; cursor: pointer; font-size: 12px;" onclick="removePostBlock(${index})">Remove</button>
+        </div>
+        <input type="hidden" name="block-${index}-type" value="${block.type}">
+        ${inputHtml}
+    </div>`;
+}
+
+// Helper to update state from current DOM before re-rendering
+function updatePostStateFromDOM() {
+    const formData = new FormData(elements.modalBody);
+    state.editingItem.title = formData.get('title');
+    state.editingItem.date = formData.get('date');
+    state.editingItem.tags = formData.get('tags').split(',').map(s => s.trim()).filter(Boolean);
+    state.editingItem.isLocked = formData.get('isLocked') === 'true';
+
+    // Reconstruct content
+    state.editingItem.content.forEach((block, index) => {
+        // Handle specialized inputs
+        if (block.type === 'image') {
+            // Image uploader puts value in hidden input with name same as ID usually, 
+            // but here ID is block-{index}-value.
+            const val = document.getElementById(`block-${index}-value-input`)?.value ||
+                document.querySelector(`input[name="block-${index}-value"]`)?.value;
+            block.value = val || '';
+        } else {
+            block.value = formData.get(`block-${index}-value`);
+        }
+    });
+}
+
+window.addPostBlock = function (type) {
+    updatePostStateFromDOM();
+    state.editingItem.content.push({ type, value: '' });
+    renderPostModal();
+};
+
+window.removePostBlock = function (index) {
+    updatePostStateFromDOM();
+    state.editingItem.content.splice(index, 1);
+    renderPostModal();
+};

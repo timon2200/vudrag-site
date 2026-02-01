@@ -2,6 +2,9 @@
  * Reset Password Logic
  */
 
+// API Base URL - uses environment variable in production
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+
 // Basic Particle System for consistency (Simplified version of login.js)
 class ParticleSystem {
     constructor() {
@@ -96,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideError();
 
         try {
-            const res = await fetch('/api/reset-password', {
+            const res = await fetch(`${API_BASE}/reset-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token, newPassword: p1 })

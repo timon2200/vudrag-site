@@ -47,6 +47,7 @@
                     <button class="nav-btn" data-section="galleries">Galleries</button>
                     <button class="nav-btn" data-section="collections">Collections</button>
                     <button class="nav-btn" data-section="assets">Assets</button>
+                    <button class="nav-btn" data-section="archive">Archive</button>
                     <button class="nav-btn" data-section="site-content">Site Content</button>
                     <button class="nav-btn" data-section="users">Users</button>
                     <button class="nav-btn" data-section="settings">Settings</button>
@@ -129,6 +130,17 @@
 
                     <h3 style="margin: 32px 0 16px; color: var(--text-primary);">Uploaded Assets</h3>
                     <div id="assets-list" class="items-grid"></div>
+                </section>
+
+                <!-- Archive Section -->
+                <section id="archive-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Archive Feed</h2>
+                        <button class="action-btn" onclick="addArchivePost()">+ New Post</button>
+                    </div>
+                    <p class="section-hint">Exclusive content for registered members. Supports rich text, images, and
+                        video.</p>
+                    <div id="archive-list" class="items-grid"></div>
                 </section>
 
                 <!-- Users Section -->
