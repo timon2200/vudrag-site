@@ -2,11 +2,23 @@ import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is provided
+// Without an API key, password reset emails will be disabled (but CMS will still work)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+if (!resend) {
+    console.warn('⚠️ RESEND_API_KEY not set - Password reset emails will be disabled');
+}
 
 const FROM_EMAIL = 'onboarding@resend.dev'; // Default for testing, user should update
 
 export async function sendPasswordResetEmail(email, resetToken, host, settings = {}) {
+    // Check if email service is available
+    if (!resend) {
+        console.error('❌ Cannot send email: RESEND_API_KEY not configured');
+        return false;
+    }
+
     const resetLink = `${host}/reset-password.html?token=${resetToken}`;
     const emailConfig = settings.email || {};
 
