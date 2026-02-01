@@ -954,6 +954,20 @@ function initDraggablePanel() {
     const cardWidth = () => track?.querySelector('.info-card')?.offsetWidth || 0;
     const totalCards = () => galleryState.activeGallery?.sculptures?.length || 1;
 
+    // Start collapsed by default on mobile
+    const startCollapsed = () => {
+        const offset = collapsedOffset();
+        if (offset > 0) {
+            currentTranslateY = offset;
+            panel.style.transform = `translateY(${offset}px)`;
+            panel.classList.add('collapsed');
+            isCollapsed = true;
+        }
+    };
+
+    // Delay to ensure panel has rendered and has height
+    setTimeout(startCollapsed, 100);
+
     // Get current carousel X offset from transform
     function getCarouselX() {
         if (!track) return 0;
