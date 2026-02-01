@@ -487,6 +487,32 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Autofill Styling - Preserve dark theme */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-canvas) inset !important;
+    box-shadow: 0 0 0 1000px var(--color-canvas) inset !important;
+    -webkit-text-fill-color: var(--color-gold-light) !important;
+    caret-color: var(--color-gold-light);
+    font-family: var(--font-primary) !important;
+    font-size: 1.4rem !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Also move the label up when autofilled */
+.form-group input:-webkit-autofill~label {
+    top: -10px;
+    font-size: 0.7rem;
+    color: var(--color-gold);
+}
+
+/* Show the gold underline when autofilled */
+.form-group input:-webkit-autofill~.input-line::after {
+    width: 100%;
+}
+
 .form-group label {
     position: absolute;
     left: 0;
