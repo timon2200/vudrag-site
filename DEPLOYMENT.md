@@ -118,7 +118,7 @@ Click **Deploy**.
 
 ### Step 4: Verify Deployment
 
-1. Visit your Vercel URL (e.g., `https://vudrag-portfolio.vercel.app`)
+1. Visit your Vercel URL (e.g., `https://vudrag-site.vercel.app`)
 2. The site should load and fetch data from your Render CMS
 3. Visit `/login.html` and log in with your admin credentials
 
@@ -131,7 +131,7 @@ Once both are deployed, update Render's CORS setting:
 1. Go to Render Dashboard → Your CMS Service → Environment
 2. Update `CORS_ORIGIN` to your Vercel domain:
    ```
-   https://vudrag-portfolio.vercel.app
+   https://vudrag-site.vercel.app
    ```
 3. Click **Save Changes** (this will trigger a redeploy)
 
