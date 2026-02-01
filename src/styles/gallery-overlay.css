@@ -331,7 +331,8 @@
 
     .gallery-panel-content {
         padding: 1.5rem 2rem;
-        padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+        /* Extra 60px for Chrome mobile navigation bar + safe area for notched devices */
+        padding-bottom: calc(60px + 2rem + env(safe-area-inset-bottom));
         padding-left: calc(2rem + env(safe-area-inset-left));
         padding-right: calc(2rem + env(safe-area-inset-right));
         border-left: none;
@@ -414,7 +415,8 @@
 
     .gallery-panel-content {
         padding: 1.25rem 1.5rem;
-        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+        /* Extra 60px for Chrome mobile navigation bar */
+        padding-bottom: calc(60px + 1.5rem + env(safe-area-inset-bottom));
         padding-left: calc(1.5rem + env(safe-area-inset-left));
         padding-right: calc(1.5rem + env(safe-area-inset-right));
     }
