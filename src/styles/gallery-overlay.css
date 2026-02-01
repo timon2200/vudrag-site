@@ -406,10 +406,17 @@
 @media (max-width: 480px) {
     .gallery-info-panel {
         max-height: 40vh;
-        padding: 1.5rem 1.75rem;
-        padding-bottom: calc(1.75rem + env(safe-area-inset-bottom));
-        padding-left: calc(1.75rem + env(safe-area-inset-left));
-        padding-right: calc(1.75rem + env(safe-area-inset-right));
+        /* Panel wrapper has no padding - it's on the content */
+        padding: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .gallery-panel-content {
+        padding: 1.25rem 1.5rem;
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+        padding-left: calc(1.5rem + env(safe-area-inset-left));
+        padding-right: calc(1.5rem + env(safe-area-inset-right));
     }
 
     .gallery-info-header h1 {

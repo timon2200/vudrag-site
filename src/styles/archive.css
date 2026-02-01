@@ -665,7 +665,7 @@ body {
     }
 }
 
-/* Response */
+/* Responsive */
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
@@ -673,5 +673,50 @@ body {
 
     .post-title {
         font-size: 2rem;
+    }
+
+    .feed-container {
+        padding: 0 16px;
+        margin: -40px auto 60px;
+    }
+
+    .post-card {
+        padding: 32px 24px;
+    }
+
+    .post-header {
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+    }
+
+    .post-content {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .post-signature {
+        margin-top: 40px;
+    }
+
+    .signature-text {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .feed-container {
+        padding: 0 12px;
+    }
+
+    .post-card {
+        padding: 24px 18px;
+    }
+
+    .post-title {
+        font-size: 1.6rem;
+    }
+
+    .post-content {
+        font-size: 0.95rem;
     }
 }
