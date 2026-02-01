@@ -14,7 +14,8 @@ export default defineConfig({
                 gallery: 'gallery.html',
                 sculpture: 'sculpture.html',
                 contact: 'contact.html',
-                login: 'login.html'
+                login: 'login.html',
+                archive: 'archive.html'
             },
             output: {
                 manualChunks: {
