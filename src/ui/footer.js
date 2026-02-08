@@ -22,7 +22,7 @@ const FALLBACK_NAV_LINKS = [
     { label: 'Collections', href: '#category-hub' },
     { label: 'Artist', href: '#artist-section' },
     { label: 'Inquire', href: '/contact.html' },
-    { label: 'The Archive', href: '/login.html' }
+    { label: 'Collectors Club', href: '/login.html' }
 ];
 
 /**

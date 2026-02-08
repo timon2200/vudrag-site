@@ -1,0 +1,44 @@
+[
+    {
+        "id": "dubai-build-impossible",
+        "title": "Dubai — Build The Impossible",
+        "category": "Exhibition",
+        "youtubeId": "7-uhfMFcx7Y",
+        "order": 0
+    },
+    {
+        "id": "thompson-coin-necklace",
+        "title": "Thompson Coin Necklace",
+        "category": "Process",
+        "youtubeId": "rIlK_HQCXF4",
+        "order": 1
+    },
+    {
+        "id": "vudrag-legacy-trailer",
+        "title": "Vudrag Legacy Trailer",
+        "category": "Film",
+        "youtubeId": "ra1X5YLkFi0",
+        "order": 2
+    },
+    {
+        "id": "dubai-hedonist-gallery",
+        "title": "Dubai Hedonist Gallery — Opening Ceremony",
+        "category": "Exhibition",
+        "youtubeId": "rnDmBogTZy4",
+        "order": 3
+    },
+    {
+        "id": "thompson-coin",
+        "title": "Thompson Coin",
+        "category": "Process",
+        "youtubeId": "sWl-7BQHmC4",
+        "order": 4
+    },
+    {
+        "id": "kovnica-novca",
+        "title": "Kovnica Novca",
+        "category": "Documentary",
+        "youtubeId": "jkFG8-GsZq8",
+        "order": 5
+    }
+]

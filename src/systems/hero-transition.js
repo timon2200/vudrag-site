@@ -87,11 +87,9 @@ function applyHeroFade() {
         textOverlay.style.pointerEvents = t > 0.2 ? 'none' : 'auto';
     }
 
-    // Subtle blur on canvas as it fades
-    if (canvasContainer) {
-        const blur = t * 4;
-        canvasContainer.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
-    }
+    // NOTE: CSS filter: blur() was removed — it forced a full GPU blur pass on
+    // the entire WebGL canvas every frame, which was extremely expensive.
+    // The opacity fade + in-scene bloom/vignette provide sufficient visual softening.
 }
 
 /**
@@ -108,9 +106,7 @@ export function resetHeroTransition() {
         heroSection.style.pointerEvents = 'auto';
     }
 
-    if (canvasContainer) {
-        canvasContainer.style.filter = 'none';
-    }
+    // canvasContainer filter cleanup no longer needed (blur removed)
 
     if (textOverlay) {
         textOverlay.style.opacity = '1';

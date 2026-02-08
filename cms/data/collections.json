@@ -1,141 +1,142 @@
 [
   {
-    "id": "persona",
-    "title": "Persona",
-    "subtitle": "The Mask Series",
-    "description": "Steel constructs exploring identity, duality, and the interface between outward presentation and inward essence.",
-    "image": "/images/VUDRAG-BOOK-MMXXV_Page_03_Image_0001.jpg",
+    "id": "networking",
+    "title": "Networking",
+    "subtitle": "The Net-Work Technique",
+    "description": "Thousands of welded steel rods forge semi-transparent lattices — forms that simultaneously shield and reveal, where the interplay of light and shadow becomes the true medium.",
+    "image": "/images/8.png",
+    "segments": [
+      "Self Standing",
+      "Wall"
+    ],
     "works": [
       {
         "title": "Persona",
         "year": "2022",
-        "dimensions": "85 x 65 x 50 cm",
-        "description": "Examining identity through its ancient roots (Latin: mask). A steel construct serving as both armor and expression.",
-        "image": "/images/works/persona-1.jpg"
+        "dimensions": "120 × 90 × 50 cm",
+        "description": "The word 'person' comes from the Latin *persona*—meaning 'mask'. Composed of 3,000 to 5,000 welded rods, this sculpture suggests that a person is neither the player nor the living being, but the role itself—a structure of perception solidified into identity.",
+        "image": "/images/works/persona.jpg",
+        "segment": "Self Standing"
+      },
+      {
+        "title": "Sphere",
+        "year": "2025",
+        "dimensions": "40 × 40 × 50 cm",
+        "description": "A symbol of perfection built from fragments. The gaps between bars are not absences, but invitations for light to pass—honoring the paradox that only through imperfection can perfection be glimpsed.",
+        "image": "/images/works/sphere.jpg",
+        "segment": "Self Standing"
+      },
+      {
+        "title": "Amphora",
+        "year": "2025",
+        "dimensions": "80 × 33 × 33 cm",
+        "description": "The sacred vessel reimagined. When light glows from within, it does not illuminate the amphora but dissolves it. A paradox of presence and absence—not an amphora, but the idea of one, burning at its core.",
+        "image": "/images/works/amphora.jpg",
+        "segment": "Self Standing"
+      },
+      {
+        "title": "The Presence",
+        "year": "2025",
+        "dimensions": "190 × 107 × 49 cm",
+        "description": "25,000 welded bars coalesce into a transparent veil. The visage emerges not as solid form, but as elusive suggestion. The veil speaks to universal maternal anxiety—the quiet dread of a mother watching her child walk toward an uncertain destiny.",
+        "image": "/images/works/the-presence.jpg",
+        "segment": "Self Standing"
+      },
+      {
+        "title": "The Awakening",
+        "year": "2019",
+        "dimensions": "Various",
+        "description": "Titans of the subconscious, ancient and new gods embodied in self-awareness. Steel becomes a tool crafting a tangible emblem that harbors a message encrypted in symbolic shapes and veiled symmetries.",
+        "image": "/images/works/the-awakening.jpg",
+        "segment": "Self Standing"
       },
       {
         "title": "Vitreolum",
         "year": "2023",
-        "dimensions": "90 x 70 x 55 cm",
-        "description": "The face emerges from a web of iron bars... Perhaps every identity is a cage, forged from inherited bars of lineage.",
-        "image": "/images/works/vitreolum.jpg"
+        "dimensions": "120 × 90 × 40 cm",
+        "description": "A face emerging from a web of iron bars—stern, noble, frozen in rigid geometry. It does not ask to be known, only to be witnessed. Both mask and revelation, its hollow eyes remind us that every face is a scaffold of perceptions waiting to be dismantled.",
+        "image": "/images/works/vitreolum.jpg",
+        "segment": "Wall"
       },
       {
         "title": "The Relic",
         "year": "2022",
-        "dimensions": "95 x 75 x 50 cm",
-        "description": "A face that occupies space yet allows us to see through it. Tradition as a vast latticework of fragments.",
-        "image": "/images/works/relic.jpg"
+        "dimensions": "120 × 90 × 50 cm",
+        "description": "Universal, classical, a relic of antiquity. The face endures not despite its transparency, but because of it—a structure perceived as whole, yet built from countless fragments. A symbol that admits its own construction.",
+        "image": "/images/works/the-relic.jpg",
+        "segment": "Wall"
       },
       {
-        "title": "The Last Iron Maiden",
+        "title": "Memento Mori",
+        "year": "2022",
+        "dimensions": "120 × 90 × 50 cm",
+        "description": "Matte black mesh playing with perception. Shadows and lights weave through the voids to complete the portrait. A dialogue between material and absence, transforming the wall into a canvas of fleeting impressions.",
+        "image": "/images/works/memento-mori.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "The Guardian",
         "year": "2025",
-        "dimensions": "110 x 80 x 60 cm",
-        "description": "The culminating work. Thousands of heavy steel rods welded into a single, breathing visage.",
-        "image": "/images/works/last-iron-maiden.jpg"
+        "dimensions": "120 × 90 × 40 cm",
+        "description": "Both fortress and figure. Heavy, raw, and unyielding, yet the contours flow with unexpected grace. A shield guarding the unseen vitality within—posing the warning: What lies behind this armored visage?",
+        "image": "/images/works/the-guardian.jpg",
+        "segment": "Wall"
       },
       {
         "title": "Iron Maiden",
-        "year": "2016/2023",
-        "dimensions": "200 x 200 x 40 cm",
-        "description": "A wall relief blurring painting and sculpture. Achieved 712,000 EUR at auction.",
-        "image": "/images/works/iron-maiden.jpg"
-      },
-      {
-        "title": "Madonna and the Veil",
-        "year": "2025",
-        "dimensions": "180 x 120 x 80 cm",
-        "description": "Instead of a perfect portrayal, a veil where the visage would be. Absence becomes the locus of presence.",
-        "image": "/images/works/madonna-veil.jpg"
-      }
-    ]
-  },
-  {
-    "id": "elemental",
-    "title": "Elemental",
-    "subtitle": "Amphoras & Drops",
-    "description": "Vessels and forms that explore the fundamental substances of life: water, oil, and the earth.",
-    "image": "/images/VUDRAG-BOOK-MMXXV_Page_27_Image_0001.jpg",
-    "works": [
-      {
-        "title": "Waterdrop",
-        "year": "2025",
-        "dimensions": "280 x 150 x 150 cm",
-        "description": "A glowing ripple frozen in time. 20,000 welded bars finished in high-gloss patina.",
-        "image": "/images/works/waterdrop.jpg"
-      },
-      {
-        "title": "Oildrop & Ripple",
-        "year": "2025",
-        "dimensions": "100 cm diameter",
-        "description": "Diptych. Oildrop: burned with mechanical oil (earth). Ripple: high-gloss polish (water).",
-        "image": "/images/works/oildrop-ripple.jpg"
-      },
-      {
-        "title": "Triptych of Amphoras",
-        "year": "2025",
-        "description": "Relic (earth/rust), Water (transparency/light), Oleum (sacred oil/black).",
-        "image": "/images/works/amphora-triptych.jpg"
-      },
-      {
-        "title": "Amphora Oleum",
-        "year": "2025",
-        "dimensions": "160 x 90 cm",
-        "description": "Burnt steel coaxing emerald greens and violet iridescence.",
-        "image": "/images/works/amphora-oleum.jpg"
-      }
-    ]
-  },
-  {
-    "id": "sumerian",
-    "title": "Sumerian",
-    "subtitle": "Script & Fragments",
-    "description": "Contemporary translations of the world's earliest script, rendered in steel lattices.",
-    "image": "/images/VUDRAG-BOOK-MMXXV_Page_20_Image_0001.jpg",
-    "works": [
-      {
-        "title": "Sumerian Cuneiform",
-        "year": "2022-2025",
-        "dimensions": "Various (45cm to 200cm)",
-        "description": "Airy lattices where every rod operates like a stylus mark.",
-        "image": "/images/works/sumerian-cuneiform.jpg"
-      },
-      {
-        "title": "Sumerian Moon",
-        "year": "2025",
-        "dimensions": "120 cm diameter",
-        "description": "A perfect sphere encased in a sharp, angular skin of cuneiform script.",
-        "image": "/images/works/sumerian-moon.jpg"
-      }
-    ]
-  },
-  {
-    "id": "nature",
-    "title": "Nature",
-    "subtitle": "Flora & Landscape",
-    "description": "Organic forms reimagined through industrial precision.",
-    "image": "/images/VUDRAG-BOOK-MMXXV_Page_30_Image_0001.jpg",
-    "works": [
-      {
-        "title": "The Dandelion",
-        "year": "2024",
-        "dimensions": "220 x 80 x 80 cm",
-        "description": "Mirrored steel. A quiet philosopher of the ruins.",
-        "image": "/images/works/dandelion.jpg"
-      },
-      {
-        "title": "The \"After\" Dandelion",
-        "year": "2024",
-        "dimensions": "Variable",
-        "description": "A dialogue between a stainless steel \"ideal\" and a rusted Corten \"survivor\".",
-        "image": "/images/works/after-dandelion.jpg"
+        "year": "2022",
+        "dimensions": "170 × 90 × 45 cm",
+        "description": "A fusion of industrial rigor and poetic fragility. Blurring the lines between painting and sculpture, its intricate mesh creates a portrait in constant flux, where the unseen speaks as loudly as the forged.",
+        "image": "/images/works/iron-maiden.jpg",
+        "segment": "Wall"
       },
       {
         "title": "Amazona",
         "year": "2022",
-        "dimensions": "180 x 240 cm",
-        "description": "Fragments series. Double arc suggesting riverbanks.",
-        "image": "/images/works/amazona.jpg"
+        "dimensions": "210 × 90 × 50 cm",
+        "description": "Evoking the Amazon's tangled branches and rivers. Two harmonious forms converge into a visage both ancient and alive. A silent dialogue between land and river, inviting contemplation on the enduring forces of nature.",
+        "image": "/images/works/amazona.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "Fragments — Eye",
+        "year": "2024–2025",
+        "dimensions": "45×45×40 to 100×40×45 cm",
+        "description": "Beauty emerging from brokenness. These fragmented compositions evoke resilience, revealing intricate details and hidden connections—a celebration of the beautifully imperfect nature of existence.",
+        "image": "/images/works/fragments-eye.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "Fragments — Kiss",
+        "year": "2024",
+        "dimensions": "120 × 50 × 15 cm",
+        "description": "An exploration of the timeless theme of love and emotional identity. Crafted from thousands of metal elements, it parallels the Persona series but delves deeper into the complexities of human connection.",
+        "image": "/images/works/fragments-kiss.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "Ripple",
+        "year": "2024",
+        "dimensions": "7cm depth × 200cm diameter",
+        "description": "A fusion of art and science from the Waterdrop series. Inspired by the double-slit experiment, 15,000 bars form a ripple that explores the mysteries of quantum physics and the primordial energies shaping reality.",
+        "image": "/images/works/ripple.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "Ichor",
+        "year": "2022/2024",
+        "dimensions": "7cm × 200cm ⌀ / 20×250×120 cm",
+        "description": "Named for the ethereal fluid of the gods. Rusted with flames and acids, it represents primordial energy—the absolute opposite of the Persona's human mask. Primordial energy captured in a net-work of steel.",
+        "image": "/images/works/ichor.jpg",
+        "segment": "Wall"
+      },
+      {
+        "title": "Iron Tapestry",
+        "year": "2022",
+        "dimensions": "—",
+        "description": "A transparent wall relief crafted from over 10,000 bars. It delicately weaves the background into its visual narrative, creating an individual piece that captivates at the intersection of strength and modernity.",
+        "image": "/images/works/iron-tapestry.jpg",
+        "segment": "Wall"
       }
     ]
   },
@@ -143,65 +144,377 @@
     "id": "portraits",
     "title": "Portraits",
     "subtitle": "Bronze Busts",
-    "description": "Disciplined realism capturing the \"second portrait\"—the private pulse behind the public face.",
-    "image": "/images/VUDRAG-BOOK-MMXXV_Page_40_Image_0001.jpg",
+    "description": "Disciplined realism capturing the private pulse behind the public face — each bust a testament to the enduring dialogue between bronze, memory, and the figures who shaped history.",
+    "image": "/images/56.webp",
     "works": [
       {
         "title": "Dr. Franjo Tuđman",
         "year": "Various",
-        "description": "A series of 7 busts charting Croatia's transition.",
+        "dimensions": "Various",
+        "description": "A series of memorial busts charting Croatia's transition, placed in public spaces throughout the country. Each portrait captures the gravity of leadership and the weight of historical moment.",
         "image": "/images/works/tudman.jpg"
       },
       {
         "title": "J.R.R. Tolkien",
         "year": "Commission",
-        "description": "Coded tribute with \"1973\" hidden in book spines. Installed in Oxford.",
+        "dimensions": "—",
+        "description": "A portrait rendered with the same patience as Tolkien's own world-building. Capturing the creator of Middle-earth in the quietude of thought.",
         "image": "/images/works/tolkien.jpg"
       },
       {
-        "title": "Hypatia of Alexandria",
-        "year": "Restored 2023",
-        "description": "A fractured bust repaired with visible \"scars\" of gold/bronze.",
+        "title": "The Unbreakable (Hypatia)",
+        "year": "2019",
+        "dimensions": "120 × 95 × 45 cm",
+        "description": "Hypatia of Alexandria, symbolized as an 'unbreakable mask'. Cast in a proprietary blend of carbon and concrete, polished to a high gloss—a monument to the resilience of intellect against the erasure of time.",
         "image": "/images/works/hypatia.jpg"
+      },
+      {
+        "title": "Prof. Predrag Keros",
+        "year": "2016",
+        "dimensions": "—",
+        "description": "A bronze bust for the University of Applied Health Sciences in Zagreb, honoring a lifetime of medical scholarship.",
+        "image": "/images/works/keros.jpg"
+      },
+      {
+        "title": "Prof. Ivo Brešan",
+        "year": "2019",
+        "dimensions": "—",
+        "description": "Installed at the Croatian National Theatre in Šibenik, this portrait captures the intensity of one of Croatia's foremost playwrights.",
+        "image": "/images/works/bresan.jpg"
+      },
+      {
+        "title": "Josip Juraj Strossmayer",
+        "year": "2020",
+        "dimensions": "—",
+        "description": "A memorial bust for the Croatian Chamber of Economy, honoring the bishop, politician, and patron who championed South Slavic unity and cultural institutions.",
+        "image": "/images/works/strossmayer.jpg"
       },
       {
         "title": "Nietzsche and Zarathustra",
         "year": "2011",
-        "description": "A dialogue between the tense philosopher and his serene ideal.",
+        "dimensions": "—",
+        "description": "A dialogue between the tense philosopher and his serene ideal. Two faces in bronze—one restless, the other transcendent—capturing the eternal struggle of the Übermensch.",
         "image": "/images/works/nietzsche.jpg"
       }
     ]
   },
   {
-    "id": "numismatics",
-    "title": "Numismatics",
-    "subtitle": "Coins & Medals",
-    "description": "Masterful hand-engraving for the Croatian National Bank and ECB.",
-    "image": "/images/VUDRAG BOOK 2025_Page_106_Image_0003.jpg",
+    "id": "coins",
+    "title": "Coins",
+    "subtitle": "Medals & Numismatics",
+    "description": "Microrealism and hyperrealism engraved in negative form — coin prototypes no taller than 1.2mm in relief, each a miniature universe of precision. Recognized as an 'A1' class medalist globally.",
+    "image": "/images/66.webp",
     "works": [
       {
-        "title": "Euro Coins",
-        "year": "Official Circulation",
-        "description": "Official Croatian Euro coinage. Two-layer design: motifs (Tesla, Marten) emerging from the national checkerboard.",
+        "title": "Euro Circulation Coins",
+        "year": "2022",
+        "dimensions": "1c – 2€",
+        "description": "Executive author of the Croatian national side. Glagolitic script, Nikola Tesla, the Marten, and the Map—icons of identity minted into the everyday currency of a continent.",
         "image": "/images/works/euro-coins.jpg"
       },
       {
-        "title": "King Tomislav",
-        "year": "Commemorative",
-        "description": "Bi-metallic gold and silver. Micro-engraved profile and olive tree reverse.",
-        "image": "/images/works/king-tomislav.jpg"
+        "title": "Croatian Black Lizard",
+        "year": "2024",
+        "dimensions": "10, 4, 100 euro",
+        "description": "Gold and silver coins capturing the endemic black lizard. Deep patina mirroring volcanic soil, engraved at a microscopic scale to honor a rare survivor of the natural world.",
+        "image": "/images/works/black-lizard.jpg"
       },
       {
-        "title": "Dalmatian Dog",
-        "year": "Investment Gold",
-        "description": "Spots rendered as the silhouettes of Dalmatian islands.",
+        "title": "King Tomislav — 1100th Anniversary",
+        "year": "2025",
+        "dimensions": "200, 100, 10, 8, 4 euro",
+        "description": "Commemorating 1100 years of the Croatian Kingdom (925–2025). Micro-engraved royal insignia and profile, forged in gold and silver to mark a millennium of statehood.",
+        "image": "/images/works/king-tomislav-coin.jpg"
+      },
+      {
+        "title": "King Tomislav 2 Euro",
+        "year": "2025",
+        "dimensions": "2€ commemorative",
+        "description": "Croatian commemorative 2 Euro coin, marking the foundational moment of Croatian statehood.",
+        "image": "/images/works/king-tomislav-2euro.jpg"
+      },
+      {
+        "title": "Dražen Petrović",
+        "year": "2024",
+        "dimensions": "200, 100, 10, 8, 4 euro",
+        "description": "Honoring the 'Mozart of Basketball'. A figure who transcended sport to become a symbol of excellence. The coin captures the kinetic energy of a legend frozen in silver and gold.",
+        "image": "/images/works/drazen-petrovic.jpg"
+      },
+      {
+        "title": "75th VE Day Anniversary",
+        "year": "2020",
+        "dimensions": "150 HRK silver",
+        "description": "Silver commemorative coin marking the 75th Anniversary of Victory in Europe Day, 1945–2020.",
+        "image": "/images/works/ve-day.jpg"
+      },
+      {
+        "title": "350th University of Zagreb",
+        "year": "2019",
+        "dimensions": "500, 150 HRK",
+        "description": "Gold and silver coins celebrating 350 years of the University of Zagreb (1669–2019), the oldest continuously operating university in Southeast Europe.",
+        "image": "/images/works/uni-zagreb.jpg"
+      },
+      {
+        "title": "Dalmatian",
+        "year": "2022",
+        "dimensions": "10, 50, 1000 HRK",
+        "description": "The Dalmatian dog, its spots rendered as the silhouettes of Croatian islands. Geography encoded in a coat—a playful yet precise tribute to one of Croatia's most recognizable global symbols.",
         "image": "/images/works/dalmatian-dog.jpg"
       },
       {
-        "title": "Croatian Black Lizard",
-        "year": "Native Species",
-        "description": "Deep black patina mirroring volcanic soil.",
-        "image": "/images/works/black-lizard.jpg"
+        "title": "Commemorative 2 Euro",
+        "year": "2023",
+        "dimensions": "2€",
+        "description": "Croatian commemorative 2 Euro coin, issued through the Croatian National Bank and Monetary Institute.",
+        "image": "/images/works/commemorative-2euro.jpg"
+      },
+      {
+        "title": "Cravat",
+        "year": "2023",
+        "dimensions": "6, 100 HRK",
+        "description": "Gold and silver coins celebrating the cravat — Croatia's gift to world fashion, the necktie born from the uniforms of 17th-century Croatian soldiers.",
+        "image": "/images/works/cravat.jpg"
+      },
+      {
+        "title": "Višnjan",
+        "year": "2022",
+        "dimensions": "1000 HRK",
+        "description": "Honoring the Višnjan Observatory. A coin that looks to the stars, celebrating the small town that discovers worlds beyond our own.",
+        "image": "/images/works/visnjan.jpg"
+      },
+      {
+        "title": "30 Years Croatian Mint",
+        "year": "2023",
+        "dimensions": "Medal",
+        "description": "A commemorative medal marking three decades of the Croatian Monetary Institute — the institution that forged a nation's currency.",
+        "image": "/images/works/croatian-mint.jpg"
+      }
+    ]
+  },
+  {
+    "id": "polygonal",
+    "title": "Polygonal",
+    "subtitle": "Geometric Forms",
+    "description": "Metal polygon plates converge into monumental animal forms and crystalline geometries — where mathematical precision meets mythological weight.",
+    "image": "/images/93.webp",
+    "segments": [
+      "Open",
+      "Closed Lighting"
+    ],
+    "works": [
+      {
+        "title": "Poseidon, The Olympian",
+        "year": "2022",
+        "dimensions": "400 × 330 × 180 cm",
+        "description": "The trident lifted to calm the storm. Metal polygon plates lend modern geometric precision to a timeless mythic figure. Rusted CorTen patina adds the weight of ages to this 4-meter titan.",
+        "image": "/images/works/poseidon.jpg",
+        "segment": "Open"
+      },
+      {
+        "title": "Musk Ox",
+        "year": "2019",
+        "dimensions": "230 × 360 × 190 cm",
+        "description": "Standing sentinel over the vineyard. The CorTen patina creates a deliberate contrast with the green vines—rust against leaf, age against growth, endurance against the turn of seasons.",
+        "image": "/images/works/musk-ox.jpg",
+        "segment": "Open"
+      },
+      {
+        "title": "Rhino (Sudan Tribute)",
+        "year": "2018",
+        "dimensions": "330 × 150 × 170 cm",
+        "description": "A tribute to Sudan, the last white rhino. Minimalist polygonal design serving as a stark reminder that less is more—a monument to a species lost, a call to protect what remains.",
+        "image": "/images/works/rhino.jpg",
+        "segment": "Open"
+      },
+      {
+        "title": "The Illuminated Concept",
+        "year": "—",
+        "dimensions": "60×80×80 to 160×200×200 cm",
+        "description": "A diamond with open edges, emanating light from within. A metaphor for the Platonic idea—pure concept radiance outward, transforming the heavy steel into a vessel of light.",
+        "image": "/images/works/illuminated-concept.jpg",
+        "segment": "Closed Lighting"
+      },
+      {
+        "title": "Diamond Collection",
+        "year": "Various",
+        "dimensions": "Various",
+        "description": "CorTen steel crystallized into geometric permanence. The warm patina of weathering steel turns into an organic hue, suggesting stability and endurance in the modern landscape.",
+        "image": "/images/works/diamond-collection.jpg",
+        "segment": "Closed Lighting"
+      },
+      {
+        "title": "COP28: The Seven Realms",
+        "year": "2023",
+        "dimensions": "5m diameter composition",
+        "description": "Seven black diamonds for the seven Emirates. Coated in 'galactic black'—pearls, iron oxide, and metallic particles forged into cosmic weight. A constellation on earth.",
+        "image": "/images/works/cop28-diamonds.jpg",
+        "segment": "Closed Lighting"
+      }
+    ]
+  },
+  {
+    "id": "public-works",
+    "title": "Public Works",
+    "subtitle": "Monumental & Interventions",
+    "description": "Large-scale commissions that transform public space — from 12-meter Tesla monuments to interactive water gates, each installation altering the dialogue between art, architecture, and the community that surrounds it.",
+    "image": "/images/95.webp",
+    "segments": [
+      "Monumental",
+      "Metal Paintings",
+      "Hercules Labors"
+    ],
+    "works": [
+      {
+        "title": "Tomislavus Rex Croatorum",
+        "year": "2025",
+        "dimensions": "600 × 550 × 210 cm",
+        "description": "The head of King Tomislav, presented as a fragmented ruin. Effectively a modern archaeological find, it speaks to the cyclical nature of history and the resilience of cultural memory.",
+        "image": "/images/works/tomislavus.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "The Violin (Music)",
+        "year": "2020",
+        "dimensions": "400 × 200 × 180 cm",
+        "description": "Engineering meets sound. Steel and bolts evoke the Eiffel Tower, while four playable strings invite participation. A sculpture that is not just seen, but heard—a monument to the universal language of music.",
+        "image": "/images/works/violin.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Tesla Power Line",
+        "year": "2020",
+        "dimensions": "12m × 5m × 4.5m",
+        "description": "A 12-meter monument to Nikola Tesla in the form of a power line. converting functional industrial infrastructure into aesthetic form—a tribute to the man who electrified the world.",
+        "image": "/images/works/tesla-powerline.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Gates of Purgatory",
+        "year": "2020",
+        "dimensions": "3m × 1.2m × 10cm",
+        "description": "A water curtain integrated into a rigid iron gate. Every passerby walks through a threshold of living water—a harmonic intervention where the industrial yields to the elemental.",
+        "image": "/images/works/gates-purgatory.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Geryon Cattle",
+        "year": "2019",
+        "dimensions": "310 × 190 × 365 cm",
+        "description": "Magnificent beasts with coats red as sunset. Standing in Varaždin, they recall the Tenth Labor and the mythic origins of Italy—the 'land of bulls'.",
+        "image": "/images/works/geryon-cattle.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Ceryneian Hind",
+        "year": "2022",
+        "dimensions": "440 × 110 × 280 cm",
+        "description": "Sacred to Artemis, this enormous hind symbolizes the purification of the higher intellect. Capturing it required devotion rather than force—a labor of patience rendered in steel.",
+        "image": "/images/works/ceryneian-hind.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Enso",
+        "year": "2022",
+        "dimensions": "—",
+        "description": "The circle that is never quite closed. A gesture of completion and incompletion in a single stroke, standing in Čakovec as a meditation on the perfection of the imperfect.",
+        "image": "/images/works/enso.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Love, Spice of Life",
+        "year": "2022",
+        "dimensions": "—",
+        "description": "Love rendered in steel—permanent yet tender. A public sculpture in Koprivnica that serves as a gathering point, anchoring the community in a shared symbol of connection.",
+        "image": "/images/works/love-spice.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Book of Knowledge",
+        "year": "2016",
+        "dimensions": "—",
+        "description": "Preserved not in pages but in forged metal. A sculpture at the Croatian State Archives that stands as a monument to the act of remembering—heavy, enduring, and open.",
+        "image": "/images/works/book-knowledge.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Sword of King Tomislav",
+        "year": "2016",
+        "dimensions": "—",
+        "description": "The blade that unified a people. A public monument in Lovinac honoring the first King, blending authority with the raw permanence of the land.",
+        "image": "/images/works/sword-tomislav.jpg",
+        "segment": "Monumental"
+      },
+      {
+        "title": "Plasma Torch Hand",
+        "year": "2022",
+        "dimensions": "280 × 117 × 3 cm",
+        "description": "The hand emerges from what is taken away. 2mm CorTen steel marked by the searing passage of the plasma torch. A paradox of creation through destruction—neither invented nor made, but revealed.",
+        "image": "/images/works/plasma-hand.jpg",
+        "segment": "Metal Paintings"
+      },
+      {
+        "title": "Drawing with Plasma Torch",
+        "year": "Various",
+        "dimensions": "150×90 to 300×150 cm",
+        "description": "Plasma hand-cutting on raw metal sheets, enhanced with LED light installations. Wall metal art where industry and humanity collide — the torch reveals what the metal conceals.",
+        "image": "/images/works/plasma-torch-series.jpg",
+        "segment": "Metal Paintings"
+      },
+      {
+        "title": "The Cretan Bull",
+        "year": "2020",
+        "dimensions": "440 × 130 × 190 cm",
+        "description": "Symbol of the fertilizing power of the spirit. The bull represents the ability to contain the realizing power of the luminous mind without artifice.",
+        "image": "/images/works/cretan-bull.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "The Stymphalian Birds",
+        "year": "2025",
+        "dimensions": "1200 × 500 × 300 cm (full installation)",
+        "description": "Extracting the root of duality. The birds represent the swarm of sensory thoughts; the sculpture captures the moment of their dismissal, freeing the mind from the noise of the vital nature.",
+        "image": "/images/works/stymphalian-birds.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "The Stables (Augeas)",
+        "year": "2022",
+        "dimensions": "600 × 900 × 1150 cm (full installation)",
+        "description": "A great portal of rusted steel, half-sunken in the earth. Neither monument nor tomb, but a threshold where myth and relic intertwine—a reminder that no labor ever fully disappears.",
+        "image": "/images/works/stables-augeas.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "Gardens of the Hesperides",
+        "year": "2024",
+        "dimensions": "S: 90×80×80, M: 160×120×120, L: 200×180×180 cm",
+        "description": "Golden apples symbolizing Knowledge. To possess them is to access Truth. The sculpture invites the viewer into the garden of the mind, where limits constantly recede.",
+        "image": "/images/works/gardens-hesperides.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "The Apples of the Hesperides",
+        "year": "—",
+        "dimensions": "—",
+        "description": "A sculptural interpretation of the ancient legend. Hercules' labor becomes a metaphor for the inner journey—the pursuit of wisdom and the golden fruits of self-discovery.",
+        "image": "/images/works/apples-hesperides.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "Atlas",
+        "year": "2024",
+        "dimensions": "100 × 100 × 350 cm",
+        "description": "The force of pushing. A hand gripping a pillar, exerting upward force against tremendous pressure. It symbolizes the continuous effort required to uphold the ideals of civilization.",
+        "image": "/images/works/atlas.jpg",
+        "segment": "Hercules Labors"
+      },
+      {
+        "title": "Prometheus",
+        "year": "2024",
+        "dimensions": "100 × 100 × 350 cm",
+        "description": "The force of pulling. Bound by a chain, the hand struggles for liberation. A symbol of rebellion and the pursuit of knowledge against the constraints of authority.",
+        "image": "/images/works/prometheus.jpg",
+        "segment": "Hercules Labors"
       }
     ]
   }

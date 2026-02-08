@@ -32,7 +32,7 @@ export function createMenuOverlay() {
             <a href="#" class="menu-link" data-target="category-hub">Collections</a>
             <a href="#" class="menu-link" data-target="artist">Artist</a>
             <a href="#" class="menu-link" data-target="contact">Inquire</a>
-            <a href="/login.html" class="menu-link">The Archive</a>
+            <a href="/login.html" class="menu-link">Collectors Club</a>
             
             <div class="menu-info">
                 Nikola Vudrag<br>

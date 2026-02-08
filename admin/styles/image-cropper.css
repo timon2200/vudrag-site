@@ -1,0 +1,309 @@
+/**
+ * Image Cropper Modal — Dark Theme
+ * Matches the Vudrag CMS admin design system
+ */
+
+/* === Modal Overlay === */
+.cropper-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.cropper-modal-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Modal Container === */
+.cropper-modal {
+    background: #1a1a1e;
+    border: 1px solid #2a2a2e;
+    border-radius: 12px;
+    width: 90vw;
+    max-width: 860px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s ease;
+}
+
+.cropper-modal-overlay.is-open .cropper-modal {
+    transform: scale(1) translateY(0);
+}
+
+/* === Header === */
+.cropper-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #2a2a2e;
+}
+
+.cropper-modal__title {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #f0f0f0;
+    margin: 0;
+}
+
+.cropper-modal__context {
+    font-size: 12px;
+    color: #c9a77a;
+    letter-spacing: 0.05em;
+    margin-left: 12px;
+    opacity: 0.8;
+}
+
+.cropper-modal__close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.cropper-modal__close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* === Canvas Area === */
+.cropper-modal__canvas {
+    flex: 1;
+    min-height: 0;
+    max-height: 55vh;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #111;
+}
+
+.cropper-modal__canvas img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* === Controls === */
+.cropper-modal__controls {
+    padding: 16px 24px;
+    border-top: 1px solid #2a2a2e;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Aspect Ratio Presets */
+.cropper-modal__ratios {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cropper-modal__ratios-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.cropper-modal__ratio-btn {
+    padding: 6px 14px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #aaa;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.cropper-modal__ratio-btn:hover {
+    border-color: #555;
+    color: #ddd;
+}
+
+.cropper-modal__ratio-btn.is-active {
+    background: rgba(201, 167, 122, 0.15);
+    border-color: #c9a77a;
+    color: #c9a77a;
+}
+
+/* Quality Slider */
+.cropper-modal__quality {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cropper-modal__quality-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-width: 56px;
+}
+
+.cropper-modal__quality-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    outline: none;
+}
+
+.cropper-modal__quality-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #c9a77a;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cropper-modal__quality-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.cropper-modal__quality-value {
+    font-size: 12px;
+    color: #aaa;
+    min-width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Info Row */
+.cropper-modal__info {
+    display: flex;
+    gap: 20px;
+    font-size: 11px;
+    color: #666;
+}
+
+.cropper-modal__info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* === Footer === */
+.cropper-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #2a2a2e;
+}
+
+.cropper-modal__btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.cropper-modal__btn--cancel {
+    background: transparent;
+    color: #888;
+    border: 1px solid #333;
+}
+
+.cropper-modal__btn--cancel:hover {
+    color: #ccc;
+    border-color: #555;
+}
+
+.cropper-modal__btn--crop {
+    background: linear-gradient(135deg, #c9a77a, #a68b5b);
+    color: #111;
+    font-weight: 600;
+}
+
+.cropper-modal__btn--crop:hover {
+    background: linear-gradient(135deg, #d4b48a, #b8986b);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(201, 167, 122, 0.3);
+}
+
+.cropper-modal__btn--crop:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* === Cropper.js Overrides === */
+.cropper-view-box {
+    outline: 1px solid rgba(201, 167, 122, 0.6);
+}
+
+.cropper-line {
+    background-color: rgba(201, 167, 122, 0.4);
+}
+
+.cropper-point {
+    background-color: #c9a77a;
+    width: 8px;
+    height: 8px;
+    opacity: 0.9;
+}
+
+.cropper-dashed {
+    border-color: rgba(201, 167, 122, 0.3);
+}
+
+/* === Responsive === */
+@media (max-width: 640px) {
+    .cropper-modal {
+        width: 96vw;
+        max-height: 95vh;
+    }
+
+    .cropper-modal__canvas {
+        max-height: 45vh;
+    }
+
+    .cropper-modal__ratios {
+        flex-wrap: wrap;
+    }
+
+    .cropper-modal__footer {
+        flex-direction: column;
+    }
+
+    .cropper-modal__btn {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -8,11 +8,11 @@
 // API Base URL - uses environment variable in production
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
-// Check if user is already logged in - redirect to archive
+// Check if user is already logged in - redirect to collectors club
 function checkAuthAndRedirect() {
     const token = localStorage.getItem('vudrag_token');
     if (token) {
-        // User is already authenticated, go directly to archive
+        // User is already authenticated, go directly to collectors club
         window.location.href = '/archive.html';
         return true;
     }
@@ -21,7 +21,7 @@ function checkAuthAndRedirect() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // If already logged in, skip to archive
+    // If already logged in, skip to collectors club
     if (checkAuthAndRedirect()) return;
 
     // Setup interactive effects
@@ -151,7 +151,7 @@ function setupFormInteraction(particleSystem) {
                     flash.remove();
                 }, 1500);
 
-                // Redirect to Archive (Private Vault) after animation completes
+                // Redirect to Collectors Club after animation completes
                 setTimeout(() => {
                     // Ideally check role, but for now redirect all valid users
                     window.location.href = '/archive.html';
@@ -174,7 +174,7 @@ function setupFormInteraction(particleSystem) {
 
             // Revert
             setTimeout(() => {
-                btnText.textContent = 'Unlock Archive';
+                btnText.textContent = 'Enter Club';
                 btn.style.borderColor = '';
                 btnText.style.color = '';
             }, 2000);

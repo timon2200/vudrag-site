@@ -23,6 +23,7 @@ import './styles/menu-overlay.css';
 import './styles/gallery-overlay.css';
 import './styles/artist-section.css';
 import './styles/works-showcase.css';
+import './styles/video-showcase.css';
 import './styles/footer.css';
 
 import { CONFIG, IS_DEV } from './config.js';
@@ -45,6 +46,7 @@ import { createInteractionHint, updateInteractionHint } from './ui/interaction-h
 import { createMenuOverlay } from './ui/menu-overlay.js';
 import { setupArtistSection } from './ui/artist-section.js';
 import { setupWorksShowcase } from './ui/works-showcase.js';
+import { setupVideoShowcase } from './ui/video-showcase.js';
 import { setupFooter } from './ui/footer.js';
 
 /**
@@ -106,6 +108,7 @@ async function init() {
     await setupCategoryHub();
     await setupArtistSection();
     await setupWorksShowcase();
+    await setupVideoShowcase();
     await setupFooter();
     createInteractionHint();
     createMenuOverlay();
@@ -146,6 +149,10 @@ function setupUpdateLoop() {
     const device = app.graphicsDevice;
     const uTime = device.scope.resolve('uTime');
 
+    // Cache DOM references once — never query inside the frame loop
+    const canvasContainer = document.getElementById('canvas-container');
+    let wasInContentZone = false;
+
     // Input handling
     window.addEventListener('mousemove', (e) => {
         // Normalize mouse coordinates to -1 to 1 range
@@ -156,9 +163,6 @@ function setupUpdateLoop() {
     app.on('update', (dt) => {
         state.time += dt;
         uTime.setValue(state.time);
-
-        // Update sticky header (all sections)
-        updateStickyHeader();
 
         // === CONTINUOUS SPLAT GALLERY UPDATE ===
 
@@ -179,36 +183,43 @@ function setupUpdateLoop() {
         // === PERFORMANCE OPTIMIZATION ===
         // When fully in content mode (scrollProgress > 1.3), skip expensive 3D operations
         const isInContentZone = state.scrollProgress > 1.3;
-        const canvasContainer = document.getElementById('canvas-container');
 
         if (isInContentZone) {
-            // Hide canvas to fully release GPU resources
-            if (canvasContainer && canvasContainer.style.visibility !== 'hidden') {
-                canvasContainer.style.visibility = 'hidden';
-                canvasContainer.style.pointerEvents = 'none';
+            // Hide canvas AND stop PlayCanvas GPU rendering
+            if (!wasInContentZone) {
+                if (canvasContainer) {
+                    canvasContainer.style.visibility = 'hidden';
+                    canvasContainer.style.pointerEvents = 'none';
+                }
+                app.autoRender = false;
+                wasInContentZone = true;
                 console.log('⏸️ 3D rendering paused for content mode');
             }
 
             // Only do minimal updates needed for scroll tracking
             state.currentSplatIndex = currentIndex;
 
-            // Animate content slide during transition
+            // Lightweight UI updates
+            updateStickyHeader();
             updateContentSlide(state.scrollProgress);
-
-            // Update category hub visibility (triggers reveals)
             updateCategoryHubVisibility(state.scrollProgress);
-
-            // Update interactive scroll hint
             updateInteractionHint(state.scrollProgress);
             return; // Skip all expensive 3D operations
         }
 
-        // Restore canvas visibility when returning to splat gallery
-        if (canvasContainer && canvasContainer.style.visibility === 'hidden') {
-            canvasContainer.style.visibility = 'visible';
-            canvasContainer.style.pointerEvents = 'auto';
+        // Restore canvas visibility and GPU rendering when returning to splat gallery
+        if (wasInContentZone) {
+            if (canvasContainer) {
+                canvasContainer.style.visibility = 'visible';
+                canvasContainer.style.pointerEvents = 'auto';
+            }
+            app.autoRender = true;
+            wasInContentZone = false;
             console.log('▶️ 3D rendering resumed');
         }
+
+        // Update sticky header
+        updateStickyHeader();
 
         // Update systems (expensive 3D operations)
         updateSplatTransitions(currentIndex, transitionT, dt);

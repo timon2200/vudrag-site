@@ -11,6 +11,7 @@
 import * as pc from 'playcanvas';
 import { CONFIG } from './config.js';
 import { GALLERIES_DATA } from './data/galleries.js';
+import { createPedestalTransformPanel } from './ui/pedestal-transform-panel.js';
 
 // CSS Imports
 import './styles/variables.css';
@@ -451,7 +452,8 @@ const galleryState = {
     entities: [],
     currentIndex: 0,
     activeGallery: null,
-    isTransitioning: false
+    isTransitioning: false,
+    pedestalEntity: null
 };
 
 // Animation state
@@ -518,6 +520,9 @@ async function init() {
 
         await loadAssets(app, galleryData);
         await spawnSculptures(app, galleryData);
+
+        // Load pedestal model
+        await loadPedestal(app);
 
         document.getElementById('loading-screen').classList.add('loaded');
         updateUI();
@@ -586,6 +591,57 @@ function applyAnimationShader(gsplatComponent, app) {
     };
 
     tryApply();
+}
+
+/**
+ * Load pedestal GLB model and add to scene
+ */
+function loadPedestal(app) {
+    return new Promise((resolve) => {
+        app.assets.loadFromUrl('/models/pedestal.glb', 'container', (err, asset) => {
+            if (err) {
+                console.warn('Could not load pedestal model:', err);
+                resolve();
+                return;
+            }
+
+            const entity = asset.resource.instantiateRenderEntity();
+            entity.name = 'Pedestal';
+            entity.setPosition(0, -1, 0);
+            entity.setLocalScale(1.84, 1.84, 1.84);
+            app.root.addChild(entity);
+
+            galleryState.pedestalEntity = entity;
+
+            // Add a directional light for the mesh model
+            const light = new pc.Entity('PedestalLight');
+            light.addComponent('light', {
+                type: 'directional',
+                color: new pc.Color(1, 0.95, 0.9),
+                intensity: 1.2,
+                castShadows: false
+            });
+            light.setEulerAngles(45, 30, 0);
+            app.root.addChild(light);
+
+            // Add a subtle fill light from below
+            const fillLight = new pc.Entity('PedestalFillLight');
+            fillLight.addComponent('light', {
+                type: 'directional',
+                color: new pc.Color(0.8, 0.85, 1.0),
+                intensity: 0.4,
+                castShadows: false
+            });
+            fillLight.setEulerAngles(-30, -150, 0);
+            app.root.addChild(fillLight);
+
+            // Create transform panel
+            createPedestalTransformPanel(entity);
+
+            console.log('🗿 Pedestal model loaded and added to scene');
+            resolve();
+        });
+    });
 }
 
 /**

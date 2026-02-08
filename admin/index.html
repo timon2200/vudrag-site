@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vudrag CMS | Admin</title>
     <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="styles/image-cropper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 </head>
 
 <body>
@@ -48,6 +51,7 @@
                     <button class="nav-btn" data-section="collections">Collections</button>
                     <button class="nav-btn" data-section="assets">Assets</button>
                     <button class="nav-btn" data-section="archive">Archive</button>
+                    <button class="nav-btn" data-section="films">Films</button>
                     <button class="nav-btn" data-section="site-content">Site Content</button>
                     <button class="nav-btn" data-section="users">Users</button>
                     <button class="nav-btn" data-section="settings">Settings</button>
@@ -141,6 +145,17 @@
                     <p class="section-hint">Exclusive content for registered members. Supports rich text, images, and
                         video.</p>
                     <div id="archive-list" class="items-grid"></div>
+                </section>
+
+                <!-- Films Section -->
+                <section id="films-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Films</h2>
+                        <button class="btn-add" id="add-film">+ Add Film</button>
+                    </div>
+                    <p class="section-hint">Manage video films shown on the main site. Paste a YouTube ID and it
+                        auto-generates the thumbnail.</p>
+                    <div id="films-list" class="items-grid"></div>
                 </section>
 
                 <!-- Users Section -->
@@ -389,6 +404,7 @@
         </div>
     </div>
 
+    <script src="src/image-cropper.js"></script>
     <script type="module" src="src/app.js"></script>
 </body>
 

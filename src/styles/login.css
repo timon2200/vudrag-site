@@ -391,19 +391,24 @@ body {
     display: block;
     font-style: italic;
     /* Reactive Sheen: Gradient moves relative to mouse */
-    background: linear-gradient(135deg,
-            var(--color-gold) 0%,
-            var(--color-gold-light) 40%,
-            white 50%,
-            var(--color-gold-light) 60%,
-            var(--color-gold) 100%);
-    background-size: 200% auto;
+    background: linear-gradient(120deg,
+            #b8935f 0%,
+            var(--color-gold) 20%,
+            #f0dfc0 38%,
+            #fffdf5 48%,
+            #ffffff 50%,
+            #fffdf5 52%,
+            #f0dfc0 62%,
+            var(--color-gold) 80%,
+            #b8935f 100%);
+    background-size: 300% auto;
     /* Calculate background position based on mouse X (screen width percentage) */
     background-position: calc(var(--mouse-x-pct, 50) * 1%) center;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     transition: background-position 0.1s ease-out;
+    filter: drop-shadow(0 0 12px rgba(201, 167, 122, 0.35));
 }
 
 /* === Ornament === */

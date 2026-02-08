@@ -279,6 +279,9 @@ export function updateFluidNavigation(dt) {
     canvas.style.opacity = navOpacity;
     canvas.style.pointerEvents = navOpacity > 0.1 ? 'auto' : 'none';
 
+    // PERF: Skip all physics + rendering when fully invisible
+    if (navOpacity <= 0.01) return;
+
     // Calculate target Y for active indicator
     const height = window.innerHeight;
     const marginTop = height * STYLE.MARGIN_VERTICAL;

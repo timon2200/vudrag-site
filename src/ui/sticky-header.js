@@ -11,6 +11,7 @@ import { toggleMenu } from './menu-overlay.js';
 // DOM references
 let header = null;
 let progressBar = null;
+let backLink = null;
 
 // State
 let isVisible = false;
@@ -51,8 +52,9 @@ export function createStickyHeader() {
 
     document.body.appendChild(header);
 
-    // Get progress bar reference
+    // Cache element references
     progressBar = document.getElementById('scroll-progress-bar');
+    backLink = document.getElementById('back-to-gallery');
 
     // Setup event listeners
     setupHeaderEvents();
@@ -178,7 +180,6 @@ function updateProgressBar() {
  * Update back link visibility
  */
 function updateBackLink() {
-    const backLink = document.getElementById('back-to-gallery');
     if (!backLink) return;
 
     // Show only when not in splat gallery

@@ -9,25 +9,25 @@
 /* === Category Hub Section === */
 .category-hub {
     position: relative;
-    min-height: 100vh;
-    padding: 15vh 8vw;
+    min-height: auto;
+    padding: 12vh 6vw 16vh;
     background: var(--color-canvas);
-    overflow: hidden;
+    overflow: visible;
 }
 
 .category-hub__header {
     text-align: center;
-    margin-bottom: 8vh;
+    margin-bottom: 6vh;
 }
 
 .category-hub__title {
     font-family: var(--font-primary);
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
     font-weight: 300;
     color: var(--color-light);
     letter-spacing: 0.05em;
     line-height: 1;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
 }
@@ -46,7 +46,7 @@
 
 .category-hub__divider {
     width: 1px;
-    height: 60px;
+    height: 40px;
     background: linear-gradient(to bottom, var(--color-gold), transparent);
     margin: 0 auto;
     opacity: 0.3;
@@ -72,7 +72,7 @@
 
 .category-hub__subtitle {
     font-family: var(--font-primary);
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 400;
     color: var(--color-gold);
     letter-spacing: 0.3em;
@@ -82,19 +82,27 @@
 /* === Card Grid with Perspective Container === */
 .category-hub__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-    max-width: 1400px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 4.5rem;
+    max-width: 960px;
     margin: 0 auto;
     perspective: 1200px;
+}
+
+/* Center the last (5th) card — Public Works */
+.category-card:last-child {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: calc(50% - 1.5rem);
+    justify-self: center;
 }
 
 /* === 3D Card === */
 .category-card {
     position: relative;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3 / 2;
     background: var(--color-surface);
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
@@ -111,7 +119,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease-out, filter 0.4s ease-out;
-    filter: grayscale(30%) brightness(0.8);
+    filter: grayscale(30%) brightness(0.75);
 }
 
 /* Card overlay gradient */
@@ -120,10 +128,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60%;
+    height: 70%;
     background: linear-gradient(to top,
             rgba(33, 33, 33, 0.95) 0%,
-            rgba(33, 33, 33, 0.6) 50%,
+            rgba(33, 33, 33, 0.5) 50%,
             transparent 100%);
     pointer-events: none;
     transition: var(--transition-hover);
@@ -135,33 +143,33 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 2rem;
-    transform: translateZ(40px);
+    padding: 1.25rem 1.5rem;
+    transform: translateZ(30px);
     transition: var(--transition-hover);
 }
 
 .category-card__label {
     font-family: var(--font-secondary);
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 500;
     color: var(--color-stone);
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
 }
 
 .category-card__title {
     font-family: var(--font-primary);
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
     font-weight: 400;
     color: var(--color-light);
     line-height: 1.2;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4rem;
 }
 
 .category-card__count {
     font-family: var(--font-secondary);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 400;
     color: var(--color-stone);
     letter-spacing: 0.05em;
@@ -170,24 +178,24 @@
 /* === Hover Effects === */
 .category-card:hover {
     box-shadow:
-        0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 60px var(--color-gold-dim);
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 40px var(--color-gold-dim);
 }
 
 .category-card:hover .category-card__image {
-    transform: scale(1.08);
+    transform: scale(1.06);
     filter: grayscale(0%) brightness(1);
 }
 
 .category-card:hover .category-card__overlay {
     background: linear-gradient(to top,
             rgba(33, 33, 33, 0.98) 0%,
-            rgba(33, 33, 33, 0.4) 60%,
+            rgba(33, 33, 33, 0.35) 60%,
             transparent 100%);
 }
 
 .category-card:hover .category-card__content {
-    transform: translateZ(60px);
+    transform: translateZ(50px);
 }
 
 .category-card:hover .category-card__label {
@@ -198,12 +206,12 @@
 .category-card::before {
     content: '';
     position: absolute;
-    inset: -2px;
+    inset: -1px;
     background: linear-gradient(135deg,
             transparent 40%,
             var(--color-gold-dim) 50%,
             transparent 60%);
-    border-radius: 6px;
+    border-radius: 7px;
     opacity: 0;
     transition: opacity 0.4s ease-out;
     pointer-events: none;
@@ -222,34 +230,54 @@
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {
     .category-hub {
-        padding: 10vh 6vw;
+        padding: 8vh 5vw;
     }
 
     .category-hub__grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
+        gap: 1rem 1.25rem;
+    }
+
+    .category-card {
+        aspect-ratio: 4 / 3;
+    }
+
+    .category-card:last-child {
+        max-width: calc(50% - 0.625rem);
     }
 
     .category-card__content {
-        padding: 1.25rem;
+        padding: 1rem 1.15rem;
     }
 
     .category-card__title {
-        font-size: 1.25rem;
+        font-size: 1rem;
+    }
+
+    .category-card__label {
+        font-size: 0.55rem;
     }
 }
 
 @media (max-width: 480px) {
     .category-hub__grid {
         grid-template-columns: 1fr;
-        max-width: 320px;
+        max-width: 300px;
+    }
+
+    .category-card:last-child {
+        max-width: 100%;
+    }
+
+    .category-card {
+        aspect-ratio: 16 / 10;
     }
 }
 
 /* === Reveal Animation States === */
 .category-card[data-reveal] {
     opacity: 0;
-    transform: translateY(60px) rotateX(10deg);
+    transform: translateY(40px) rotateX(8deg);
 }
 
 .category-card[data-reveal].is-revealed {

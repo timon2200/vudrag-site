@@ -15,52 +15,44 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 // Fallback category data (used if CMS unavailable)
 const FALLBACK_CATEGORIES = [
     {
-        id: 'persona',
-        title: 'Persona',
-        subtitle: 'THE MASK SERIES',
-        description: 'Steel constructs exploring identity and expression',
-        count: 6,
-        image: '/images/collections/persona.jpg'
-    },
-    {
-        id: 'elemental',
-        title: 'Elemental',
-        subtitle: 'AMPHORAS & DROPS',
-        description: 'Vessels exploring water, oil, and earth',
-        count: 4,
-        image: '/images/collections/elemental.jpg'
-    },
-    {
-        id: 'sumerian',
-        title: 'Sumerian',
-        subtitle: 'SCRIPT & FRAGMENTS',
-        description: 'Ancient scripts reimagined in modern steel',
-        count: 2,
-        image: '/images/collections/sumerian.jpg'
-    },
-    {
-        id: 'nature',
-        title: 'Nature',
-        subtitle: 'FLORA & LANDSCAPE',
-        description: 'Organic forms through industrial precision',
-        count: 3,
-        image: '/images/collections/nature.jpg'
+        id: 'networking',
+        title: 'Networking',
+        subtitle: 'THE NET-WORK TECHNIQUE',
+        description: 'Semi-transparent lattices where light and shadow become the true medium',
+        count: 16,
+        image: '/images/collections/networking.jpg'
     },
     {
         id: 'portraits',
         title: 'Portraits',
         subtitle: 'BRONZE BUSTS',
-        description: 'Classical busts capturing the private spirit',
-        count: 4,
+        description: 'The private pulse behind the public face, forged in bronze',
+        count: 7,
         image: '/images/collections/portraits.jpg'
     },
     {
-        id: 'numismatics',
-        title: 'Numismatics',
-        subtitle: 'COINS & MEDALS',
-        description: 'Masterful hand-engraving for currencies',
-        count: 4,
-        image: '/images/collections/numismatics.jpg'
+        id: 'coins',
+        title: 'Coins',
+        subtitle: 'MEDALS & NUMISMATICS',
+        description: 'Microrealism engraved in negative form — miniature universes of precision',
+        count: 12,
+        image: '/images/collections/coins.jpg'
+    },
+    {
+        id: 'polygonal',
+        title: 'Polygonal',
+        subtitle: 'GEOMETRIC FORMS',
+        description: 'Mathematical precision meets mythological weight in polygon-plate sculpture',
+        count: 6,
+        image: '/images/collections/polygonal.jpg'
+    },
+    {
+        id: 'public-works',
+        title: 'Public Works',
+        subtitle: 'MONUMENTAL & INTERVENTIONS',
+        description: 'Large-scale commissions transforming the dialogue between art and community',
+        count: 19,
+        image: '/images/collections/public-works.jpg'
     }
 ];
 
@@ -78,6 +70,9 @@ const TILT_CONFIG = {
 
 // Track active card for cleanup
 let activeCard = null;
+
+// Cached hub element reference (set after setup)
+let hubElement = null;
 
 /**
  * Fetch categories from CMS (uses Collections/Galleries data)
@@ -127,11 +122,11 @@ export async function setupCategoryHub() {
     // Fetch categories from CMS
     CATEGORIES = await fetchCategoriesFromCMS();
 
-    const hubElement = createCategoryHubDOM();
-    contentArea.appendChild(hubElement);
+    const hub = createCategoryHubDOM();
+    contentArea.appendChild(hub);
 
     // Setup 3D tilt effects on all cards
-    const cards = hubElement.querySelectorAll('.category-card');
+    const cards = hub.querySelectorAll('.category-card');
     cards.forEach((card, index) => {
         setupCardTilt(card);
 
@@ -143,8 +138,11 @@ export async function setupCategoryHub() {
         observeElement(card);
     });
 
+    // Cache reference for per-frame visibility updates
+    hubElement = hub;
+
     console.log('✨ Category hub initialized with 3D cards');
-    return hubElement;
+    return hub;
 }
 
 /**
@@ -392,7 +390,7 @@ function handleCategoryClick(categoryId) {
  * This just triggers card reveals when visible
  */
 export function updateCategoryHubVisibility(scrollProgress) {
-    const hub = document.getElementById('category-hub');
+    const hub = hubElement;
     if (!hub) return;
 
     // Reveal cards when:

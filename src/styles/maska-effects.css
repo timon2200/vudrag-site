@@ -1,0 +1,53 @@
+/* Maska Text Highlight Effects */
+
+@keyframes shine-flow {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.maska-title-container {
+    position: relative;
+    display: inline-block;
+}
+
+.maska-highlight-line {
+    position: absolute;
+    bottom: 12px;
+    /* Adjust based on font baseline */
+    left: -10%;
+    width: 120%;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(201, 167, 122, 0) 20%,
+            rgba(201, 167, 122, 0.8) 50%,
+            rgba(201, 167, 122, 0) 80%,
+            transparent 100%);
+    filter: blur(4px);
+    z-index: -1;
+    opacity: 1.0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    box-shadow: 0 0 15px rgba(201, 167, 122, 0.4);
+}
+
+.maska-highlight-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 80%;
+    background: radial-gradient(ellipse at center,
+            rgba(201, 167, 122, 0.3) 0%,
+            transparent 70%);
+    filter: blur(10px);
+    z-index: -2;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}

@@ -28,7 +28,8 @@ const state = {
     // Generic temp image for collections/works
     tempImage: null,
     settings: {},
-    archivePosts: []
+    archivePosts: [],
+    films: []
 };
 
 // === DOM Elements ===
@@ -109,7 +110,7 @@ function showDashboard() {
 // === Data Loading ===
 async function loadAllData() {
     try {
-        const [splats, sculptures, galleries, collections, users, gridOrder, siteContent, settings, archivePosts] = await Promise.all([
+        const [splats, sculptures, galleries, collections, users, gridOrder, siteContent, settings, archivePosts, films] = await Promise.all([
             apiFetch('/splats'),
             apiFetch('/sculptures'),
             apiFetch('/galleries'),
@@ -118,7 +119,8 @@ async function loadAllData() {
             loadGridOrder(),
             loadSiteContent(),
             apiFetch('/settings'),
-            apiFetch('/archive-posts')
+            apiFetch('/archive-posts'),
+            apiFetch('/films')
         ]);
 
         state.splats = splats || [];
@@ -130,6 +132,7 @@ async function loadAllData() {
         state.siteContent = siteContent || {};
         state.settings = settings || {};
         state.archivePosts = archivePosts || [];
+        state.films = films || [];
 
         renderSplats();
         renderSculptures();
@@ -140,6 +143,7 @@ async function loadAllData() {
         renderSiteContent();
         renderSettings();
         renderArchivePosts();
+        renderFilms();
         loadAssets();
     } catch (err) {
         console.error('Failed to load data:', err);
@@ -808,11 +812,17 @@ function createGalleryManager(images = []) {
 }
 
 /**
- * Upload a single image to the server
+ * Upload a single image to the server.
+ * Accepts either a File or a Blob+filename pair.
  */
-async function uploadSingleImage(file) {
+async function uploadSingleImage(fileOrBlob, explicitFilename) {
     const formData = new FormData();
-    formData.append('file', file);
+    if (explicitFilename) {
+        // Blob from cropper — give it the explicit WebP filename
+        formData.append('file', fileOrBlob, explicitFilename);
+    } else {
+        formData.append('file', fileOrBlob);
+    }
 
     try {
         const response = await fetch(`${API_BASE}/upload/image`, {
@@ -823,7 +833,7 @@ async function uploadSingleImage(file) {
 
         if (!response.ok) throw new Error('Upload failed');
         const result = await response.json();
-        return result.path; // Returns relative path like /images/filename.jpg
+        return result.path; // Returns relative path like /images/filename.webp
     } catch (err) {
         console.error('Image upload failed:', err);
         alert('Failed to upload image');
@@ -834,7 +844,7 @@ async function uploadSingleImage(file) {
 /**
  * Initialize image uploader interactions
  */
-function initializeImageUploader(id, onUpload) {
+function initializeImageUploader(id, onUpload, cropContext) {
     const container = document.getElementById(`${id}-container`);
     const dropzone = document.getElementById(`${id}-dropzone`);
     const input = document.getElementById(`${id}-input`);
@@ -842,45 +852,62 @@ function initializeImageUploader(id, onUpload) {
 
     if (!dropzone || !input) return;
 
-    // Handle file selection
+    // Determine crop context from uploader id if not explicitly provided
+    if (!cropContext) {
+        if (id === 'artist-portrait') cropContext = 'portrait';
+        else if (id === 'heroImage') cropContext = 'hero';
+        else if (id === 'image') cropContext = 'work';
+        else cropContext = 'asset';
+    }
+
+    // Handle file selection — routes through cropper modal
     const handleFile = async (file) => {
         if (!file.type.startsWith('image/')) {
             alert('Please select an image file');
             return;
         }
 
-        // Show loading state
-        dropzone.innerHTML = `
-            <div class="image-uploader__loading">
-                <div class="image-uploader__spinner"></div>
-                <span>Uploading...</span>
-            </div>
-        `;
+        try {
+            // Open cropper modal
+            const { blob, filename } = await window.ImageCropper.open(file, cropContext);
 
-        const path = await uploadSingleImage(file);
-
-        if (path) {
-            // Update UI with preview
-            dropzone.classList.add('has-image');
+            // Show loading state
             dropzone.innerHTML = `
-                <div class="image-uploader__preview">
-                    <img src="${path}" alt="Preview" id="${id}-preview">
-                    <div class="image-uploader__preview-overlay">
-                        <button type="button" class="image-uploader__btn image-uploader__btn--change">Change</button>
-                        <button type="button" class="image-uploader__btn image-uploader__btn--remove" data-action="remove">Remove</button>
-                    </div>
+                <div class="image-uploader__loading">
+                    <div class="image-uploader__spinner"></div>
+                    <span>Uploading...</span>
                 </div>
             `;
-            hiddenInput.value = path;
-            if (onUpload) onUpload(path);
-        } else {
-            // Reset to empty state
-            dropzone.classList.remove('has-image');
-            dropzone.innerHTML = `
-                <span class="image-uploader__icon">🖼️</span>
-                <p class="image-uploader__text">Drop image here or click to upload</p>
-                <p class="image-uploader__hint">JPG, PNG, WebP • Max 10MB</p>
-            `;
+
+            const path = await uploadSingleImage(blob, filename);
+
+            if (path) {
+                // Update UI with preview
+                dropzone.classList.add('has-image');
+                dropzone.innerHTML = `
+                    <div class="image-uploader__preview">
+                        <img src="${path}" alt="Preview" id="${id}-preview">
+                        <div class="image-uploader__preview-overlay">
+                            <button type="button" class="image-uploader__btn image-uploader__btn--change">Change</button>
+                            <button type="button" class="image-uploader__btn image-uploader__btn--remove" data-action="remove">Remove</button>
+                        </div>
+                    </div>
+                `;
+                hiddenInput.value = path;
+                if (onUpload) onUpload(path);
+            } else {
+                // Reset to empty state
+                dropzone.classList.remove('has-image');
+                dropzone.innerHTML = `
+                    <span class="image-uploader__icon">🖼️</span>
+                    <p class="image-uploader__text">Drop image here or click to upload</p>
+                    <p class="image-uploader__hint">JPG, PNG, WebP → auto-compressed</p>
+                `;
+            }
+        } catch (err) {
+            // User cancelled cropper — silently ignore
+            if (err.message === 'Cropping cancelled') return;
+            console.error('Image processing failed:', err);
         }
     };
 
@@ -892,7 +919,7 @@ function initializeImageUploader(id, onUpload) {
             dropzone.innerHTML = `
                 <span class="image-uploader__icon">🖼️</span>
                 <p class="image-uploader__text">Drop image here or click to upload</p>
-                <p class="image-uploader__hint">JPG, PNG, WebP • Max 10MB</p>
+                <p class="image-uploader__hint">JPG, PNG, WebP → auto-compressed</p>
             `;
             hiddenInput.value = '';
             if (onUpload) onUpload(null);
@@ -903,6 +930,7 @@ function initializeImageUploader(id, onUpload) {
 
     input.addEventListener('change', (e) => {
         if (e.target.files[0]) handleFile(e.target.files[0]);
+        e.target.value = ''; // Reset so same file can be re-selected
     });
 
     // Drag and drop
@@ -936,21 +964,30 @@ function initializeGalleryManager() {
 
     input.addEventListener('change', async (e) => {
         if (!e.target.files[0]) return;
-
-        // Show uploading feedback
-        addBtn.textContent = 'Uploading...';
-        addBtn.disabled = true;
-
-        const path = await uploadSingleImage(e.target.files[0]);
-
-        addBtn.textContent = '+ Add Image';
-        addBtn.disabled = false;
-
-        if (path) {
-            state.tempGalleryImages.push(path);
-            updateGalleryGrid();
-        }
+        const file = e.target.files[0];
         input.value = ''; // Reset for next upload
+
+        try {
+            // Open cropper modal for gallery image
+            const { blob, filename } = await window.ImageCropper.open(file, 'gallery');
+
+            // Show uploading feedback
+            addBtn.textContent = 'Uploading...';
+            addBtn.disabled = true;
+
+            const path = await uploadSingleImage(blob, filename);
+
+            addBtn.textContent = '+ Add Image';
+            addBtn.disabled = false;
+
+            if (path) {
+                state.tempGalleryImages.push(path);
+                updateGalleryGrid();
+            }
+        } catch (err) {
+            if (err.message === 'Cropping cancelled') return;
+            console.error('Gallery image upload failed:', err);
+        }
     });
 
     // Handle remove buttons via delegation
@@ -1285,7 +1322,7 @@ window.editCollection = function (collectionId) {
     setTimeout(() => {
         initializeImageUploader('image', (path) => {
             state.tempImage = path;
-        });
+        }, 'collection');
     }, 100);
 };
 
@@ -1401,7 +1438,7 @@ window.addCollection = function () {
     setTimeout(() => {
         initializeImageUploader('image', (path) => {
             state.tempImage = path;
-        });
+        }, 'collection');
     }, 100);
 };
 
@@ -2024,6 +2061,19 @@ async function saveChanges() {
             } else {
                 await apiFetch(`/archive-posts/${state.editingItem.id}`, { method: 'PUT', body: JSON.stringify(postData) });
             }
+        } else if (state.editingType === 'film') {
+            const filmData = {
+                title: data.title,
+                category: data.category,
+                youtubeId: data.youtubeId,
+                order: parseInt(data.order) || 0
+            };
+
+            if (state.editingItem._isNew) {
+                await apiFetch('/films', { method: 'POST', body: JSON.stringify(filmData) });
+            } else {
+                await apiFetch(`/films/${state.editingItem.id}`, { method: 'PUT', body: JSON.stringify(filmData) });
+            }
         }
 
         closeModal();
@@ -2056,11 +2106,28 @@ function setupUpload() {
 
 async function uploadFiles(files) {
     for (const file of files) {
-        const type = file.name.endsWith('.sog') ? 'splat' : 'image';
-        const formData = new FormData();
-        formData.append('file', file);
+        const isSplat = file.name.endsWith('.sog');
+        const isImage = file.type.startsWith('image/');
 
         try {
+            let formData = new FormData();
+            let displayName = file.name;
+
+            if (isImage && !isSplat) {
+                // Route image through cropper
+                try {
+                    const { blob, filename } = await window.ImageCropper.open(file, 'asset');
+                    formData.append('file', blob, filename);
+                    displayName = filename;
+                } catch (err) {
+                    if (err.message === 'Cropping cancelled') continue;
+                    throw err;
+                }
+            } else {
+                formData.append('file', file);
+            }
+
+            const type = isSplat ? 'splat' : 'image';
             const response = await fetch(`${API_BASE}/upload/${type}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${state.token}` },
@@ -2071,7 +2138,7 @@ async function uploadFiles(files) {
 
             elements.uploadStatus.innerHTML += `
                 <div class="upload-item ${response.ok ? 'success' : 'error'}">
-                    <span>${file.name}</span>
+                    <span>${displayName}</span>
                     <span>${response.ok ? '✓ Uploaded' : '✗ Failed'}</span>
                 </div>
             `;
@@ -2163,6 +2230,7 @@ function init() {
     document.getElementById('add-collection')?.addEventListener('click', window.addCollection);
     document.getElementById('save-grid-order')?.addEventListener('click', saveGridOrder);
     document.getElementById('save-site-content')?.addEventListener('click', saveSiteContent);
+    document.getElementById('add-film')?.addEventListener('click', window.addFilm);
     document.getElementById('add-user')?.addEventListener('click', window.addUser);
 
     if (state.token) {
@@ -2350,7 +2418,7 @@ function renderBlockInput(block, index) {
     } else if (block.type === 'image') {
         inputHtml = createImageUploader(`block-${index}-value`, 'Image', block.value || '');
         // Note: We need to initialize this after render
-        setTimeout(() => initializeImageUploader(`block-${index}-value`), 50);
+        setTimeout(() => initializeImageUploader(`block-${index}-value`, null, 'archive'), 50);
     } else if (block.type === 'video') {
         inputHtml = `<input type="text" name="block-${index}-value" value="${block.value || ''}" placeholder="YouTube URL or /path/to/video.mp4" style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">`;
     }
@@ -2399,4 +2467,122 @@ window.removePostBlock = function (index) {
     updatePostStateFromDOM();
     state.editingItem.content.splice(index, 1);
     renderPostModal();
+};
+
+// === Film Management Functions ===
+function renderFilms() {
+    const container = document.getElementById('films-list');
+    if (!container) return;
+
+    if (state.films.length === 0) {
+        container.innerHTML = '<p class="section-hint">No films yet. Add your first film.</p>';
+        return;
+    }
+
+    // Sort by order
+    const sorted = [...state.films].sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    container.innerHTML = sorted.map(film => {
+        const thumb = film.youtubeId
+            ? `https://img.youtube.com/vi/${film.youtubeId}/mqdefault.jpg`
+            : '';
+
+        return `
+        <div class="item-card">
+            ${thumb ? `<img src="${thumb}" alt="${film.title}" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px 6px 0 0; display: block;">` : ''}
+            <div class="item-card-header" style="padding: 12px;">
+                <div>
+                    <span class="item-subtitle" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">${film.category || ''}</span>
+                    <h3 class="item-title" style="margin-top: 4px;">${film.title}</h3>
+                    <span class="item-subtitle" style="font-size: 11px; opacity: 0.5;">YT: ${film.youtubeId || '—'} · Order: ${film.order ?? '—'}</span>
+                </div>
+            </div>
+            <div class="item-actions" style="padding: 0 12px 12px;">
+                <button class="btn-edit" onclick="editFilm('${film.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteFilm('${film.id}')">Delete</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+window.addFilm = function () {
+    state.editingItem = { _isNew: true, order: state.films.length };
+    state.editingType = 'film';
+
+    elements.modalTitle.textContent = 'Add New Film';
+    elements.modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" value="" placeholder="Film title">
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">
+                <option value="Film">Film</option>
+                <option value="Exhibition">Exhibition</option>
+                <option value="Process">Process</option>
+                <option value="Documentary">Documentary</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>YouTube ID</label>
+            <input type="text" name="youtubeId" value="" placeholder="e.g. 7-uhfMFcx7Y">
+            <p style="font-size: 11px; color: #666; margin-top: 4px;">The part after v= in the YouTube URL</p>
+        </div>
+        <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" name="order" value="${state.films.length}" min="0">
+        </div>
+    `;
+
+    openModal();
+};
+
+window.editFilm = function (id) {
+    const film = state.films.find(f => f.id === id);
+    if (!film) return;
+
+    state.editingItem = { ...film };
+    state.editingType = 'film';
+
+    const categories = ['Film', 'Exhibition', 'Process', 'Documentary'];
+
+    elements.modalTitle.textContent = `Edit: ${film.title}`;
+    elements.modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" value="${film.title || ''}">
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" style="width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">
+                ${categories.map(c => `<option value="${c}" ${film.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>YouTube ID</label>
+            <input type="text" name="youtubeId" value="${film.youtubeId || ''}">
+            <p style="font-size: 11px; color: #666; margin-top: 4px;">The part after v= in the YouTube URL</p>
+        </div>
+        <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" name="order" value="${film.order ?? 0}" min="0">
+        </div>
+        ${film.youtubeId ? `<div style="margin-top: 16px; border-radius: 8px; overflow: hidden;"><img src="https://img.youtube.com/vi/${film.youtubeId}/mqdefault.jpg" style="width: 100%; display: block;" alt="Preview"></div>` : ''}
+    `;
+
+    openModal();
+};
+
+window.deleteFilm = async function (id) {
+    const film = state.films.find(f => f.id === id);
+    if (!confirm(`Delete film "${film?.title || id}"?`)) return;
+
+    try {
+        await apiFetch(`/films/${id}`, { method: 'DELETE' });
+        await loadAllData();
+    } catch (err) {
+        console.error('Delete film failed:', err);
+        alert('Failed to delete film');
+    }
 };

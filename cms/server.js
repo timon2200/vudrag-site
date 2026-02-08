@@ -738,16 +738,61 @@ app.delete('/api/archive-posts/:id', authMiddleware, (req, res) => {
     res.json({ deleted });
 });
 
+// === Film Routes ===
+// Public endpoint - needed for frontend film showcase
+app.get('/api/films', (req, res) => {
+    const films = loadJSON('films.json') || [];
+    // Return sorted by order
+    films.sort((a, b) => (a.order || 0) - (b.order || 0));
+    res.json(films);
+});
+
+app.post('/api/films', authMiddleware, (req, res) => {
+    const films = loadJSON('films.json') || [];
+    const newFilm = {
+        id: req.body.id || `film-${Date.now()}`,
+        title: req.body.title || 'New Film',
+        category: req.body.category || 'Film',
+        youtubeId: req.body.youtubeId || '',
+        order: req.body.order !== undefined ? req.body.order : films.length
+    };
+    films.push(newFilm);
+    saveJSON('films.json', films);
+    res.json(newFilm);
+});
+
+app.put('/api/films/:id', authMiddleware, (req, res) => {
+    const films = loadJSON('films.json') || [];
+    const index = films.findIndex(f => f.id === req.params.id);
+    if (index === -1) return res.status(404).json({ error: 'Film not found' });
+
+    films[index] = { ...films[index], ...req.body };
+    saveJSON('films.json', films);
+    res.json(films[index]);
+});
+
+app.delete('/api/films/:id', authMiddleware, (req, res) => {
+    const films = loadJSON('films.json') || [];
+    const index = films.findIndex(f => f.id === req.params.id);
+    if (index === -1) return res.status(404).json({ error: 'Film not found' });
+
+    const deleted = films.splice(index, 1)[0];
+    saveJSON('films.json', films);
+    res.json({ deleted });
+});
+
 // === Public Config Endpoint (for frontend) ===
 app.get('/api/config.json', (req, res) => {
     const splats = loadJSON('splats.json') || [];
     const galleries = loadJSON('galleries.json') || { galleries: [] };
     const collections = loadJSON('collections.json') || [];
+    const films = loadJSON('films.json') || [];
 
     res.json({
         splats,
         galleries: galleries.galleries,
-        collections
+        collections,
+        films
     });
 });
 

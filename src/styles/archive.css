@@ -241,17 +241,22 @@ body {
 .sculpture__title-accent {
     display: block;
     font-style: italic;
-    background: linear-gradient(135deg,
-            var(--gold) 0%,
-            #e5d4b8 40%,
-            white 50%,
-            #e5d4b8 60%,
-            var(--gold) 100%);
-    background-size: 200% auto;
+    background: linear-gradient(120deg,
+            #b8935f 0%,
+            var(--gold) 20%,
+            #f0dfc0 38%,
+            #fffdf5 48%,
+            #ffffff 50%,
+            #fffdf5 52%,
+            #f0dfc0 62%,
+            var(--gold) 80%,
+            #b8935f 100%);
+    background-size: 300% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: sheen 8s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(201, 167, 122, 0.35));
 }
 
 @keyframes sheen {
