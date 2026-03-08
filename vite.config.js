@@ -15,7 +15,9 @@ export default defineConfig({
                 sculpture: 'sculpture.html',
                 contact: 'contact.html',
                 login: 'login.html',
-                archive: 'archive.html'
+                archive: 'archive.html',
+                splatViewer: 'splat-viewer.html',
+                splatHero: 'splat-hero.html'
             },
             output: {
                 manualChunks: {

@@ -17,8 +17,7 @@
 /* === Video Background === */
 .artist-section__video-bg {
     position: absolute;
-    inset: -60px;
-    /* Extend beyond bounds to hide YouTube UI */
+    inset: 0;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
@@ -28,9 +27,19 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 180%;
-    /* Oversized to crop and fill */
-    height: 180%;
+    /*
+     * Cover-fit for 16:9 iframe:
+     * - min-width/min-height ensure it's at least as big as parent
+     * - aspect-ratio: 16/9 forces the iframe to stay 16:9
+     * - When both mins can't be satisfied at 16:9, the larger
+     *   dimension wins and the other grows proportionally,
+     *   overflow is clipped by the parent's overflow:hidden
+     */
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    aspect-ratio: 16 / 9;
     transform: translate(-50%, -50%);
     border: none;
     pointer-events: none;

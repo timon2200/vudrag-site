@@ -4,20 +4,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikola Vudrag | Sculptures in Light</title>
-    <meta name="description" content="An immersive 3D journey through the sculptural works of Nikola Vudrag">
+    <title>Nikola Vudrag | 3D Sculpture Experience</title>
+    <meta name="description"
+        content="Immersive 3D Gaussian Splat gallery — scroll through Nikola Vudrag's sculptures with cinematic transitions">
 
-    <!-- Preload fonts for better LCP -->
+    <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Premium typography fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
         rel="stylesheet">
 
     <style>
-        /* Critical CSS - inlined to prevent FOUC */
+        /* Critical CSS */
         *,
         *::before,
         *::after {
@@ -29,11 +28,25 @@
         html,
         body {
             width: 100%;
+            height: 100%;
+            overflow: hidden;
             background: #050508;
             font-family: 'Inter', -apple-system, sans-serif;
         }
 
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
+        #canvas-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
 
         /* Loading Screen */
         #loading-screen {
@@ -81,7 +94,37 @@
             color: #6b6b7a;
         }
 
-        /* Scroll Hint */
+        /* Back button */
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(201, 167, 122, 0.3);
+            border-radius: 50px;
+            background: rgba(5, 5, 8, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #c9a77a;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(201, 167, 122, 0.12);
+            border-color: #c9a77a;
+        }
+
+        /* Scroll hint */
         #scroll-hint {
             position: fixed;
             bottom: 2.5rem;
@@ -93,7 +136,7 @@
             align-items: center;
             gap: 0.75rem;
             opacity: 1;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.5s ease;
             pointer-events: none;
         }
 
@@ -111,11 +154,9 @@
 
         #scroll-hint.hidden {
             opacity: 0;
-            transform: translateX(-50%) translateY(20px);
         }
 
         #scroll-hint svg {
-            display: block;
             color: #c9a77a;
             filter: drop-shadow(0 0 8px rgba(201, 167, 122, 0.6));
             animation: bounce 2s infinite;
@@ -157,34 +198,28 @@
 </head>
 
 <body>
-    <!-- Scroll Container - enables pinned hero behavior -->
-    <div id="scroll-container">
+    <a href="/" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Back to Gallery
+    </a>
 
-        <!-- Hero Section - luxury image slider with desert storm -->
-        <section id="hero-section" class="pinned-hero">
-            <!-- Hero content injected dynamically by hero-slider.js -->
-        </section>
+    <div id="canvas-container"></div>
 
-        <!-- Scroll zone - invisible spacer that drives hero slide changes -->
-        <div id="hero-scroll-zone"></div>
-
-        <!-- Content sections - normal document flow below hero -->
-        <section id="content-area" class="content-section">
-            <!-- Category hub and sections rendered here dynamically -->
-        </section>
-
+    <div id="scroll-hint">
+        <span>Scroll to explore</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
     </div>
 
-    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loader-ring"></div>
-        <span class="loader-text">Loading experience...</span>
+        <span class="loader-text">Loading 3D sculptures...</span>
     </div>
 
-    <!-- Section Transition Overlay -->
-    <div id="section-transition-overlay"></div>
-
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/splat-hero.js"></script>
 </body>
 
 </html>

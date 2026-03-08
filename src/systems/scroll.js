@@ -1,20 +1,17 @@
 /**
  * Scroll & Input Control System
- * Handles mouse wheel, touch, and keyboard navigation with magnetic snap behavior
+ * Handles mouse wheel, touch, and keyboard navigation
  * 
  * Two modes:
- * 1. Splat Gallery Mode: Custom scroll with magnetic snapping (scrollProgress 0-1)
+ * 1. Hero Mode: Custom scroll controls hero parallax/fade (scrollProgress 0-1)
  * 2. Content Mode: Native scrolling inside content-area overlay
  */
-import { CONFIG, SCROLL } from '../config.js';
+import { SCROLL } from '../config.js';
 import { state } from '../state.js';
 
 // Reference to content area for event routing
 let contentArea = null;
 
-/**
- * Setup all scroll and input event handlers
- */
 // Shared scroll hint reference
 let scrollHint = null;
 
@@ -34,13 +31,12 @@ export function setupScrollControl() {
     // Touch support
     let touchStartY = 0;
     let touchExitAccumulator = 0;
-    const TOUCH_EXIT_THRESHOLD = 80; // Pixels of downward swipe needed to exit content mode
+    const TOUCH_EXIT_THRESHOLD = 80;
 
     window.addEventListener('touchstart', (e) => {
         touchStartY = e.touches[0].clientY;
         state.lastScrollTime = performance.now();
         state.isScrolling = true;
-        // Reset touch exit accumulator on new touch
         touchExitAccumulator = 0;
     }, { passive: true });
 
@@ -48,29 +44,25 @@ export function setupScrollControl() {
         const touchY = e.touches[0].clientY;
         const deltaY = touchY - touchStartY; // Positive = swiping down
 
-        // Handle content mode (category hub) - check for pull-to-dismiss gesture
+        // Handle content mode - check for pull-to-dismiss gesture
         if (contentArea?.classList.contains('is-visible')) {
-            // Only accumulate if at the top of content area and swiping down
             if (contentArea.scrollTop <= 0 && deltaY > 0) {
-                touchExitAccumulator += deltaY * 0.5; // Scale down for better control
+                touchExitAccumulator += deltaY * 0.5;
 
-                // If threshold crossed, trigger exit
                 if (touchExitAccumulator > TOUCH_EXIT_THRESHOLD) {
                     exitContentMode();
                     touchExitAccumulator = 0;
-                    touchStartY = touchY; // Reset to prevent further accumulation
+                    touchStartY = touchY;
                 }
             } else {
-                // Reset accumulator if scrolling up or not at top
                 touchExitAccumulator = 0;
             }
 
-            // Update touchStartY for delta calculation
             touchStartY = touchY;
             return;
         }
 
-        // Splat gallery mode - custom scroll handling
+        // Hero mode - custom scroll handling
         const delta = (touchStartY - touchY) * 0.003;
         touchStartY = touchY;
         state.targetScrollProgress = Math.max(0, Math.min(2.0, state.targetScrollProgress + delta));
@@ -89,23 +81,18 @@ export function setupScrollControl() {
 
     window.addEventListener('touchend', () => {
         state.lastScrollTime = performance.now();
-        // Reset touch exit accumulator
         touchExitAccumulator = 0;
     }, { passive: true });
 
-    // Keyboard navigation (only in splat mode)
+    // Keyboard navigation
     window.addEventListener('keydown', (e) => {
-        // Skip if content area is visible
         if (contentArea?.classList.contains('is-visible')) return;
 
-        const numSplats = CONFIG.splats.length;
         if (e.key === 'ArrowDown' || e.key === ' ') {
-            const nextIndex = Math.min(state.currentSplatIndex + 1, numSplats - 1);
-            state.targetScrollProgress = nextIndex / (numSplats - 1);
+            state.targetScrollProgress = Math.min(2.0, state.targetScrollProgress + 0.3);
             e.preventDefault();
         } else if (e.key === 'ArrowUp') {
-            const prevIndex = Math.max(state.currentSplatIndex - 1, 0);
-            state.targetScrollProgress = prevIndex / (numSplats - 1);
+            state.targetScrollProgress = Math.max(0, state.targetScrollProgress - 0.3);
             e.preventDefault();
         }
     });
@@ -117,45 +104,33 @@ export function setupScrollControl() {
 }
 
 /**
- * Handle wheel events - routes between splat scroll and content scroll
+ * Handle wheel events - routes between hero scroll and content scroll
  */
-// Accumulator for pull-to-dismiss behavior
 let exitScrollAccumulator = 0;
-const EXIT_SCROLL_THRESHOLD = 50; // Pixels of upward scroll needed to exit
+const EXIT_SCROLL_THRESHOLD = 50;
 
-/**
- * Handle wheel events - routes between splat scroll and content scroll
- */
 function handleWheel(e) {
     const scrollHint = document.getElementById('scroll-hint');
     const isContentVisible = contentArea?.classList.contains('is-visible');
 
     if (isContentVisible) {
-        // Content area is visible - check if we should return to gallery
-
-        // Only track accumulation if we are at the very top (or negative due to bounce)
         if (contentArea.scrollTop <= 0 && e.deltaY < 0) {
-            // Accumulate upward scroll (deltaY is negative when scrolling up)
             exitScrollAccumulator += Math.abs(e.deltaY);
 
-            // If threshold crossed, trigger exit
             if (exitScrollAccumulator > EXIT_SCROLL_THRESHOLD) {
                 e.preventDefault();
                 exitContentMode();
-                exitScrollAccumulator = 0; // Reset
+                exitScrollAccumulator = 0;
                 return;
             }
         } else {
-            // Reset accumulator if scrolling down or not at top
             exitScrollAccumulator = 0;
         }
 
-        // If explicitly preventing default for bounce handling, do it here
-        // Otherwise let the event bubble to content area naturally
         return;
     }
 
-    // Splat gallery mode - use custom scroll
+    // Hero mode - use custom scroll
     e.preventDefault();
 
     state.lastScrollTime = performance.now();
@@ -175,10 +150,8 @@ function handleWheel(e) {
  * Handle scroll within content area
  */
 function handleContentScroll() {
-    // Track when user is at top for potential exit
     state.contentScrollTop = contentArea?.scrollTop || 0;
 
-    // Reset accumulator if user scrolls down into content
     if (state.contentScrollTop > 0) {
         exitScrollAccumulator = 0;
     }
@@ -191,38 +164,29 @@ export function enterContentMode() {
     if (!contentArea) return;
 
     contentArea.classList.add('is-visible');
-    contentArea.scrollTop = 0; // Start at top
-    exitScrollAccumulator = 0; // Reset accumulator
+    contentArea.scrollTop = 0;
+    exitScrollAccumulator = 0;
 
-    // Ensure pointer events are enabled immediately
     contentArea.style.pointerEvents = 'auto';
-
-    // Focus the content area so it can receive scroll events immediately
-    // This prevents the "need to move mouse first" issue
     contentArea.focus();
 
     console.log('📄 Entered content mode');
 }
 
 /**
- * Exit content mode - return to splat gallery with animation
+ * Exit content mode - return to hero with animation
  */
 export function exitContentMode() {
     if (!contentArea) return;
 
-    // Remove the is-visible class so JS can control the transform
     contentArea.classList.remove('is-visible');
 
-    // Soft Exit: Set target to 1.15 instead of 1.25
-    // This allows the elastic physics (in updateMagneticSnap) to gently "pull" 
-    // the view back to 1.0 (Romislav) rather than snapping instantly.
-    // Reduced from 1.25 to 1.15 to prevent "bounce" from triggering hero fade-out
-    state.targetScrollProgress = 1.15;
-
+    // Soft exit: animate back toward hero
+    state.targetScrollProgress = 0.8;
     state.lastScrollTime = performance.now();
     state.isScrolling = true;
 
-    console.log('🎨 Animating back to splat gallery');
+    console.log('🎨 Animating back to hero');
 }
 
 /**
@@ -234,14 +198,12 @@ export function isInContentMode() {
 
 /**
  * Update content slide animation during transition
- * Called from main update loop when scrollProgress > 1.0
+ * Called from main update loop
  * @param {number} scrollProgress - Current scroll progress
  */
 export function updateContentSlide(scrollProgress) {
     if (!contentArea) return;
 
-    // Only animate during transition phase (1.0 to 1.3)
-    // After 1.3, content mode is fully active with no transform
     if (scrollProgress <= 1.0) {
         // Hidden below viewport
         contentArea.style.transform = 'translateY(100vh)';
@@ -249,15 +211,15 @@ export function updateContentSlide(scrollProgress) {
         contentArea.style.visibility = 'hidden';
         contentArea.style.pointerEvents = 'none';
     } else if (scrollProgress >= 1.3) {
-        // Fully visible (content mode handles this)
+        // Fully visible — enter content mode if not already
         if (!isInContentMode()) {
-            // Will be handled by enterContentMode
+            // Will be handled by enterContentMode via magnetic snap
         }
     } else {
         // Transition phase: slide up from 100vh to 0
         const progress = (scrollProgress - 1.0) / 0.3; // 0 to 1
         const eased = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
-        const slideY = 100 * (1 - eased); // 100vh to 0
+        const slideY = 100 * (1 - eased);
         const opacity = eased;
 
         contentArea.style.transform = `translateY(${slideY}vh)`;
@@ -269,7 +231,7 @@ export function updateContentSlide(scrollProgress) {
 
 /**
  * Apply magnetic snap behavior when user stops scrolling
- * Only applies in splat gallery mode
+ * Simplified for image hero (no splat indices)
  */
 export function updateMagneticSnap() {
     // Skip if content mode is active
@@ -286,11 +248,8 @@ export function updateMagneticSnap() {
 
     state.isScrolling = false;
 
-    const numSplats = CONFIG.splats.length;
-
     // Overshoot region (>1.0) - entering content area
     if (state.targetScrollProgress > 1.0) {
-        // Lower threshold to 1.1 (approx 70% visible) for "auto-scroll" feel
         const COMMIT_THRESHOLD = 1.1;
 
         // If committed, enter content mode
@@ -299,47 +258,26 @@ export function updateMagneticSnap() {
             return;
         }
 
-        // Below commit - elastic snap back
+        // Below commit - elastic snap back to 1.0
         const overshoot = state.targetScrollProgress - 1.0;
-        // Reduced strength for softer return
         const snapStrength = 0.08;
         state.targetScrollProgress -= overshoot * snapStrength;
         return;
     }
 
-    // Normal splat range (0-1): snap to nearest splat
-    const splatProgress = state.targetScrollProgress * (numSplats - 1);
-    const currentIndex = Math.floor(splatProgress);
-    const fractionalPart = splatProgress - currentIndex;
-
-    let snapToIndex;
-
-    if (fractionalPart < SCROLL.SNAP_THRESHOLD) {
-        snapToIndex = currentIndex;
-    } else if (fractionalPart > (1 - SCROLL.SNAP_THRESHOLD)) {
-        snapToIndex = Math.min(currentIndex + 1, numSplats - 1);
-    } else {
-        if (fractionalPart < 0.5) {
-            snapToIndex = currentIndex;
-        } else {
-            snapToIndex = Math.min(currentIndex + 1, numSplats - 1);
-        }
+    // Hero range (0-1): snap to either 0 or stay put
+    // No splat indices to snap to — just gentle damping toward 0 if close
+    if (state.targetScrollProgress < 0.05) {
+        state.targetScrollProgress += (0 - state.targetScrollProgress) * 0.05;
     }
-
-    const snapProgress = snapToIndex / (numSplats - 1);
-    // Reduced snap speed for smoother feel (was 0.08)
-    state.targetScrollProgress += (snapProgress - state.targetScrollProgress) * 0.05;
 }
 
 /**
  * Create a fake scrollable element to trigger mobile browser address bar behavior
- * Mobile browsers only hide the address bar with native scroll events
  */
 function setupFakeScrollForMobile() {
-    // Only needed on mobile/touch devices
     if (!('ontouchstart' in window)) return;
 
-    // Create fake scroll container
     fakeScrollElement = document.createElement('div');
     fakeScrollElement.id = 'fake-scroll-container';
     fakeScrollElement.style.cssText = `
@@ -355,7 +293,6 @@ function setupFakeScrollForMobile() {
         opacity: 0;
     `;
 
-    // Create fake content that's taller than viewport
     const fakeContent = document.createElement('div');
     fakeContent.style.cssText = `
         height: 300vh;
@@ -365,7 +302,6 @@ function setupFakeScrollForMobile() {
     fakeScrollElement.appendChild(fakeContent);
     document.body.appendChild(fakeScrollElement);
 
-    // Initial position
     fakeScrollElement.scrollTop = window.innerHeight;
 
     console.log('📱 Fake scroll element created for mobile browser behavior');
@@ -373,13 +309,10 @@ function setupFakeScrollForMobile() {
 
 /**
  * Update fake scroll position based on actual scroll progress
- * This triggers native scroll events that mobile browsers respond to
  */
 function updateFakeScroll() {
     if (!fakeScrollElement) return;
 
-    // Map scroll progress (0-2) to fake scroll position
-    // Start at 1vh so there's room to scroll up and down
     const viewportHeight = window.innerHeight;
     const targetScroll = viewportHeight + (state.targetScrollProgress * viewportHeight);
 

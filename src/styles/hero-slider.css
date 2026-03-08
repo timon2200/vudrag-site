@@ -1,0 +1,282 @@
+/**
+ * Hero Slider CSS — GSAP-Driven Cinematic Carousel
+ * 
+ * Layout, typography, and progress indicator styles.
+ * All transitions (slide crossfade, text stagger, Ken Burns) 
+ * are handled by GSAP in hero-slider.js — no CSS animations needed.
+ */
+
+/* ========================
+   Slide Container & Slides
+   ======================== */
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    z-index: 1;
+    will-change: opacity, transform;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-image-wrapper {
+    position: absolute;
+    inset: -20px;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+    will-change: transform;
+    transform: scale(1.08);
+}
+
+.hero-image.loaded {
+    opacity: 1;
+}
+
+/* ========================
+   Gradient Overlays
+   ======================== */
+
+#hero-section .hero-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    background:
+        radial-gradient(ellipse 80% 70% at center, transparent 30%, rgba(5, 5, 8, 0.5) 100%),
+        linear-gradient(to bottom, transparent 50%, rgba(5, 5, 8, 0.7) 100%),
+        linear-gradient(to top, transparent 80%, rgba(5, 5, 8, 0.4) 100%);
+}
+
+/* ========================
+   Hero Content (Centered)
+   ======================== */
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* ========================
+   Typography
+   ======================== */
+
+.hero-eyebrow {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+    font-weight: 300;
+    color: var(--color-gold);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.hero-title {
+    font-family: var(--font-primary);
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 300;
+    color: #f0ebe3;
+    letter-spacing: 0.08em;
+    line-height: 1.05;
+    margin: 0 0 1.2rem 0;
+    text-shadow:
+        0 2px 40px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(201, 167, 122, 0.15);
+}
+
+.hero-subtitle {
+    font-family: var(--font-secondary);
+    font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    margin: 0 0 2.5rem 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* ========================
+   CTA Button (Pill)
+   ======================== */
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 2.5rem;
+    border: 1px solid rgba(201, 167, 122, 0.4);
+    border-radius: 50px;
+    background: rgba(201, 167, 122, 0.08);
+    color: var(--color-gold-light);
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.hero-cta:hover {
+    background: rgba(201, 167, 122, 0.18);
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 32px rgba(201, 167, 122, 0.15),
+        0 0 60px rgba(201, 167, 122, 0.08);
+}
+
+.hero-cta svg {
+    transition: transform 0.4s ease;
+}
+
+.hero-cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* ========================
+   Vertical Progress Indicator
+   ======================== */
+
+.hero-progress {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 120px;
+}
+
+.hero-progress-track {
+    width: 2px;
+    height: 100%;
+    background: rgba(201, 167, 122, 0.15);
+    border-radius: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 33.3%;
+    background: var(--color-gold);
+    border-radius: 1px;
+    box-shadow: 0 0 8px rgba(201, 167, 122, 0.4);
+    /* GSAP handles height transitions — no CSS transition needed */
+}
+
+.hero-progress-numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.hero-progress-num {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: rgba(201, 167, 122, 0.3);
+    transition: all 0.4s ease;
+    line-height: 1;
+}
+
+.hero-progress-num.active {
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(201, 167, 122, 0.5);
+}
+
+/* ========================
+   Scroll Hint
+   ======================== */
+
+#hero-section #scroll-hint {
+    z-index: 6;
+}
+
+/* ========================
+   Responsive
+   ======================== */
+
+@media (max-width: 768px) {
+    .hero-content {
+        width: 90%;
+    }
+
+    .hero-title {
+        letter-spacing: 0.05em;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+        padding: 0 1rem;
+    }
+
+    .hero-cta {
+        padding: 0.8rem 2rem;
+        font-size: 0.7rem;
+    }
+
+    .hero-progress {
+        right: 1.5rem;
+        height: 80px;
+    }
+
+    .hero-progress-num {
+        font-size: 0.55rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-eyebrow {
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-progress {
+        right: 1rem;
+        height: 60px;
+        gap: 0.6rem;
+    }
+}

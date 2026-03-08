@@ -6,8 +6,6 @@
  */
 
 import { observeElement } from './scroll-reveal.js';
-import { isInContentMode } from '../systems/scroll.js';
-import { state } from '../state.js';
 
 // CMS API URL
 const CMS_API = import.meta.env.VITE_API_BASE || '/api';
@@ -370,14 +368,9 @@ function handleCategoryClick(categoryId) {
         }
     });
 
-    // Save scroll position before navigating (so we can restore on return)
-    const contentArea = document.getElementById('content-area');
+    // Save scroll position before navigating
     sessionStorage.setItem('vudrag_scroll_position', JSON.stringify({
-        scrollProgress: state.scrollProgress,
-        targetScrollProgress: state.targetScrollProgress,
-        windowScrollY: window.scrollY,
-        contentAreaScrollTop: contentArea ? contentArea.scrollTop : 0,
-        wasInContentMode: contentArea ? contentArea.classList.contains('is-visible') : false
+        windowScrollY: window.scrollY
     }));
 
     // Navigate to category gallery
@@ -385,45 +378,26 @@ function handleCategoryClick(categoryId) {
 }
 
 /**
- * Update category hub visibility based on scroll
- * The content-area slide is now handled by hero-transition.js
- * This just triggers card reveals when visible
+ * Trigger category hub reveal — called by IntersectionObserver or setupCategoryHub.
+ * Cards are now revealed via scroll-reveal.js IntersectionObserver (native scroll).
+ * This function is kept for any manual triggering needs.
  */
-export function updateCategoryHubVisibility(scrollProgress) {
+export function revealCategoryHub() {
     const hub = hubElement;
-    if (!hub) return;
+    if (!hub || hub.classList.contains('is-revealed')) return;
 
-    // Reveal cards when:
-    // 1. scrollProgress > 1.1 (matches the COMMIT_THRESHOLD in scroll.js)
-    // 2. OR if we are explicitly in content mode (handles slow scroll / snap cases)
-    const shouldReveal = scrollProgress > 1.1 || isInContentMode();
+    hub.classList.add('is-revealed');
 
-    if (shouldReveal && !hub.classList.contains('is-revealed')) {
-        hub.classList.add('is-revealed');
+    const cards = hub.querySelectorAll('.category-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('is-revealed');
+        }, index * 100);
+    });
 
-        // Trigger individual card reveals with stagger
-        const cards = hub.querySelectorAll('.category-card');
-        cards.forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('is-revealed');
-            }, index * 100);
-        });
-
-        // Reveal header
-        const header = hub.querySelector('.category-hub__header');
-        if (header) {
-            header.classList.add('is-revealed');
-        }
-    } else if (scrollProgress <= 1.0 && hub.classList.contains('is-revealed')) {
-        // Reset when scrolling back to splats
-        hub.classList.remove('is-revealed');
-        const cards = hub.querySelectorAll('.category-card');
-        cards.forEach(card => card.classList.remove('is-revealed'));
-
-        const header = hub.querySelector('.category-hub__header');
-        if (header) {
-            header.classList.remove('is-revealed');
-        }
+    const header = hub.querySelector('.category-hub__header');
+    if (header) {
+        header.classList.add('is-revealed');
     }
 }
 

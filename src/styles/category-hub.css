@@ -12,7 +12,7 @@
     min-height: auto;
     padding: 12vh 6vw 16vh;
     background: var(--color-canvas);
-    overflow: visible;
+    overflow: hidden;
 }
 
 .category-hub__header {

@@ -173,8 +173,8 @@ function createWorksShowcaseDOM() {
         <div class="works-showcase__watermark" aria-hidden="true">WORKS</div>
         
         <header class="works-showcase__header" data-reveal>
-            <span class="works-showcase__label">Selected Works</span>
-            <h2 class="works-showcase__title">The Sculptures</h2>
+            <span class="works-showcase__label">Featured Pieces</span>
+            <h2 class="works-showcase__title">The Selection</h2>
             <div class="works-showcase__divider"></div>
         </header>
 

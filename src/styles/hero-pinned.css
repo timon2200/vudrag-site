@@ -1,78 +1,64 @@
 /**
- * Hero Pinned - Premium Patek-style hero section styling
- * Using overlay approach for content area
+ * Hero Pinned → GSAP ScrollTrigger Layout
+ * 
+ * GSAP ScrollTrigger handles pinning the hero section.
+ * The scroll zone provides the runway for scroll-driven transitions.
+ * Content sections flow naturally after the scroll zone.
  */
 
-/* Root scroll container */
+/* Root scroll container - normal document flow */
 #scroll-container {
     position: relative;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    overflow-x: clip;
 }
 
-/* Hero section - fixed at top */
+/* Hero section - GSAP pins this via ScrollTrigger */
 #hero-section {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     height: 100vh;
     width: 100%;
     z-index: 1;
     overflow: hidden;
-    will-change: transform, opacity;
+    will-change: opacity;
 }
 
-/* Hero exit animation state */
-#hero-section.exiting {
-    pointer-events: none;
-}
-
-/* Canvas container */
-#hero-section #canvas-container {
+/* Scroll zone - defines scroll distance for GSAP, hidden from layout */
+#hero-scroll-zone {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    height: 300vh;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+    visibility: hidden;
 }
 
-/* Content area - FIXED OVERLAY approach
- * When visible, this overlays the entire screen
- * Scrolling happens INSIDE this container
- * Transform/opacity controlled by JS for smooth animation
- */
+/* Content area - scrolls over the hero with a cinematic gradient reveal */
 .content-section {
-    position: fixed;
-    top: 0;
+    position: relative;
+    z-index: 10;
+    background: var(--color-deep-black);
+    min-height: 100vh;
+}
+
+/* Cinematic gradient that fades over the hero as content scrolls up */
+.content-section::before {
+    content: '';
+    position: absolute;
+    top: -120px;
     left: 0;
     right: 0;
-    bottom: 0;
-    z-index: 100;
-    background: var(--color-deep-black);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    will-change: transform, opacity;
-
-    /* Initially hidden - JS will animate */
-    transform: translateY(100vh);
-    opacity: 0;
-    visibility: hidden;
+    height: 120px;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(5, 5, 8, 0.3) 25%,
+            rgba(5, 5, 8, 0.7) 60%,
+            var(--color-deep-black) 100%);
     pointer-events: none;
-
-    /* Smooth snap transition when .is-visible class is added */
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+    z-index: 10;
 }
 
-/* When content is fully active (post-transition) */
-.content-section.is-visible {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-}
-
-/* Hero overlay gradient - adds depth */
+/* Hero gradient overlay */
 .hero-gradient-overlay {
     position: absolute;
     inset: 0;
@@ -83,7 +69,7 @@
         linear-gradient(to bottom, transparent 70%, rgba(5, 5, 8, 0.6) 100%);
 }
 
-/* Hero scroll progress indicator */
+/* Scroll hint */
 .hero-scroll-indicator {
     position: absolute;
     bottom: 3rem;
@@ -110,20 +96,10 @@
     color: var(--color-muted);
 }
 
-.hero-scroll-indicator .progress-dots {
-    display: flex;
-    gap: 6px;
-}
-
-.hero-scroll-indicator .progress-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #3a3a4a;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.hero-scroll-indicator .progress-dot.active {
-    background: var(--color-gold);
-    transform: scale(1.3);
+/* Mobile: no scroll zone, rely on auto-advance */
+@media (max-width: 768px) {
+    #hero-scroll-zone {
+        height: 0;
+        display: none;
+    }
 }
