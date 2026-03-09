@@ -53,9 +53,8 @@
     pointer-events: none;
     z-index: 4;
     background:
-        radial-gradient(ellipse 80% 70% at center, transparent 30%, rgba(5, 5, 8, 0.5) 100%),
-        linear-gradient(to bottom, transparent 50%, rgba(5, 5, 8, 0.7) 100%),
-        linear-gradient(to top, transparent 80%, rgba(5, 5, 8, 0.4) 100%);
+        radial-gradient(ellipse 70% 60% at center, rgba(5, 5, 8, 0.4) 10%, rgba(5, 5, 8, 0.7) 100%),
+        linear-gradient(to bottom, rgba(5, 5, 8, 0.6) 0%, transparent 40%, rgba(5, 5, 8, 0.85) 100%);
 }
 
 /* ========================
@@ -71,11 +70,57 @@
     text-align: center;
     pointer-events: none;
     will-change: transform, opacity;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 2rem;
+}
+
+/* ========================
+   Decorative Details
+   ======================== */
+
+.hero-decorative-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.hero-slide-counter {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    color: var(--color-gold);
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+}
+
+.hero-decorative-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(201, 167, 122, 0) 0%, rgba(201, 167, 122, 0.6) 50%, rgba(201, 167, 122, 0) 100%);
+    margin: 1rem 0;
 }
 
 /* ========================
    Typography
    ======================== */
+
+@keyframes cinematic-glow {
+    0% {
+        text-shadow:
+            0 4px 60px rgba(0, 0, 0, 0.9),
+            0 2px 15px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(201, 167, 122, 0.1);
+    }
+
+    100% {
+        text-shadow:
+            0 4px 60px rgba(0, 0, 0, 0.9),
+            0 2px 15px rgba(0, 0, 0, 0.8),
+            0 0 100px rgba(201, 167, 122, 0.5),
+            0 0 30px rgba(201, 167, 122, 0.3);
+    }
+}
 
 .hero-eyebrow {
     display: block;
@@ -85,21 +130,19 @@
     color: var(--color-gold);
     letter-spacing: 0.35em;
     text-transform: uppercase;
-    margin-bottom: 1.5rem;
     opacity: 0.9;
+    animation: cinematic-glow 5s ease-in-out infinite alternate-reverse;
 }
 
 .hero-title {
     font-family: var(--font-primary);
-    font-size: clamp(3rem, 8vw, 7rem);
+    font-size: clamp(3.5rem, 9vw, 8rem);
     font-weight: 300;
     color: #f0ebe3;
     letter-spacing: 0.08em;
     line-height: 1.05;
-    margin: 0 0 1.2rem 0;
-    text-shadow:
-        0 2px 40px rgba(0, 0, 0, 0.6),
-        0 0 80px rgba(201, 167, 122, 0.15);
+    margin: 0 0 1rem 0;
+    animation: cinematic-glow 4s ease-in-out infinite alternate;
 }
 
 .hero-subtitle {
@@ -107,12 +150,14 @@
     font-size: clamp(0.85rem, 1.4vw, 1.1rem);
     font-weight: 300;
     color: var(--color-muted);
-    letter-spacing: 0.08em;
-    margin: 0 0 2.5rem 0;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0 0 3rem 0;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
+    animation: cinematic-glow 6s ease-in-out infinite alternate;
 }
 
 /* ========================

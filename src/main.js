@@ -35,11 +35,33 @@ import { setupFooter } from './ui/footer.js';
 
 import { state } from './state.js';
 
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 /**
  * Initialize the experience
  */
 async function init() {
     console.log('🎨 Initializing Vudrag Gallery Experience...');
+
+    // Initialize Lenis for smooth scrolling
+    const lenis = new Lenis({
+        lerp: 0.08, // Controls the smoothness
+        smoothWheel: true,
+    });
+
+    // Sync Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+
+    // Disable GSAP's lag smoothing to prevent conflicts
+    gsap.ticker.lagSmoothing(0);
 
     // Setup hero image slider
     setupHeroSlider();

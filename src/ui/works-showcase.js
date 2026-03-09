@@ -76,6 +76,14 @@ const FALLBACK_WORKS = [
         year: '2024',
         size: 'wide',
         image: 'https://images.unsplash.com/photo-1560421683-6856ea585c78?w=800&q=80'
+    },
+    {
+        id: 'press',
+        title: 'Selected Media',
+        series: 'Press',
+        year: 'Various',
+        size: 'wide',
+        image: '/images/press.jpg'
     }
 ];
 

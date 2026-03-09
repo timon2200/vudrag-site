@@ -218,14 +218,19 @@ function rebuildParticles() {
     const h = canvas.height / window.devicePixelRatio;
     const cfg = EFFECTS[currentEffect];
 
-    particles = [];
-    for (const [layerName, layerCfg] of Object.entries(LAYERS)) {
-        const count = Math.floor(cfg.totalParticles * layerCfg.count);
-        for (let i = 0; i < count; i++) {
-            particles.push(createParticle(w, h, layerName));
+    // Instead of rebuilding immediately, let setEffect handle the morphing logic.
+    // This initial rebuild is only used on setup.
+    if (particles.length === 0) {
+        particles = [];
+        for (const [layerName, layerCfg] of Object.entries(LAYERS)) {
+            const count = Math.floor(cfg.totalParticles * layerCfg.count);
+            for (let i = 0; i < count; i++) {
+                particles.push(createParticle(w, h, layerName));
+            }
         }
     }
 
+    // Wisps change instantly since they fade in and out naturally
     wisps = [];
     for (let i = 0; i < cfg.wispCount; i++) {
         const wisp = createWisp(w, h);
@@ -387,6 +392,16 @@ function drawParticles(dt, w, h) {
         const p = particles[i];
 
         // Physics
+        // Smooth transition interpolations for physics
+        if (p.targetAngle !== undefined) {
+            p.angle += (p.targetAngle - p.angle) * dt * 1.5;
+            const targetVx = Math.cos(p.angle) * p.targetBaseSpeed;
+            const targetVy = Math.sin(p.angle) * p.targetBaseSpeed * 0.35 + (Math.random() - 0.5) * 20 + EFFECTS[currentEffect].gravity;
+            p.vx += (targetVx - p.vx) * dt * 2.0;
+            p.vy += (targetVy - p.vy) * dt * 2.0;
+            p.opacity += (p.targetOpacity - p.opacity) * dt * 2.0;
+        }
+
         p.x += p.vx * dt;
         p.y += p.vy * dt;
         p.turbPhase += p.turbSpeed * dt;
@@ -395,11 +410,24 @@ function drawParticles(dt, w, h) {
 
         // Reset if off-screen
         if (p.x < -30 || p.x > w + 30 || p.y < -30 || p.y > h + 30) {
-            Object.assign(p, createParticle(w, h, p.layer, true));
+            const newParticle = createParticle(w, h, p.layer, true);
+            newParticle.currentColor = newParticle.color;
+            newParticle.targetColor = newParticle.color;
+            Object.assign(p, newParticle);
         }
 
         // Compute draw opacity
         let drawOpacity = p.opacity;
+
+        // Sandstorm and dust get a vertical gradient (stronger at bottom)
+        // Embers float up and have their own glow lifecycle, so skip them
+        if (!isEmbers) {
+            // Vertical gradient: weak opacity at top (0%), full opacity at bottom (100%)
+            const verticalFade = Math.pow(Math.max(0, Math.min(1, p.y / h)), 1.5);
+            // Lower bound of 0.2 so they are never completely invisible at the top
+            drawOpacity *= Math.max(0.2, verticalFade);
+        }
+
         if (isEmbers) {
             p.glowPhase += p.glowSpeed * dt;
             drawOpacity *= 0.4 + 0.6 * Math.sin(p.glowPhase);
@@ -410,7 +438,18 @@ function drawParticles(dt, w, h) {
         drawOpacity *= (0.7 + 0.3 * Math.sin(p.shimmerPhase)) * burstMultiplier;
         drawOpacity = Math.max(0, Math.min(1, drawOpacity));
 
-        const [r, g, b] = p.color;
+        // Smooth color transition
+        if (!p.currentColor) p.currentColor = [...p.color];
+        if (!p.targetColor) p.targetColor = [...p.color];
+
+        // Lerp color
+        p.currentColor[0] += (p.targetColor[0] - p.currentColor[0]) * dt * 2;
+        p.currentColor[1] += (p.targetColor[1] - p.currentColor[1]) * dt * 2;
+        p.currentColor[2] += (p.targetColor[2] - p.currentColor[2]) * dt * 2;
+
+        const r = Math.round(p.currentColor[0]);
+        const g = Math.round(p.currentColor[1]);
+        const b = Math.round(p.currentColor[2]);
 
         // Calculate streak direction from velocity
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
@@ -447,11 +486,37 @@ function drawParticles(dt, w, h) {
 // ═══════════════════════════════════
 
 /**
- * Switch to a different effect type
+ * Switch to a different effect type smoothly (morphing)
  */
 export function setEffect(type) {
     if (!EFFECTS[type] || type === currentEffect) return;
     currentEffect = type;
+    const cfg = EFFECTS[currentEffect];
+
+    // Morph existing particles to the new preset
+    particles.forEach((p) => {
+        // Assign new target color to lerp to
+        p.targetColor = cfg.colors[Math.floor(Math.random() * cfg.colors.length)];
+
+        // Smoothly adjust target angle and speed bounds (will be applied over time)
+        p.targetAngle = cfg.windAngle + (Math.random() - 0.5) * cfg.angleSpread;
+        p.targetBaseSpeed = rand(cfg.windSpeed.min, cfg.windSpeed.max) * LAYERS[p.layer].speedMul;
+        p.targetOpacity = rand(cfg.particleOpacity.min, cfg.particleOpacity.max) * LAYERS[p.layer].opacityMul;
+    });
+
+    // Handle particle count differences
+    let currentCount = particles.length;
+    let targetCount = cfg.totalParticles;
+
+    if (currentCount < targetCount) {
+        // Add more particles smoothly over the next few frames via bursts
+        triggerBurst(); // Adds 30% more instantly
+    } else if (currentCount > targetCount) {
+        // Trim some particles to thin out the storm
+        particles.splice(targetCount, currentCount - targetCount);
+    }
+
+    // Rebuild wisps
     rebuildParticles();
 }
 

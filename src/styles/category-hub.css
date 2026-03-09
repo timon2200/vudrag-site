@@ -89,13 +89,7 @@
     perspective: 1200px;
 }
 
-/* Center the last (5th) card — Public Works */
-.category-card:last-child {
-    grid-column: 1 / -1;
-    width: 100%;
-    max-width: calc(50% - 1.5rem);
-    justify-self: center;
-}
+
 
 /* === 3D Card === */
 .category-card {

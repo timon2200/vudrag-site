@@ -14,43 +14,51 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 const FALLBACK_CATEGORIES = [
     {
         id: 'networking',
-        title: 'Networking',
-        subtitle: 'THE NET-WORK TECHNIQUE',
+        title: 'Network',
+        subtitle: 'The Net-Work Technique',
         description: 'Semi-transparent lattices where light and shadow become the true medium',
-        count: 16,
-        image: '/images/collections/networking.jpg'
-    },
-    {
-        id: 'portraits',
-        title: 'Portraits',
-        subtitle: 'BRONZE BUSTS',
-        description: 'The private pulse behind the public face, forged in bronze',
-        count: 7,
-        image: '/images/collections/portraits.jpg'
+        count: 17,
+        image: '/images/networks.jpg' // Placeholder
     },
     {
         id: 'coins',
         title: 'Coins',
-        subtitle: 'MEDALS & NUMISMATICS',
+        subtitle: 'Medals & Numismatics',
         description: 'Microrealism engraved in negative form — miniature universes of precision',
         count: 12,
-        image: '/images/collections/coins.jpg'
+        image: '/images/66.webp'
     },
     {
         id: 'polygonal',
         title: 'Polygonal',
-        subtitle: 'GEOMETRIC FORMS',
+        subtitle: 'Geometric Forms',
         description: 'Mathematical precision meets mythological weight in polygon-plate sculpture',
         count: 6,
-        image: '/images/collections/polygonal.jpg'
+        image: '/images/93.webp'
+    },
+    {
+        id: 'nature',
+        title: 'Nature',
+        subtitle: 'Flora & Landscape',
+        description: 'Organic forms reimagined through industrial precision.',
+        count: 7,
+        image: '/images/nature.jpg' // Placeholder
+    },
+    {
+        id: 'portraits',
+        title: 'Portraits',
+        subtitle: 'Bronze Busts',
+        description: 'The private pulse behind the public face, forged in bronze',
+        count: 7,
+        image: '/images/56.webp'
     },
     {
         id: 'public-works',
         title: 'Public Works',
-        subtitle: 'MONUMENTAL & INTERVENTIONS',
+        subtitle: 'Monumental & Interventions',
         description: 'Large-scale commissions transforming the dialogue between art and community',
         count: 19,
-        image: '/images/collections/public-works.jpg'
+        image: '/images/95.webp'
     }
 ];
 
@@ -135,6 +143,12 @@ export async function setupCategoryHub() {
         // Register with scroll reveal observer
         observeElement(card);
     });
+
+    // Fix: Explicitly register the hub header so the title fades in
+    const hubHeader = hub.querySelector('.category-hub__header');
+    if (hubHeader) {
+        observeElement(hubHeader);
+    }
 
     // Cache reference for per-frame visibility updates
     hubElement = hub;

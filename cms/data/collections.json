@@ -1,7 +1,7 @@
 [
   {
     "id": "networking",
-    "title": "Networking",
+    "title": "Network",
     "subtitle": "The Net-Work Technique",
     "description": "Thousands of welded steel rods forge semi-transparent lattices — forms that simultaneously shield and reveal, where the interplay of light and shadow becomes the true medium.",
     "image": "/images/8.png",
@@ -10,6 +10,14 @@
       "Wall"
     ],
     "works": [
+      {
+        "title": "Madonna and the Veil",
+        "year": "2025",
+        "dimensions": "180 × 120 × 80 cm",
+        "description": "Instead of a perfect portrayal, a veil where the visage would be. Absence becomes the locus of presence. (Mrežasti Madona)",
+        "image": "/images/works/the-presence.jpg",
+        "segment": "Self Standing"
+      },
       {
         "title": "Persona",
         "year": "2022",
@@ -137,6 +145,22 @@
         "description": "A transparent wall relief crafted from over 10,000 bars. It delicately weaves the background into its visual narrative, creating an individual piece that captivates at the intersection of strength and modernity.",
         "image": "/images/works/iron-tapestry.jpg",
         "segment": "Wall"
+      }
+    ]
+  },
+  {
+    "id": "nature",
+    "title": "Nature",
+    "subtitle": "Flora & Landscape",
+    "description": "Organic forms reimagined through industrial precision. A dialogue between the fragile impermanence of nature and the heavy eternity of steel.",
+    "image": "/images/nature.jpg",
+    "works": [
+      {
+        "title": "The Dandelion",
+        "year": "2024",
+        "dimensions": "220 × 80 × 80 cm",
+        "description": "Mirrored stainless steel. A quiet philosopher of the ruins. Delicacy achieved through absolute discipline.",
+        "image": "/images/works/dandelion.jpg"
       }
     ]
   },

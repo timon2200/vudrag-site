@@ -52,6 +52,9 @@ export function createMenuOverlay() {
         link.addEventListener('click', handleMenuClick);
     });
 
+    // Listen for global toggle events (from static header)
+    window.addEventListener('toggle-menu', toggleMenu);
+
     console.log('🍔 Menu overlay created');
 }
 

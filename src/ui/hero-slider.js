@@ -28,7 +28,7 @@ const SLIDES = [
     {
         image: '/images/VUDRAG-BOOK-MMXXV_Page_03_Image_0001.jpg',
         title: 'IRON MAIDEN',
-        subtitle: 'Strength forged in steel — vulnerability revealed through light',
+        subtitle: 'Monumental Steel',
         eyebrow: 'Nikola Vudrag',
         effect: 'sandstorm',
         objectPosition: 'center 35%',
@@ -36,7 +36,7 @@ const SLIDES = [
     {
         image: '/images/VUDRAG-BOOK-MMXXV_Page_20_Image_0001.jpg',
         title: 'NETWORKING',
-        subtitle: 'An intricate lattice where light becomes the medium of connection',
+        subtitle: 'Latticework & Light',
         eyebrow: 'The Net-Work Series',
         effect: 'embers',
         objectPosition: 'center 50%',
@@ -44,7 +44,7 @@ const SLIDES = [
     {
         image: '/images/VUDRAG-BOOK-MMXXV_Page_40_Image_0001.jpg',
         title: 'ROMISLAV',
-        subtitle: 'Bronze echoes of a face shaped by time and memory',
+        subtitle: 'Bronze & Memory',
         eyebrow: 'Portrait Series',
         effect: 'dust',
         objectPosition: 'center 30%',
@@ -116,15 +116,21 @@ export function setupHeroSlider() {
         ${slidesHTML}
         <div class="hero-gradient-overlay"></div>
         <div class="hero-content">
-            <span class="hero-eyebrow">${SLIDES[0].eyebrow}</span>
+            <div class="hero-decorative-top">
+                <span class="hero-slide-counter">01</span>
+                <div class="hero-decorative-line"></div>
+                <span class="hero-eyebrow">${SLIDES[0].eyebrow}</span>
+            </div>
             <h1 class="hero-title">${SLIDES[0].title}</h1>
             <p class="hero-subtitle">${SLIDES[0].subtitle}</p>
-            <a href="/gallery.html" class="hero-cta">
-                <span>EXPLORE THE WORK</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
+            <div class="hero-decorative-bottom">
+                <a href="/gallery.html" class="hero-cta">
+                    <span>EXPLORE THE WORK</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
         </div>
         ${progressHTML}
         <div id="scroll-hint">
@@ -223,14 +229,14 @@ function setupScrollTrigger() {
             const centered = Math.max(-0.5, Math.min(0.5, slideProgress - 0.5));
 
             if (contentEl) {
-                const eyebrow = contentEl.querySelector('.hero-eyebrow');
+                const topDecor = contentEl.querySelector('.hero-decorative-top');
                 const title = contentEl.querySelector('.hero-title');
                 const subtitle = contentEl.querySelector('.hero-subtitle');
-                const cta = contentEl.querySelector('.hero-cta');
+                const bottomDecor = contentEl.querySelector('.hero-decorative-bottom');
 
                 // Each element shifts at a different rate for depth
-                if (eyebrow) {
-                    gsap.to(eyebrow, {
+                if (topDecor) {
+                    gsap.to(topDecor, {
                         y: centered * -30,
                         duration: 0.4,
                         ease: 'power2.out',
@@ -253,8 +259,8 @@ function setupScrollTrigger() {
                         overwrite: 'auto',
                     });
                 }
-                if (cta) {
-                    gsap.to(cta, {
+                if (bottomDecor) {
+                    gsap.to(bottomDecor, {
                         y: centered * -8,
                         duration: 0.4,
                         ease: 'power2.out',
@@ -332,6 +338,15 @@ function goToSlide(index) {
     if (activeTransition) {
         activeTransition.kill();
         activeTransition = null;
+
+        // Clean up: if we killed a transition midway, ensure only the outgoing
+        // and incoming slides are visible. Force all others to 0 opacity.
+        slideElements.forEach((el, i) => {
+            if (i !== currentSlide && i !== index) {
+                gsap.set(el, { opacity: 0 });
+                el.classList.remove('active');
+            }
+        });
     }
 
     const prevIndex = currentSlide;
@@ -352,10 +367,10 @@ function goToSlide(index) {
 
     // === Phase 1: Text exit — fast simultaneous fade ===
     const textElements = contentEl ? [
-        contentEl.querySelector('.hero-eyebrow'),
+        contentEl.querySelector('.hero-decorative-top'),
         contentEl.querySelector('.hero-title'),
         contentEl.querySelector('.hero-subtitle'),
-        contentEl.querySelector('.hero-cta'),
+        contentEl.querySelector('.hero-decorative-bottom'),
     ].filter(Boolean) : [];
 
     if (textElements.length) {
@@ -373,6 +388,7 @@ function goToSlide(index) {
         triggerBurst();
         // Swap text content immediately during crossfade
         if (contentEl) {
+            contentEl.querySelector('.hero-slide-counter').textContent = String(currentSlide + 1).padStart(2, '0');
             contentEl.querySelector('.hero-eyebrow').textContent = slide.eyebrow;
             contentEl.querySelector('.hero-title').textContent = slide.title;
             contentEl.querySelector('.hero-subtitle').textContent = slide.subtitle;
