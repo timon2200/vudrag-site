@@ -20,6 +20,14 @@ Photorealistic 3D sculptures rendered using cutting-edge Gaussian Splatting tech
 | **Kapljica** | "Where stone meets water" |
 | **Romislav** | "Ancient whispers in marble" |
 
+### 🌪️ Hero Slider & Desert Storm
+GSAP ScrollTrigger-driven cinematic hero carousel with atmospheric effects:
+- **Scroll-driven slide transitions** with compressed ~0.6s timing for fluid, professional feel
+- **Intra-slide text parallax** — per-element depth shift while scrolling within each slide
+- **Desert storm particle system** — 800+ sandstorm particles, 14+ organic wisps, embers, and floating dust
+- **Cinematic typography** with animated progress indicator
+- Reduced scroll distance and scrub delay for responsive switching
+
 ### 🌟 Plasma Explosion Transitions
 Custom GLSL shaders create mesmerizing plasma explosion/implosion effects when transitioning between sculptures:
 - Particles burst outward in spiraling patterns
@@ -54,6 +62,7 @@ Rich cinematic detail pages for each sculpture featuring:
 - **Technical Gallery**: Blueprint-style documentation with lightbox
 - **Inquire Section**: Elegant sculptural CTA linking to contact
 - **Related Works**: Dynamic grid of related pieces
+- **Marble Pedestal**: Compressed GLB model (651KB) with directional lighting and debug panel
 
 ### 📬 Contact Page
 Sculptural presentation of contact information:
@@ -70,8 +79,19 @@ Sculptural presentation of contact information:
 ### 🎥 Video Integration
 Atmospheric video elements throughout the experience:
 - **Video Dividers**: Cinematic section transitions
+- **Video Showcase**: Dedicated section for film and video content with CMS-managed film data
 - **Artist Section Background**: YouTube embed with oversized cropping
 - Dynamic loading with graceful fallbacks
+
+### 🖼️ Splat Hero & Viewer
+Standalone pages for immersive Gaussian Splat experiences:
+- **Splat Hero** (`splat-hero.html`): Full-screen cinematic splat display with particle wave shaders and text overlays
+- **Splat Viewer** (`splat-viewer.html`): Interactive viewer with orbital camera, debug panels, and fluid navigation
+- Reusable template system under `src/templates/splat-hero/`
+
+### ✂️ CMS Image Cropper
+- Built-in image cropper component for upload workflows
+- Integrated into the admin panel for precise image framing before save
 
 ---
 
@@ -123,6 +143,7 @@ npm run preview  # Preview production build
 vudrag-site/
 ├── public/
 │   ├── gs_*.sog                      # Gaussian Splat files
+│   ├── models/pedestal.glb           # Compressed marble pedestal
 │   └── textures/                     # Title textures
 ├── src/
 │   ├── main.js                       # Entry point & orchestrator
@@ -130,8 +151,11 @@ vudrag-site/
 │   ├── state.js                      # Global application state
 │   ├── contact.js                    # Contact page logic
 │   ├── sculpture-page.js             # Sculpture detail page
+│   ├── splat-hero.js                 # Standalone splat hero page
+│   ├── splat-viewer.js               # Interactive splat viewer
 │   ├── shaders/
-│   │   └── plasma.glsl.js            # Custom GLSL transition shader
+│   │   ├── plasma.glsl.js            # Custom GLSL transition shader
+│   │   └── particle-wave.glsl.js     # Particle wave shader
 │   ├── systems/
 │   │   ├── camera.js                 # Orbital camera with sway
 │   │   ├── hero-transition.js        # Hero fade-out transition
@@ -139,34 +163,47 @@ vudrag-site/
 │   │   ├── post-effects.js           # HDR bloom, vignette, grading
 │   │   ├── scroll.js                 # Magnetic snap scroll
 │   │   └── splats.js                 # Splat loading & transitions
+│   ├── templates/splat-hero/         # Reusable splat hero template
 │   ├── ui/
 │   │   ├── artist-section.js         # Artist biography section
 │   │   ├── category-hub.js           # 3D interactive category cards
+│   │   ├── desert-storm.js           # Desert storm particle system
 │   │   ├── footer.js                 # Dynamic CMS-powered footer
+│   │   ├── hero-slider.js            # GSAP ScrollTrigger hero slider
 │   │   ├── menu-overlay.js           # Full-screen hamburger menu
 │   │   ├── sticky-header.js          # Minimal sticky header
 │   │   ├── video-divider.js          # Cinematic video transitions
+│   │   ├── video-showcase.js         # Film/video showcase section
 │   │   └── works-showcase.js         # Portfolio grid display
 │   └── styles/
 │       ├── artist-section.css        # Artist section styles
 │       ├── contact.css               # Contact page styles
 │       ├── footer.css                # Footer styles
+│       ├── hero-slider.css           # Hero slider styles
 │       ├── sculpture-page.css        # Detail page styles
+│       ├── video-showcase.css        # Video showcase styles
 │       └── video-divider.css         # Video component styles
 ├── admin/
 │   ├── index.html                    # CMS admin panel
-│   ├── src/app.js                    # Admin panel JavaScript
-│   └── styles/admin.css              # Admin panel styles
+│   ├── src/
+│   │   ├── app.js                    # Admin panel JavaScript
+│   │   └── image-cropper.js          # Image cropper component
+│   └── styles/
+│       ├── admin.css                 # Admin panel styles
+│       └── image-cropper.css         # Image cropper styles
 ├── cms/
 │   ├── server.js                     # Express API server
 │   └── data/
 │       ├── splats.json               # 3D splat configuration
 │       ├── galleries.json            # Gallery definitions
 │       ├── collections.json          # Category hub content
+│       ├── films.json                # Film/video showcase data
 │       ├── sculptures.json           # Detail page narratives
 │       ├── site-content.json         # Footer & contact content
 │       └── grid-order.json           # Splat display order
 ├── index.html                        # Main page
+├── splat-hero.html                   # Standalone splat hero
+├── splat-viewer.html                 # Interactive splat viewer
 ├── sculpture.html                    # Sculpture detail template
 ├── contact.html                      # Contact page
 └── vite.config.js                    # Vite configuration
@@ -311,7 +348,16 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 - [x] Site Content editor (footer, contact, artist)
 - [x] Asset management with drag-and-drop ordering
 
-### Phase 4: Production
+### Phase 4: Cinematic Experience ✅
+- [x] GSAP ScrollTrigger hero slider with scroll-driven parallax
+- [x] Desert storm atmospheric particle system (800+ particles, wisps, embers)
+- [x] Marble pedestal model with directional lighting
+- [x] Standalone splat-hero & splat-viewer pages
+- [x] CMS image cropper for upload workflows
+- [x] Video showcase section with film data management
+- [x] GLB compression workflow for web-optimized 3D assets
+
+### Phase 5: Production
 - [ ] Mobile optimization
 - [ ] SEO & accessibility
 - [ ] Performance profiling
