@@ -44,6 +44,10 @@ app.use(express.json());
 // Static file serving for admin panel
 app.use('/cms-admin', express.static(join(__dirname, '..', 'admin')));
 
+// Serve frontend files from document root (parent dir in cPanel Passenger setup)
+const DOCUMENT_ROOT = join(__dirname, '..');
+app.use(express.static(DOCUMENT_ROOT));
+
 // Serve public assets (images, splats)
 app.use(express.static(PUBLIC_DIR));
 
@@ -810,6 +814,21 @@ app.post('/api/init-from-source', authMiddleware, async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+// === SPA Fallback ===
+// For any non-API request that doesn't match a static file, serve index.html
+app.get('*', (req, res) => {
+    // Don't catch API or cms-admin routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/cms-admin')) {
+        return res.status(404).json({ error: 'Not found' });
+    }
+    const indexPath = join(__dirname, '..', 'index.html');
+    if (existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send('Frontend not deployed yet');
     }
 });
 
