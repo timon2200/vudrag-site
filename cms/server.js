@@ -42,7 +42,7 @@ app.use(cors({
 app.use(express.json());
 
 // Static file serving for admin panel
-app.use('/admin', express.static(join(__dirname, '..', 'admin')));
+app.use('/cms-admin', express.static(join(__dirname, '..', 'admin')));
 
 // Serve public assets (images, splats)
 app.use(express.static(PUBLIC_DIR));
@@ -814,14 +814,17 @@ app.post('/api/init-from-source', authMiddleware, async (req, res) => {
 });
 
 // === Start Server ===
-app.listen(PORT, () => {
+// Passenger on cPanel sets process.env.PORT automatically
+const LISTEN_PORT = process.env.PORT || PORT;
+app.listen(LISTEN_PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║          Vudrag CMS Server Running                        ║
 ╠═══════════════════════════════════════════════════════════╣
-║  Admin Panel:  http://localhost:${PORT}/admin              ║
-║  API Base:     http://localhost:${PORT}/api                ║
-║  Config:       http://localhost:${PORT}/api/config.json    ║
+║  Port:         ${LISTEN_PORT}                                      ║
+║  Admin Panel:  /cms-admin                                 ║
+║  API Base:     /api                                       ║
+║  Config:       /api/config.json                           ║
 ╚═══════════════════════════════════════════════════════════╝
     `);
 });
