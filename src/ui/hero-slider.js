@@ -185,6 +185,9 @@ export async function setupHeroSlider() {
     // Setup pagination clicks
     setupPagination(heroSection);
 
+    // Setup scroll escape so users can scroll past the slider to content below
+    setupScrollEscape(heroSection);
+
     console.log('🎬 Hero slider initialized —', slides.length, 'slides (lazy video loading)');
 }
 
@@ -261,3 +264,74 @@ function setupPagination(heroSection) {
         });
     });
 }
+
+/**
+ * Scroll Escape — let users scroll past the slider into the page content.
+ * 
+ * When the hero slider reaches its last slide and the user keeps scrolling
+ * down, we break free and scroll the outer page to the content below.
+ * 
+ * While "escaped", the hero's internal overflow is DISABLED so that
+ * scrolling back up moves the outer page rather than snapping between
+ * slides. Internal scrolling is only re-enabled once the outer page
+ * has fully returned to the top (window.scrollY ≈ 0).
+ */
+function setupScrollEscape(heroSection) {
+    let escapeAccumulator = 0;
+    const ESCAPE_THRESHOLD = 120;
+    let escaped = false;
+
+    const pagination = heroSection.querySelector('.hero-pagination');
+
+    /** Lock the hero's internal scroll so it can't intercept wheel events */
+    function lockHeroScroll() {
+        heroSection.style.overflowY = 'hidden';
+        heroSection.style.scrollSnapType = 'none';
+        if (pagination) pagination.style.opacity = '0';
+    }
+
+    /** Restore the hero's internal scroll-snap behaviour */
+    function unlockHeroScroll() {
+        heroSection.style.overflowY = '';
+        heroSection.style.scrollSnapType = '';
+        if (pagination) pagination.style.opacity = '';
+    }
+
+    heroSection.addEventListener('wheel', (e) => {
+        // While escaped, don't let the hero consume scroll at all
+        if (escaped) return;
+
+        const atBottom = heroSection.scrollTop + heroSection.clientHeight >= heroSection.scrollHeight - 2;
+
+        // Scrolling DOWN while at the last slide → accumulate escape intent
+        if (atBottom && e.deltaY > 0) {
+            escapeAccumulator += e.deltaY;
+
+            if (escapeAccumulator >= ESCAPE_THRESHOLD) {
+                escaped = true;
+                escapeAccumulator = 0;
+
+                // Lock internal scroll, then push outer page down
+                lockHeroScroll();
+
+                const contentArea = document.getElementById('content-area');
+                if (contentArea) {
+                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            return;
+        }
+
+        // Any normal internal scroll resets the accumulator
+        escapeAccumulator = 0;
+    }, { passive: true });
+
+    // When the outer page scrolls back to the very top, re-enable the slider
+    window.addEventListener('scroll', () => {
+        if (escaped && window.scrollY <= 5) {
+            escaped = false;
+            unlockHeroScroll();
+        }
+    }, { passive: true });
+}
+
