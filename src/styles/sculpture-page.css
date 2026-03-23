@@ -139,7 +139,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: var(--title-texture, url('/textures/title-texture.png'));
+    background-image: var(--title-texture, url('/textures/title-texture.webp'));
     background-size: cover;
     background-position: center;
     opacity: 0.35;

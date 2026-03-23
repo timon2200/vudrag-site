@@ -18,7 +18,7 @@ const FALLBACK_CATEGORIES = [
         subtitle: 'The Net-Work Technique',
         description: 'Semi-transparent lattices where light and shadow become the true medium',
         count: 17,
-        image: '/images/networks.jpg' // Placeholder
+        image: '/images/8.webp'
     },
     {
         id: 'coins',
@@ -42,7 +42,7 @@ const FALLBACK_CATEGORIES = [
         subtitle: 'Flora & Landscape',
         description: 'Organic forms reimagined through industrial precision.',
         count: 7,
-        image: '/images/nature.jpg' // Placeholder
+        image: '/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp'
     },
     {
         id: 'portraits',

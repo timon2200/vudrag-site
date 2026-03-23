@@ -83,7 +83,7 @@ const FALLBACK_WORKS = [
         series: 'Press',
         year: 'Various',
         size: 'wide',
-        image: '/images/press.jpg'
+        image: '/images/luminous-museum-interior-stockcake.webp'
     }
 ];
 
