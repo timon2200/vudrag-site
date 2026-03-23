@@ -14,7 +14,7 @@
 
 const FALLBACK_SLIDES = [
     {
-        image: '/images/VUDRAG-BOOK-MMXXV_Page_03_Image_0001.webp',
+        image: '/images/Forge.webp',
         youtubeId: '-EINfzSwMeg',
         youtubeIdMobile: 'XH2j7ZigZyE',
         title: 'THE FORGE',
@@ -24,7 +24,7 @@ const FALLBACK_SLIDES = [
         link: '/gallery.html',
     },
     {
-        image: '/images/VUDRAG-BOOK-MMXXV_Page_20_Image_0001.webp',
+        image: '/images/Network.webp',
         youtubeId: 'BCEdZVVwBC4',
         youtubeIdMobile: 'AL1UjxlcHo0',
         title: 'NETWORKING',
@@ -34,7 +34,7 @@ const FALLBACK_SLIDES = [
         link: '/gallery.html',
     },
     {
-        image: '/images/VUDRAG-BOOK-MMXXV_Page_40_Image_0001.webp',
+        image: '/images/Atlas.webp',
         youtubeId: 'PkF5YGPu_YI',
         youtubeIdMobile: '8sbb6UZwZC4',
         startTime: 2,
