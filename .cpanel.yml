@@ -2,23 +2,20 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/varazdin/vudrag.varazdin.studio
-    # Activate Node.js environment
-    - source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/vudrag.varazdin.studio/cms
-    # --- Frontend ---
-    # Install dependencies and build
-    - npm install
-    - npm run build
-    # Copy built frontend to document root
-    - /bin/cp -R dist/* $DEPLOYPATH/
-    # Copy public assets (splats, images, etc.)
-    - /bin/cp -R public/* $DEPLOYPATH/
-    # --- CMS Backend ---
-    - /bin/mkdir -p $DEPLOYPATH/cms/services
-    - /bin/cp cms/server.js $DEPLOYPATH/cms/
-    - /bin/cp cms/package.json $DEPLOYPATH/cms/
-    - /bin/cp cms/package-lock.json $DEPLOYPATH/cms/
-    - /bin/cp -R cms/services/* $DEPLOYPATH/cms/services/
-    # Install CMS production dependencies
-    - cd $DEPLOYPATH/cms && npm install --production
-    # --- Admin Panel ---
-    - /bin/cp -R admin $DEPLOYPATH/
+    - export NODEVENV="source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate"
+    # --- Frontend: install deps and build ---
+    - /bin/bash -c "source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/repositories/vudrag-site && npm install && npm run build"
+    # --- Copy frontend dist to document root ---
+    - /bin/cp -R /home/varazdin/repositories/vudrag-site/dist/* /home/varazdin/vudrag.varazdin.studio/
+    # --- Copy public assets (splats, images, etc.) ---
+    - /bin/cp -R /home/varazdin/repositories/vudrag-site/public/* /home/varazdin/vudrag.varazdin.studio/
+    # --- Copy CMS backend files ---
+    - /bin/mkdir -p /home/varazdin/vudrag.varazdin.studio/cms/services
+    - /bin/cp /home/varazdin/repositories/vudrag-site/cms/server.js /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp /home/varazdin/repositories/vudrag-site/cms/package.json /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp /home/varazdin/repositories/vudrag-site/cms/package-lock.json /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp -R /home/varazdin/repositories/vudrag-site/cms/services/* /home/varazdin/vudrag.varazdin.studio/cms/services/
+    # --- Install CMS deps ---
+    - /bin/bash -c "source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/vudrag.varazdin.studio/cms && npm install --production"
+    # --- Copy admin panel ---
+    - /bin/cp -R /home/varazdin/repositories/vudrag-site/admin /home/varazdin/vudrag.varazdin.studio/
