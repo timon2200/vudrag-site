@@ -343,7 +343,7 @@ body {
 .feed-container {
     max-width: 760px;
     /* Narrower for better reading */
-    margin: -60px auto 100px;
+    margin: -60px auto 0;
     padding: 0 20px;
     position: relative;
     z-index: 10;
@@ -519,12 +519,10 @@ body {
 
 /* Specific Footer Particles Override */
 #footer-particles {
-    height: 100vh;
-    /* Extend significantly upwards */
+    height: 40vh;
     top: auto;
     bottom: 0;
     z-index: -1;
-    /* Ensure it stays behind content */
 
     /* Fade out as they go up */
     mask-image: linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
