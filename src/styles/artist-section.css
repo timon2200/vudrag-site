@@ -14,50 +14,6 @@
     overflow: hidden;
 }
 
-/* === Video Background === */
-.artist-section__video-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.artist-section__video-bg iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /*
-     * Cover-fit for 16:9 iframe:
-     * - min-width/min-height ensure it's at least as big as parent
-     * - aspect-ratio: 16/9 forces the iframe to stay 16:9
-     * - When both mins can't be satisfied at 16:9, the larger
-     *   dimension wins and the other grows proportionally,
-     *   overflow is clipped by the parent's overflow:hidden
-     */
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    transform: translate(-50%, -50%);
-    border: none;
-    pointer-events: none;
-    filter: brightness(0.4) saturate(1.1) contrast(1.1);
-}
-
-/* Dark Overlay for text readability */
-.artist-section__video-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg,
-            rgba(26, 26, 26, 0.85) 0%,
-            rgba(26, 26, 26, 0.6) 50%,
-            rgba(26, 26, 26, 0.9) 100%);
-    z-index: 1;
-    pointer-events: none;
-}
-
 .artist-section__watermark {
     position: absolute;
     top: 10%;

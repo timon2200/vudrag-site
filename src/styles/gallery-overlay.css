@@ -5,6 +5,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh; /* Safari-safe: uses dynamic viewport height */
     pointer-events: none;
     /* Let clicks pass to canvas */
     z-index: 2000;
@@ -205,8 +206,8 @@
 
     /* Collapsed state - show only drag handle peek */
     .gallery-info-panel.collapsed {
-        /* Ensure enough peek is visible (3.5rem + safe area) */
-        transform: translateY(calc(100% - 3.5rem - env(safe-area-inset-bottom)));
+        /* JS handles collapsed transform for cross-browser compat */
+        pointer-events: auto;
     }
 
     .gallery-info-panel.collapsed .panel-drag-handle {

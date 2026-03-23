@@ -103,23 +103,6 @@ export async function setupArtistSection() {
 }
 
 /**
- * Build YouTube embed URL with autoplay parameters
- */
-function buildVideoEmbedUrl(baseUrl) {
-    // Extract video ID from various YouTube URL formats
-    let videoId = '';
-    const regExp = /(?:youtube\.com\/embed\/|youtube\.com\/watch\?v=|youtu\.be\/)([^?&]+)/;
-    const match = baseUrl.match(regExp);
-    if (match) {
-        videoId = match[1];
-    } else {
-        // Assume it's already just a video ID or full embed URL
-        videoId = baseUrl.includes('embed') ? baseUrl.split('/').pop().split('?')[0] : baseUrl;
-    }
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&playsinline=1&rel=0&showinfo=0&modestbranding=1&disablekb=1&fs=0`;
-}
-
-/**
  * Create the artist section DOM structure
  */
 function createArtistSectionDOM() {
@@ -127,18 +110,7 @@ function createArtistSectionDOM() {
     section.className = 'artist-section';
     section.id = 'artist-section';
 
-    const videoEmbedUrl = buildVideoEmbedUrl(ARTIST_DATA.videoUrl);
-
     section.innerHTML = `
-        <!-- Ambient Video Background -->
-        <div class="artist-section__video-bg">
-            <iframe
-                src="${videoEmbedUrl}"
-                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
-                title="Ambient background video"></iframe>
-        </div>
-        <div class="artist-section__video-overlay"></div>
-        
         <div class="artist-section__watermark" aria-hidden="true">ARTIST</div>
         
         <!-- Hero Quote -->

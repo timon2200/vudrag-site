@@ -127,3 +127,42 @@
     max-width: 300px;
     line-height: 1.6;
 }
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 768px) {
+    .menu-overlay-content {
+        gap: 1.25rem;
+        padding: 0 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .menu-link {
+        font-size: 2rem;
+    }
+
+    .menu-close {
+        top: 1.25rem;
+        right: 1.25rem;
+    }
+
+    .menu-info {
+        margin-top: 2.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .menu-link {
+        font-size: 1.6rem;
+        letter-spacing: 0.03em;
+    }
+
+    .menu-overlay-content {
+        gap: 1rem;
+    }
+
+    .menu-info {
+        margin-top: 2rem;
+    }
+}
