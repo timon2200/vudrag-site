@@ -1,9 +1,9 @@
 /**
- * Hero Pinned → GSAP ScrollTrigger Layout
+ * Hero Layout
  * 
- * GSAP ScrollTrigger handles pinning the hero section.
- * The scroll zone provides the runway for scroll-driven transitions.
- * Content sections flow naturally after the scroll zone.
+ * Simple layout for the hero section and content flow.
+ * No pinning, no scroll hijacking — just a 100vh hero
+ * followed by content sections in normal document flow.
  */
 
 /* Root scroll container - normal document flow */
@@ -13,27 +13,16 @@
     overflow-x: clip;
 }
 
-/* Hero section - GSAP pins this via ScrollTrigger */
+/* Hero section - simple 100vh block */
 #hero-section {
     position: relative;
     height: 100vh;
     width: 100%;
     z-index: 1;
     overflow: hidden;
-    will-change: opacity;
 }
 
-/* Scroll zone - defines scroll distance for GSAP, hidden from layout */
-#hero-scroll-zone {
-    position: absolute;
-    height: 300vh;
-    width: 0;
-    overflow: hidden;
-    pointer-events: none;
-    visibility: hidden;
-}
-
-/* Content area - scrolls over the hero with a cinematic gradient reveal */
+/* Content area - normal document flow below hero */
 .content-section {
     position: relative;
     z-index: 10;
@@ -67,39 +56,4 @@
     background:
         radial-gradient(ellipse at center bottom, transparent 50%, rgba(5, 5, 8, 0.3) 100%),
         linear-gradient(to bottom, transparent 70%, rgba(5, 5, 8, 0.6) 100%);
-}
-
-/* Scroll hint */
-.hero-scroll-indicator {
-    position: absolute;
-    bottom: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
-}
-
-.hero-scroll-indicator.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.hero-scroll-indicator span {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-}
-
-/* Mobile: no scroll zone, rely on auto-advance */
-@media (max-width: 768px) {
-    #hero-scroll-zone {
-        height: 0;
-        display: none;
-    }
 }

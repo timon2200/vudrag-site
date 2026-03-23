@@ -299,6 +299,9 @@ async function loadSiteContent() {
 function renderSiteContent() {
     const content = state.siteContent;
 
+    // === Hero Slides ===
+    renderHeroSlides(content.heroSlides || []);
+
     // Note: Category Hub is now managed via Collections tab
 
     // === Artist Section with Portrait Uploader ===
@@ -374,6 +377,9 @@ async function saveSiteContent() {
         saveBtn.textContent = 'Saving...';
         saveBtn.disabled = true;
 
+        // === Collect Hero Slides ===
+        const heroSlides = collectHeroSlides();
+
         // Note: Categories are managed via Collections tab, not here
 
         // === Collect Artist Section ===
@@ -400,6 +406,7 @@ async function saveSiteContent() {
 
         // === Gather Footer & Contact ===
         const updatedContent = {
+            heroSlides,
             artistSection,
             footer: {
                 brand: document.getElementById('footer-brand')?.value || '',
@@ -443,6 +450,129 @@ async function saveSiteContent() {
         saveBtn.textContent = '💾 Save All Changes';
         saveBtn.disabled = false;
     }
+}
+
+// === Hero Slides Editor ===
+function renderHeroSlides(slides) {
+    const container = document.getElementById('hero-slides-list');
+    if (!container) return;
+
+    if (!slides || slides.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); padding: 20px; text-align: center;">No hero slides yet. Click "+ Add Slide" to create one.</p>';
+        return;
+    }
+
+    container.innerHTML = slides.map((slide, i) => `
+        <div class="hero-slide-card" data-index="${i}">
+            <div class="hero-slide-card__header">
+                <span class="hero-slide-card__number">${String(i + 1).padStart(2, '0')}</span>
+                <h4 class="hero-slide-card__title">${slide.title || 'Untitled Slide'}</h4>
+                <button class="btn-delete hero-slide-card__delete" onclick="removeHeroSlide(${i})">×</button>
+            </div>
+            <div class="hero-slide-card__body">
+                <div class="hero-slide-card__image">
+                    ${createImageUploader(`hero-slide-${i}`, 'Slide Image', slide.image || '')}
+                </div>
+                <div class="hero-slide-card__fields">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="hero-slide-title-${i}" value="${slide.title || ''}" placeholder="IRON MAIDEN">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle</label>
+                        <input type="text" name="hero-slide-subtitle-${i}" value="${slide.subtitle || ''}" placeholder="Monumental Steel">
+                    </div>
+                    <div class="form-group">
+                        <label>Eyebrow</label>
+                        <input type="text" name="hero-slide-eyebrow-${i}" value="${slide.eyebrow || ''}" placeholder="Nikola Vudrag">
+                    </div>
+                    <div class="form-group">
+                        <label>YouTube Video ID <span style="color: var(--text-muted); font-weight: 400; text-transform: none;">(leave empty for image-only)</span></label>
+                        <input type="text" name="hero-slide-youtube-${i}" value="${slide.youtubeId || ''}" placeholder="e.g. dQw4w9WgXcQ">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mobile Video ID <span style="color: var(--text-muted); font-weight: 400; text-transform: none;">(portrait, optional)</span></label>
+                            <input type="text" name="hero-slide-youtube-mobile-${i}" value="${slide.youtubeIdMobile || ''}" placeholder="Portrait version">
+                        </div>
+                        <div class="form-group">
+                            <label>Start Time <span style="color: var(--text-muted); font-weight: 400; text-transform: none;">(seconds)</span></label>
+                            <input type="number" name="hero-slide-start-${i}" value="${slide.startTime || ''}" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Object Position</label>
+                            <input type="text" name="hero-slide-objpos-${i}" value="${slide.objectPosition || 'center 50%'}" placeholder="center 35%">
+                        </div>
+                        <div class="form-group">
+                            <label>Link</label>
+                            <input type="text" name="hero-slide-link-${i}" value="${slide.link || '/gallery.html'}" placeholder="/gallery.html">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Initialize image uploaders for each slide
+    slides.forEach((slide, i) => {
+        initializeImageUploader(`hero-slide-${i}`, (path) => {
+            // Update the hidden input value
+            const hiddenInput = document.querySelector(`input[name="hero-slide-${i}"]`);
+            if (hiddenInput) hiddenInput.value = path;
+        });
+    });
+}
+
+function collectHeroSlides() {
+    const container = document.getElementById('hero-slides-list');
+    if (!container) return state.siteContent.heroSlides || [];
+
+    const cards = container.querySelectorAll('.hero-slide-card');
+    if (cards.length === 0) return state.siteContent.heroSlides || [];
+
+    return Array.from(cards).map((card, i) => {
+        const imageInput = card.querySelector(`input[name="hero-slide-${i}"]`);
+        const youtubeVal = card.querySelector(`input[name="hero-slide-youtube-${i}"]`)?.value || '';
+        const slide = {
+            image: imageInput?.value || '',
+            title: card.querySelector(`input[name="hero-slide-title-${i}"]`)?.value || '',
+            subtitle: card.querySelector(`input[name="hero-slide-subtitle-${i}"]`)?.value || '',
+            eyebrow: card.querySelector(`input[name="hero-slide-eyebrow-${i}"]`)?.value || '',
+            objectPosition: card.querySelector(`input[name="hero-slide-objpos-${i}"]`)?.value || 'center 50%',
+            link: card.querySelector(`input[name="hero-slide-link-${i}"]`)?.value || '/gallery.html'
+        };
+        if (youtubeVal) slide.youtubeId = youtubeVal;
+        const youtubeMobileVal = card.querySelector(`input[name="hero-slide-youtube-mobile-${i}"]`)?.value || '';
+        if (youtubeMobileVal) slide.youtubeIdMobile = youtubeMobileVal;
+        const startVal = parseInt(card.querySelector(`input[name="hero-slide-start-${i}"]`)?.value);
+        if (startVal > 0) slide.startTime = startVal;
+        return slide;
+    });
+}
+
+window.removeHeroSlide = function(index) {
+    if (!confirm('Remove this hero slide?')) return;
+    const slides = collectHeroSlides();
+    slides.splice(index, 1);
+    state.siteContent.heroSlides = slides;
+    renderHeroSlides(slides);
+};
+
+function addHeroSlide() {
+    const slides = collectHeroSlides();
+    slides.push({
+        image: '',
+        youtubeId: '',
+        title: 'NEW SLIDE',
+        subtitle: 'Subtitle',
+        eyebrow: 'Eyebrow Text',
+        objectPosition: 'center 50%',
+        link: '/gallery.html'
+    });
+    state.siteContent.heroSlides = slides;
+    renderHeroSlides(slides);
 }
 
 // === Asset Loading ===
@@ -2230,6 +2360,7 @@ function init() {
     document.getElementById('add-collection')?.addEventListener('click', window.addCollection);
     document.getElementById('save-grid-order')?.addEventListener('click', saveGridOrder);
     document.getElementById('save-site-content')?.addEventListener('click', saveSiteContent);
+    document.getElementById('add-hero-slide')?.addEventListener('click', addHeroSlide);
     document.getElementById('add-film')?.addEventListener('click', window.addFilm);
     document.getElementById('add-user')?.addEventListener('click', window.addUser);
 

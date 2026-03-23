@@ -129,25 +129,7 @@ export function resetReveals() {
     }
 }
 
-/**
- * Apply parallax effect to elements
- * Call this from rAF or scroll handler
- */
-export function updateParallax(scrollY) {
-    const parallaxElements = document.querySelectorAll('[data-parallax]');
 
-    parallaxElements.forEach(el => {
-        const speed = parseFloat(el.dataset.parallax) || 0.5;
-        const rect = el.getBoundingClientRect();
-        const elementTop = rect.top + scrollY;
-
-        // Only apply if element is near viewport
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            const yOffset = (scrollY - elementTop) * speed * 0.2;
-            el.style.transform = `translateY(${yOffset}px)`;
-        }
-    });
-}
 
 /**
  * Cleanup observer

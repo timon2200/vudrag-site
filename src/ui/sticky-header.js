@@ -2,10 +2,9 @@
  * Sticky Header
  * 
  * Minimalist navigation that appears after scrolling past the hero section.
- * Patek-style: centered logo, hamburger menu, blur background.
+ * Uses native scroll position — no custom state dependencies.
  */
 
-import { state, SECTIONS } from '../state.js';
 import { toggleMenu } from './menu-overlay.js';
 
 // DOM references
@@ -15,12 +14,9 @@ let backLink = null;
 
 // State
 let isVisible = false;
-let lastScrollY = 0;
 
 // Configuration
 const HEADER_CONFIG = {
-    SHOW_THRESHOLD: 0.3,       // Show after this scroll progress in hero
-    HIDE_ON_SCROLL_UP: false,  // Whether to hide when scrolling up
     LOGO_TEXT: 'VUDRAG'
 };
 
@@ -28,7 +24,6 @@ const HEADER_CONFIG = {
  * Create and inject the sticky header into the DOM
  */
 export function createStickyHeader() {
-    // Create header element
     header = document.createElement('header');
     header.className = 'sticky-header';
     header.innerHTML = `
@@ -56,8 +51,17 @@ export function createStickyHeader() {
     progressBar = document.getElementById('scroll-progress-bar');
     backLink = document.getElementById('back-to-gallery');
 
+    // Hide back-link on the main index page — it's only for sub-pages
+    const isIndexPage = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+    if (backLink && isIndexPage) {
+        backLink.style.display = 'none';
+    }
+
     // Setup event listeners
     setupHeaderEvents();
+
+    // Setup native scroll listener for show/hide
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     console.log('📍 Sticky header created');
 }
@@ -71,22 +75,20 @@ function setupHeaderEvents() {
     if (logo) {
         logo.addEventListener('click', (e) => {
             e.preventDefault();
-            scrollToTop();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
     // Back to gallery link
-    const backLink = document.getElementById('back-to-gallery');
-    if (backLink) {
-        backLink.addEventListener('click', (e) => {
+    const back = document.getElementById('back-to-gallery');
+    if (back) {
+        back.addEventListener('click', (e) => {
             e.preventDefault();
-
-            // Return to gallery - scroll to top regardless of section
-            scrollToTop();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
-    // Menu toggle (placeholder for future menu)
+    // Menu toggle
     const menuToggle = header.querySelector('.menu-toggle');
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
@@ -96,99 +98,34 @@ function setupHeaderEvents() {
 }
 
 /**
- * Smooth scroll to top
+ * Handle native scroll — show/hide header based on scroll position
+ * On the index page, the sticky header never shows (static header handles it)
  */
-function scrollToTop() {
-    state.targetScrollProgress = 0;
-    state.scrollProgress = 0;
-}
-
-/**
- * Update header visibility based on scroll state
- * Call this from your main update loop
- */
-export function updateStickyHeader() {
+function handleScroll() {
     if (!header) return;
 
-    const shouldShow = determineShouldShow();
+    // Don't show on index page — static header is already present
+    const isIndexPage = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+    if (isIndexPage) return;
+
+    const scrollY = window.scrollY;
+    const threshold = window.innerHeight * 0.8;
+
+    const shouldShow = scrollY > threshold;
 
     if (shouldShow && !isVisible) {
-        showHeader();
+        isVisible = true;
+        header.classList.add('visible');
     } else if (!shouldShow && isVisible) {
-        hideHeader();
+        isVisible = false;
+        header.classList.remove('visible');
     }
 
     // Update scroll progress bar
-    updateProgressBar();
-
-    // Update back link visibility based on section
-    updateBackLink();
-}
-
-/**
- * Determine if header should be visible
- */
-function determineShouldShow() {
-    // Show in category hub
-    if (state.currentSection === SECTIONS.CATEGORY_HUB) {
-        return true;
-    }
-
-    // Show after scrolling past threshold in splat gallery
-    if (state.currentSection === SECTIONS.SPLAT_GALLERY) {
-        return state.scrollProgress > HEADER_CONFIG.SHOW_THRESHOLD;
-    }
-
-    return false;
-}
-
-/**
- * Show the header
- */
-function showHeader() {
-    isVisible = true;
-    header.classList.add('visible');
-}
-
-/**
- * Hide the header
- */
-function hideHeader() {
-    isVisible = false;
-    header.classList.remove('visible');
-}
-
-/**
- * Update scroll progress bar
- */
-function updateProgressBar() {
-    if (!progressBar) return;
-
-    let progress = 0;
-
-    if (state.currentSection === SECTIONS.SPLAT_GALLERY) {
-        progress = state.scrollProgress;
-    } else if (state.currentSection === SECTIONS.CATEGORY_HUB) {
-        // Could track hub scroll progress here
-        progress = 1;
-    }
-
-    progressBar.style.width = `${progress * 100}%`;
-}
-
-/**
- * Update back link visibility
- */
-function updateBackLink() {
-    if (!backLink) return;
-
-    // Show only when not in splat gallery
-    if (state.currentSection === SECTIONS.SPLAT_GALLERY) {
-        backLink.style.opacity = '0';
-        backLink.style.pointerEvents = 'none';
-    } else {
-        backLink.style.opacity = '1';
-        backLink.style.pointerEvents = 'auto';
+    if (progressBar) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollY / docHeight : 0;
+        progressBar.style.width = `${progress * 100}%`;
     }
 }
 
@@ -197,6 +134,7 @@ function updateBackLink() {
  */
 export function destroyStickyHeader() {
     if (header) {
+        window.removeEventListener('scroll', handleScroll);
         header.remove();
         header = null;
         progressBar = null;

@@ -1,273 +1,270 @@
 /**
- * Hero Slider CSS — GSAP-Driven Cinematic Carousel
+ * Hero Slider CSS — Rolls-Royce–Style Full-Screen Scroll Carousel
  * 
- * Layout, typography, and progress indicator styles.
- * All transitions (slide crossfade, text stagger, Ken Burns) 
- * are handled by GSAP in hero-slider.js — no CSS animations needed.
+ * Each slide is a full-viewport section in normal document flow.
+ * CSS scroll-snap gives the magnetic "lock to slide" feel.
+ * Minimal animations — just the essentials.
  */
 
 /* ========================
-   Slide Container & Slides
+   Hero Container — snap host
+   ======================== */
+
+#hero-section {
+    position: relative;
+    width: 100%;
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: 100vh;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but keep scroll functional */
+#hero-section::-webkit-scrollbar {
+    display: none;
+}
+#hero-section {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* ========================
+   Individual Slides
    ======================== */
 
 .hero-slide {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* Background image */
+.hero-slide__image {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    z-index: 1;
-    will-change: opacity, transform;
-}
-
-.hero-slide.active {
-    opacity: 1;
-    z-index: 2;
-}
-
-.hero-image-wrapper {
-    position: absolute;
-    inset: -20px;
-    overflow: hidden;
-}
-
-.hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 1s ease;
-    will-change: transform;
-    transform: scale(1.08);
+    transition: transform 6s ease-out;
+    transform: scale(1.0);
 }
 
-.hero-image.loaded {
-    opacity: 1;
+/* Subtle Ken Burns on active slide */
+.hero-slide.is-active .hero-slide__image {
+    transform: scale(1.06);
 }
 
 /* ========================
-   Gradient Overlays
+   YouTube Video Background
    ======================== */
 
-#hero-section .hero-gradient-overlay {
+.hero-slide__video-wrap {
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    z-index: 4;
-    background:
-        radial-gradient(ellipse 70% 60% at center, rgba(5, 5, 8, 0.4) 10%, rgba(5, 5, 8, 0.7) 100%),
-        linear-gradient(to bottom, rgba(5, 5, 8, 0.6) 0%, transparent 40%, rgba(5, 5, 8, 0.85) 100%);
+    overflow: hidden;
+    z-index: 0;
+    background: #050508;
 }
 
-/* ========================
-   Hero Content (Centered)
-   ======================== */
-
-.hero-content {
+/* Scale iframe to always cover the viewport regardless of aspect ratio.
+   A 16:9 video on a 9:16 (portrait) screen needs ~3.16× width to fill height.
+   We use max() to pick the larger dimension so it always covers. */
+.hero-slide__video {
     position: absolute;
     top: 50%;
     left: 50%;
+    /* On landscape: height drives, width follows 16:9 ratio
+       On portrait: width must be enough to fill height at 16:9 */
+    width: max(177.78vh, 100vw);   /* 177.78vh = 100vh × (16/9) */
+    height: max(56.25vw, 100vh);   /* 56.25vw = 100vw × (9/16) */
+    min-width: 100%;
+    min-height: 100%;
     transform: translate(-50%, -50%);
-    z-index: 5;
-    text-align: center;
     pointer-events: none;
-    will-change: transform, opacity;
-    width: 100%;
-    max-width: 900px;
-    padding: 0 2rem;
+    border: none;
 }
 
-/* ========================
-   Decorative Details
-   ======================== */
-
-.hero-decorative-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.hero-slide-counter {
-    font-family: var(--font-secondary);
-    font-size: 0.75rem;
-    color: var(--color-gold);
-    letter-spacing: 0.15em;
-    opacity: 0.8;
-}
-
-.hero-decorative-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, rgba(201, 167, 122, 0) 0%, rgba(201, 167, 122, 0.6) 50%, rgba(201, 167, 122, 0) 100%);
-    margin: 1rem 0;
-}
-
-/* ========================
-   Typography
-   ======================== */
-
-@keyframes cinematic-glow {
-    0% {
-        text-shadow:
-            0 4px 60px rgba(0, 0, 0, 0.9),
-            0 2px 15px rgba(0, 0, 0, 0.8),
-            0 0 40px rgba(201, 167, 122, 0.1);
-    }
-
-    100% {
-        text-shadow:
-            0 4px 60px rgba(0, 0, 0, 0.9),
-            0 2px 15px rgba(0, 0, 0, 0.8),
-            0 0 100px rgba(201, 167, 122, 0.5),
-            0 0 30px rgba(201, 167, 122, 0.3);
+/* Extra scale nudge to hide any YouTube UI chrome at edges */
+@media (max-aspect-ratio: 16/9) {
+    .hero-slide__video {
+        width: max(200vh, 100vw);
+        height: max(56.25vw, 100vh);
     }
 }
 
-.hero-eyebrow {
+/* Poster image sits on top, fades away when active to reveal video */
+.hero-slide__image--poster {
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 1.5s ease 0.5s;
+}
+
+.hero-slide.is-active .hero-slide__image--poster {
+    opacity: 0;
+}
+
+/* Dark overlay for text legibility */
+.hero-slide__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom,
+            rgba(5, 5, 8, 0.5) 0%,
+            rgba(5, 5, 8, 0.1) 40%,
+            rgba(5, 5, 8, 0.15) 60%,
+            rgba(5, 5, 8, 0.7) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ========================
+   Slide Content
+   ======================== */
+
+.hero-slide__content {
+    position: absolute;
+    bottom: 15%;
+    left: 8%;
+    z-index: 2;
+    max-width: 600px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition-delay: 0.2s;
+}
+
+.hero-slide.is-active .hero-slide__content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Eyebrow */
+.hero-slide__eyebrow {
     display: block;
-    font-family: var(--font-secondary);
-    font-size: clamp(0.7rem, 1.1vw, 0.85rem);
-    font-weight: 300;
-    color: var(--color-gold);
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-gold, #c9a77a);
     letter-spacing: 0.35em;
     text-transform: uppercase;
+    margin-bottom: 1rem;
     opacity: 0.9;
-    animation: cinematic-glow 5s ease-in-out infinite alternate-reverse;
 }
 
-.hero-title {
-    font-family: var(--font-primary);
-    font-size: clamp(3.5rem, 9vw, 8rem);
+/* Title */
+.hero-slide__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', serif);
+    font-size: clamp(2.8rem, 7vw, 6rem);
     font-weight: 300;
     color: #f0ebe3;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     line-height: 1.05;
     margin: 0 0 1rem 0;
-    animation: cinematic-glow 4s ease-in-out infinite alternate;
 }
 
-.hero-subtitle {
-    font-family: var(--font-secondary);
-    font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+/* Subtitle */
+.hero-slide__subtitle {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
     font-weight: 300;
-    color: var(--color-muted);
-    letter-spacing: 0.15em;
+    color: var(--color-muted, #8a8a96);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin: 0 0 3rem 0;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 0 2rem 0;
     line-height: 1.6;
-    animation: cinematic-glow 6s ease-in-out infinite alternate;
 }
 
-/* ========================
-   CTA Button (Pill)
-   ======================== */
-
-.hero-cta {
+/* CTA */
+.hero-slide__cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 2.5rem;
-    border: 1px solid rgba(201, 167, 122, 0.4);
-    border-radius: 50px;
-    background: rgba(201, 167, 122, 0.08);
-    color: var(--color-gold-light);
-    font-family: var(--font-secondary);
+    gap: 0.6rem;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
     font-size: 0.75rem;
     font-weight: 400;
-    letter-spacing: 0.3em;
+    color: #f0ebe3;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     text-decoration: none;
-    pointer-events: auto;
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(240, 235, 227, 0.3);
+    transition: border-color 0.3s ease, gap 0.3s ease;
 }
 
-.hero-cta:hover {
-    background: rgba(201, 167, 122, 0.18);
-    border-color: var(--color-gold);
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 32px rgba(201, 167, 122, 0.15),
-        0 0 60px rgba(201, 167, 122, 0.08);
+.hero-slide__cta:hover {
+    border-color: var(--color-gold, #c9a77a);
+    gap: 1rem;
 }
 
-.hero-cta svg {
-    transition: transform 0.4s ease;
+.hero-slide__cta svg {
+    transition: transform 0.3s ease;
 }
 
-.hero-cta:hover svg {
-    transform: translateX(4px);
+.hero-slide__cta:hover svg {
+    transform: translateX(3px);
 }
 
 /* ========================
-   Vertical Progress Indicator
+   Fixed Pagination Dots
    ======================== */
 
-.hero-progress {
-    position: absolute;
+.hero-pagination {
+    position: fixed;
     right: 3rem;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 6;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 120px;
-}
-
-.hero-progress-track {
-    width: 2px;
-    height: 100%;
-    background: rgba(201, 167, 122, 0.15);
-    border-radius: 1px;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-progress-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 33.3%;
-    background: var(--color-gold);
-    border-radius: 1px;
-    box-shadow: 0 0 8px rgba(201, 167, 122, 0.4);
-    /* GSAP handles height transitions — no CSS transition needed */
-}
-
-.hero-progress-numbers {
+    z-index: 100;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    gap: 1.5rem;
 }
 
-.hero-progress-num {
-    font-family: var(--font-secondary);
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    color: rgba(201, 167, 122, 0.3);
+.hero-pagination__dot {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-pagination__dot::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(240, 235, 227, 0.3);
     transition: all 0.4s ease;
-    line-height: 1;
 }
 
-.hero-progress-num.active {
-    color: var(--color-gold);
-    text-shadow: 0 0 10px rgba(201, 167, 122, 0.5);
+.hero-pagination__dot.is-active::before {
+    background: var(--color-gold, #c9a77a);
+    box-shadow: 0 0 12px rgba(201, 167, 122, 0.5);
+    transform: scale(1.4);
 }
 
-/* ========================
-   Scroll Hint
-   ======================== */
+.hero-pagination__number {
+    position: absolute;
+    right: 100%;
+    margin-right: 0.75rem;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.6rem;
+    color: rgba(240, 235, 227, 0);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
 
-#hero-section #scroll-hint {
-    z-index: 6;
+.hero-pagination__dot.is-active .hero-pagination__number {
+    color: rgba(240, 235, 227, 0.5);
 }
 
 /* ========================
@@ -275,53 +272,36 @@
    ======================== */
 
 @media (max-width: 768px) {
-    .hero-content {
-        width: 90%;
+    .hero-slide__content {
+        bottom: 12%;
+        left: 6%;
+        right: 6%;
     }
 
-    .hero-title {
-        letter-spacing: 0.05em;
+    .hero-slide__title {
+        font-size: clamp(2rem, 10vw, 3.5rem);
     }
 
-    .hero-subtitle {
-        font-size: 0.85rem;
-        padding: 0 1rem;
-    }
-
-    .hero-cta {
-        padding: 0.8rem 2rem;
-        font-size: 0.7rem;
-    }
-
-    .hero-progress {
+    .hero-pagination {
         right: 1.5rem;
-        height: 80px;
+        gap: 1rem;
     }
 
-    .hero-progress-num {
-        font-size: 0.55rem;
+    .hero-pagination__number {
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
-    .hero-eyebrow {
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
+    .hero-slide__eyebrow {
+        font-size: 0.6rem;
     }
 
-    .hero-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
+    .hero-slide__content {
+        bottom: 10%;
     }
 
-    .hero-subtitle {
-        font-size: 0.8rem;
-        margin-bottom: 2rem;
-    }
-
-    .hero-progress {
+    .hero-pagination {
         right: 1rem;
-        height: 60px;
-        gap: 0.6rem;
     }
 }

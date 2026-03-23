@@ -1,4 +1,37 @@
 {
+  "heroSlides": [
+    {
+      "image": "/images/VUDRAG-BOOK-MMXXV_Page_03_Image_0001.jpg",
+      "youtubeId": "-EINfzSwMeg",
+      "youtubeIdMobile": "XH2j7ZigZyE",
+      "title": "THE FORGE",
+      "subtitle": "Where Steel Becomes Spirit",
+      "eyebrow": "Nikola Vudrag",
+      "objectPosition": "center 35%",
+      "link": "/gallery.html"
+    },
+    {
+      "image": "/images/VUDRAG-BOOK-MMXXV_Page_20_Image_0001.jpg",
+      "youtubeId": "BCEdZVVwBC4",
+      "youtubeIdMobile": "AL1UjxlcHo0",
+      "title": "NETWORKING",
+      "subtitle": "Latticework & Light",
+      "eyebrow": "The Net-Work Series",
+      "objectPosition": "center 50%",
+      "link": "/gallery.html"
+    },
+    {
+      "image": "/images/VUDRAG-BOOK-MMXXV_Page_40_Image_0001.jpg",
+      "youtubeId": "PkF5YGPu_YI",
+      "youtubeIdMobile": "8sbb6UZwZC4",
+      "startTime": 2,
+      "title": "ATLAS",
+      "subtitle": "The Weight of the World",
+      "eyebrow": "The Labours of Hercules",
+      "objectPosition": "center 30%",
+      "link": "/gallery.html"
+    }
+  ],
   "footer": {
     "brand": "VUDRAG",
     "tagline": "Art in Bronze",
