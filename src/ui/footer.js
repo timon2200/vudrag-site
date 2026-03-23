@@ -3,6 +3,7 @@
  * 
  * Elegant site footer with gold accents, animated elements,
  * and luxury Patek-inspired aesthetic.
+ * Content fetched from CMS, with hardcoded fallback.
  */
 
 import { observeElement } from './scroll-reveal.js';
@@ -10,20 +11,64 @@ import { observeElement } from './scroll-reveal.js';
 // CMS API URL
 const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 
-// Fallback social links (used if CMS unavailable)
-const FALLBACK_SOCIAL_LINKS = [
-    { name: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/vudrag_art/' },
-    { name: 'Facebook', icon: 'facebook', url: 'https://web.facebook.com/nikola.vudrag.77' },
-    { name: 'Interview', icon: 'article', url: 'https://www.contemporaryartissue.com/a-conversation-with-nikola-vudrag/' }
-];
+// Fallback footer content (used if CMS unavailable)
+const FALLBACK_FOOTER = {
+    brand: 'VUDRAG',
+    tagline: 'Sculpting in Light & Shadow',
+    description: 'Exploring the intersection of classical craftsmanship and modern industrial art. Each piece tells a story of transformation, resilience, and raw power.',
+    email: 'studio@vudrag.com',
+    location: 'Varaždin • Zagreb • Dubai',
+    navLinks: [
+        { label: 'Collections', href: '#category-hub' },
+        { label: 'Artist', href: '#artist-section' },
+        { label: 'Inquire', href: '/contact.html' },
+        { label: 'Collectors Club', href: '/login.html' }
+    ],
+    socialLinks: [
+        { name: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/vudrag_art/' },
+        { name: 'Facebook', icon: 'facebook', url: 'https://web.facebook.com/nikola.vudrag.77' },
+        { name: 'Interview', icon: 'article', url: 'https://www.contemporaryartissue.com/a-conversation-with-nikola-vudrag/' }
+    ]
+};
 
-// Fallback navigation links
-const FALLBACK_NAV_LINKS = [
-    { label: 'Collections', href: '#category-hub' },
-    { label: 'Artist', href: '#artist-section' },
-    { label: 'Inquire', href: '/contact.html' },
-    { label: 'Collectors Club', href: '/login.html' }
-];
+/**
+ * Fetch footer content from CMS
+ */
+async function fetchFooterContent() {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+        const response = await fetch(`${CMS_API}/site-content`, {
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error('CMS unavailable');
+        const data = await response.json();
+
+        if (data.footer) {
+            return {
+                brand: data.footer.brand || FALLBACK_FOOTER.brand,
+                tagline: data.footer.tagline || FALLBACK_FOOTER.tagline,
+                description: data.footer.description || FALLBACK_FOOTER.description,
+                email: data.footer.email || FALLBACK_FOOTER.email,
+                location: data.footer.location || FALLBACK_FOOTER.location,
+                navLinks: (data.footer.navLinks && data.footer.navLinks.length > 0)
+                    ? data.footer.navLinks
+                    : FALLBACK_FOOTER.navLinks,
+                socialLinks: (data.footer.socialLinks && data.footer.socialLinks.length > 0)
+                    ? data.footer.socialLinks
+                    : FALLBACK_FOOTER.socialLinks
+            };
+        }
+        return FALLBACK_FOOTER;
+    } catch (err) {
+        console.warn('⚠️ CMS unavailable or timed out, using fallback footer content');
+        return FALLBACK_FOOTER;
+    }
+}
 
 /**
  * Setup and render the global footer
@@ -34,6 +79,9 @@ export async function setupFooter() {
 
     // Check if footer already exists
     if (document.getElementById('main-footer')) return;
+
+    // Fetch content from CMS
+    const footerData = await fetchFooterContent();
 
     // Create footer element
     const footer = document.createElement('footer');
@@ -48,14 +96,11 @@ export async function setupFooter() {
             <!-- Brand Column -->
             <div class="footer__brand" data-reveal>
                 <div class="footer__logo">
-                    <span class="footer__logo-text">VUDRAG</span>
+                    <span class="footer__logo-text">${footerData.brand}</span>
                     <span class="footer__logo-dot"></span>
                 </div>
-                <div class="footer__tagline">Sculpting in Light & Shadow</div>
-                <p class="footer__description">
-                    Exploring the intersection of classical craftsmanship and modern industrial art. 
-                    Each piece tells a story of transformation, resilience, and raw power.
-                </p>
+                <div class="footer__tagline">${footerData.tagline}</div>
+                <p class="footer__description">${footerData.description}</p>
             </div>
 
             <!-- Navigation Column -->
@@ -70,8 +115,8 @@ export async function setupFooter() {
             <div class="footer__contact" data-reveal data-reveal-delay="2">
                 <h4 class="footer__heading">Connect</h4>
                 <div class="footer__contact-info">
-                    <a href="mailto:studio@vudrag.com" class="footer__email">studio@vudrag.com</a>
-                    <div class="footer__location">Varaždin • Zagreb • Dubai</div>
+                    <a href="mailto:${footerData.email}" class="footer__email">${footerData.email}</a>
+                    <div class="footer__location">${footerData.location}</div>
                 </div>
                 <div class="footer__social">
                     <!-- Social icons injected via JS -->
@@ -104,9 +149,9 @@ export async function setupFooter() {
     // Append to content area
     contentArea.appendChild(footer);
 
-    // Populate links
+    // Populate nav links from CMS data
     const linksContainer = footer.querySelector('.footer__links');
-    FALLBACK_NAV_LINKS.forEach(link => {
+    footerData.navLinks.forEach(link => {
         const a = document.createElement('a');
         a.href = link.href;
         a.className = 'footer__link';
@@ -120,9 +165,9 @@ export async function setupFooter() {
         linksContainer.appendChild(a);
     });
 
-    // Populate social icons
+    // Populate social icons from CMS data
     const socialContainer = footer.querySelector('.footer__social');
-    FALLBACK_SOCIAL_LINKS.forEach(social => {
+    footerData.socialLinks.forEach(social => {
         const a = document.createElement('a');
         a.href = social.url;
         a.className = 'footer__social-link';
@@ -139,7 +184,7 @@ export async function setupFooter() {
     // Initialize animations
     setupFooterAnimations(footer);
 
-    console.log('✅ Footer initialized');
+    console.log('✅ Footer initialized (CMS-driven)');
 }
 
 // ... (existing code) ...

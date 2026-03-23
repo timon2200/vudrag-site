@@ -126,14 +126,20 @@ npm install
 node server.js
 ```
 
-CMS Admin Panel: [http://localhost:3001/admin](http://localhost:3001/admin)
+CMS Admin Panel: [http://localhost:3001/cms-admin](http://localhost:3001/cms-admin)
 
-### Build for Production
+### Build & Deploy to Production
 
 ```bash
-npm run build
-npm run preview  # Preview production build
+npm run build          # Build frontend → dist/
+git add -A && git commit -m "Your changes"
+git push origin main   # Push to GitHub
 ```
+
+Then in cPanel: **Git Version Control** → Update from Remote → Deploy HEAD Commit → Restart Node.js App.
+
+**Production site**: [https://vudrag.varazdin.studio](https://vudrag.varazdin.studio)  
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full deployment guide.
 
 ---
 
@@ -232,12 +238,12 @@ A lightweight headless CMS powers the portfolio's dynamic content.
 
 ### Accessing the Admin Panel
 
-| Interface | URL |
-|-----------|-----|
-| **Admin Panel** | [http://localhost:3001/admin](http://localhost:3001/admin) |
-| **API** | [http://localhost:3001/api/*](http://localhost:3001/api/) |
+| Interface | Local URL | Production URL |
+|-----------|-----------|----------------|
+| **Admin Panel** | [http://localhost:3001/cms-admin](http://localhost:3001/cms-admin) | [https://vudrag.varazdin.studio/cms-admin](https://vudrag.varazdin.studio/cms-admin) |
+| **API** | [http://localhost:3001/api/*](http://localhost:3001/api/) | [https://vudrag.varazdin.studio/api](https://vudrag.varazdin.studio/api) |
 
-Login uses the password defined in `cms/.env` as `ADMIN_PASSWORD`.
+Login uses the password defined as `ADMIN_PASSWORD` (env variable in cPanel, or `cms/.env` locally).
 
 ### What You Can Manage
 
@@ -321,6 +327,7 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 ## 📚 Documentation
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** — Deep technical documentation covering systems, shaders, and module architecture
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** — Production hosting guide (cPanel, DNS, SSL, deploy workflow)
 - **[PROJECT_TRAJECTORY.md](./PROJECT_TRAJECTORY.md)** — Roadmap, vision, and future development phases
 - **[cms/README.md](./cms/README.md)** — CMS server documentation with full API reference
 
@@ -357,7 +364,15 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 - [x] Video showcase section with film data management
 - [x] GLB compression workflow for web-optimized 3D assets
 
-### Phase 5: Production
+### Phase 5: Production & Deployment ✅
+- [x] cPanel hosting with CloudLinux Passenger (Node.js 22)
+- [x] Git-based deployment via cPanel Git Version Control
+- [x] AutoSSL (Let's Encrypt) for HTTPS
+- [x] Image optimization (all images converted to WebP)
+- [x] Cloudflare DNS configuration
+- [x] Live at [vudrag.varazdin.studio](https://vudrag.varazdin.studio)
+
+### Phase 6: Polish
 - [ ] Mobile optimization
 - [ ] SEO & accessibility
 - [ ] Performance profiling

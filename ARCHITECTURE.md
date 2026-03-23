@@ -56,11 +56,19 @@ vudrag-site-2/
 
 ## Running the Project
 
+### Local Development
 ```bash
 npm install
-npm run dev     # Development server at localhost:3000 or 3001
-npm run build   # Production build
+npm run dev     # Frontend dev server at localhost:3000/3001
+
+# In a separate terminal:
+cd cms && npm install && node server.js  # CMS at localhost:3001
 ```
+
+### Production
+The site is hosted on **cPanel with CloudLinux Passenger** at [vudrag.varazdin.studio](https://vudrag.varazdin.studio). Both frontend and CMS are served by a single Node.js app via Apache Passenger.
+
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full hosting setup and deploy workflow.
 
 ---
 

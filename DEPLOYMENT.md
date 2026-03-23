@@ -1,192 +1,392 @@
-# Deployment Guide: Vercel (Frontend) + Render (Backend/CMS)
+# Deployment Guide: cPanel + Passenger (Self-Hosted)
 
-This guide explains how to deploy the Vudrag Portfolio using **Vercel** for the static frontend and **Render** for the CMS backend.
+> **Live Site**: [https://vudrag.varazdin.studio](https://vudrag.varazdin.studio)  
+> **Admin Panel**: [https://vudrag.varazdin.studio/cms-admin](https://vudrag.varazdin.studio/cms-admin)  
+> **API Base**: [https://vudrag.varazdin.studio/api](https://vudrag.varazdin.studio/api)
 
 ## Architecture Overview
 
+Both the frontend and CMS backend are served from a **single Node.js application** on cPanel with CloudLinux Passenger. The Express CMS server handles API routes, admin panel, and also serves the static frontend files.
+
 ```
-┌─────────────────┐       API calls        ┌─────────────────┐
-│   VERCEL        │ ────────────────────▶  │    RENDER       │
-│   (Frontend)    │                        │    (CMS API)    │
-│                 │                        │                 │
-│   index.html    │                        │   server.js     │
-│   gallery.html  │ ◀──── JSON data ────── │   /api/*        │
-│   sculpture.html│                        │   /admin        │
-│   + JS/CSS/Splats                        │   data/*.json   │
-└─────────────────┘                        └─────────────────┘
-     FREE tier                                 FREE tier
+┌──────────────────────────────────────────────────────────┐
+│                    cPanel Server                         │
+│             vudrag.varazdin.studio                       │
+│                                                          │
+│  ┌─────────────────────────────────────────────────────┐ │
+│  │         CloudLinux Passenger (Node.js 22)           │ │
+│  │                                                     │ │
+│  │  ┌─────────────────────┐  ┌──────────────────────┐ │ │
+│  │  │   Express CMS       │  │   Static Frontend    │ │ │
+│  │  │   (cms/server.js)   │  │   (dist/ files)      │ │ │
+│  │  │                     │  │                      │ │ │
+│  │  │   /api/*            │  │   index.html         │ │ │
+│  │  │   /cms-admin        │  │   gallery.html       │ │ │
+│  │  │   data/*.json       │  │   sculpture.html     │ │ │
+│  │  │                     │  │   assets/, images/   │ │ │
+│  │  │                     │  │   splats/*.sog       │ │ │
+│  │  └─────────────────────┘  └──────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────┘
 ```
+
+**Key insight**: With cPanel Passenger, ALL HTTP requests are routed through the Node.js app. The Express server serves both the API and the static frontend files from the document root (`../` relative to `cms/`).
 
 ---
 
-## Prerequisites
+## Hosting Environment
 
-1. GitHub account with this repository pushed
-2. Vercel account (free): https://vercel.com
-3. Render account (free): https://render.com
+| Detail | Value |
+|--------|-------|
+| **Server** | WHM/cPanel on `git.brzioblak.eu` |
+| **IP Address** | `194.56.74.62` |
+| **cPanel Account** | `varazdin` (for `varazdin.studio`) |
+| **Subdomain** | `vudrag.varazdin.studio` |
+| **Document Root** | `/home/varazdin/vudrag.varazdin.studio/` |
+| **Node.js App Root** | `/home/varazdin/vudrag.varazdin.studio/cms/` |
+| **Node.js Version** | 22 (CloudLinux Node.js Selector) |
+| **Startup File** | `server.js` |
+| **DNS Provider** | Cloudflare (`santino.ns.cloudflare.com`, `sky.ns.cloudflare.com`) |
+| **SSL** | AutoSSL (Let's Encrypt), auto-renews |
+| **Git Repository** | `https://github.com/timon2200/vudrag-site.git` |
+
+### Important: DNS is on Cloudflare
+
+The domain `varazdin.studio` uses **Cloudflare nameservers**, not cPanel's Zone Editor. Any DNS changes (new subdomains, etc.) MUST be made in the Cloudflare dashboard, NOT in WHM/cPanel Zone Editor.
+
+**Cloudflare DNS Records for the subdomain:**
+| Type | Name | Content | Proxy |
+|------|------|---------|-------|
+| A | `vudrag` | `194.56.74.62` | DNS only (grey) |
+| CNAME | `www.vudrag` | `vudrag.varazdin.studio` | DNS only (grey) |
+
+> ⚠️ **Proxy must be "DNS only" (grey cloud)** — Cloudflare orange-cloud proxy interferes with Passenger/Node.js.
 
 ---
 
-## Part 1: Deploy CMS to Render
+## WHM Server Setup
 
-### Step 1: Create Render Account & New Web Service
+The WHM server at `git.brzioblak.eu` required the following setup before cPanel could host Node.js apps. This only needs to be done once per server.
 
-1. Go to https://render.com and sign up
-2. Click **New +** → **Web Service**
-3. Connect your GitHub repository
+### Prerequisites Installed in WHM
 
-### Step 2: Configure the Service
+1. **CloudLinux LVE Manager** → Node.js Selector
+   - WHM → **CloudLinux LVE Manager** → **Options** tab → Enable **Node.js Selector**
+   - This adds the "Setup Node.js App" feature to cPanel
+
+2. **Apache Passenger (mod_passenger)**
+   - WHM → **EasyApache 4** → **Currently Installed Packages** → search for `passenger`
+   - Install `mod_passenger` module
+   - This allows Apache to proxy requests to Node.js apps
+
+3. **Feature Manager** (enable for user package)
+   - WHM → **Feature Manager** → edit the relevant feature list
+   - Enable: **Node.js Selector**, **Application Manager**
+   - This makes the features visible in the cPanel account
+
+### cPanel Node.js App Configuration
+
+In **cPanel → Setup Node.js App**:
 
 | Setting | Value |
 |---------|-------|
-| **Name** | `vudrag-cms` (or any name you prefer) |
-| **Region** | Frankfurt (EU) or closest to you |
-| **Branch** | `main` |
-| **Root Directory** | `cms` |
-| **Runtime** | Node |
-| **Build Command** | `npm install` |
-| **Start Command** | `npm start` |
-| **Instance Type** | Free |
+| Node.js version | `22` |
+| Application mode | `Production` |
+| Application root | `vudrag.varazdin.studio/cms` |
+| Application URL | `vudrag.varazdin.studio` |
+| Application startup file | `server.js` |
 
-### Step 3: Add Environment Variables
+**Environment variables** are set in the same UI (see Environment Variables section below).
 
-In the Render dashboard, go to **Environment** and add:
+### cPanel Git Version Control
 
-| Key | Value |
-|-----|-------|
-| `CMS_PORT` | `10000` (Render uses this port) |
-| `JWT_SECRET` | Generate a random string (e.g., `your-super-secret-key-change-this-123`) |
-| `ADMIN_PASSWORD` | Your admin password |
-| `CORS_ORIGIN` | `*` (we'll restrict this later) |
-| `RESEND_API_KEY` | Your Resend API key (for password reset emails) |
-
-### Step 4: Deploy
-
-Click **Create Web Service**. Render will:
-1. Clone your repo
-2. Run `npm install` in the `cms` folder
-3. Start `npm start`
-4. Give you a URL like: `https://vudrag-cms.onrender.com`
-
-**📝 Copy this URL!** You'll need it for the next step.
-
-### Step 5: Verify CMS
-
-Visit `https://YOUR-RENDER-URL.onrender.com/api/config.json`
-
-You should see JSON data with your splats, galleries, and collections.
-
----
-
-## Part 2: Deploy Frontend to Vercel
-
-### Step 1: Update Production Environment
-
-Edit `.env.production` in your project root:
-
-```bash
-VITE_API_BASE=https://YOUR-RENDER-URL.onrender.com/api
-```
-
-Replace `YOUR-RENDER-URL` with your actual Render service URL.
-
-**Commit and push this change:**
-```bash
-git add .env.production
-git commit -m "Configure production API URL"
-git push
-```
-
-### Step 2: Create Vercel Project
-
-1. Go to https://vercel.com and sign in
-2. Click **Add New...** → **Project**
-3. Import your GitHub repository
-
-### Step 3: Configure Vercel
-
-Vercel will auto-detect Vite. Verify these settings:
+In **cPanel → Git™ Version Control**:
 
 | Setting | Value |
 |---------|-------|
-| **Framework Preset** | Vite |
-| **Build Command** | `npm run build` |
-| **Output Directory** | `dist` |
-| **Install Command** | `npm install` |
+| Clone URL | `https://github.com/timon2200/vudrag-site.git` |
+| Repository path | `/home/varazdin/repositories/vudrag-site` |
+| Branch | `main` |
 
-Click **Deploy**.
+The `.cpanel.yml` in the repo root defines deployment tasks (copy files to document root).
 
-### Step 4: Verify Deployment
+### Node.js Virtual Environment
 
-1. Visit your Vercel URL (e.g., `https://vudrag-site.vercel.app`)
-2. The site should load and fetch data from your Render CMS
-3. Visit `/login.html` and log in with your admin credentials
+CloudLinux stores node_modules in a separate virtual environment, not in the app directory. The path is:
+```
+/home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/
+```
 
----
+To activate manually (e.g., via Terminal):
+```bash
+source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/vudrag.varazdin.studio/cms
+```
 
-## Part 3: Configure CORS (Security)
-
-Once both are deployed, update Render's CORS setting:
-
-1. Go to Render Dashboard → Your CMS Service → Environment
-2. Update `CORS_ORIGIN` to your Vercel domain:
-   ```
-   https://vudrag-site.vercel.app
-   ```
-3. Click **Save Changes** (this will trigger a redeploy)
+> **Never upload a `node_modules` folder** to the app directory — it conflicts with CloudLinux's symlink. Always use cPanel's "Run NPM Install" button.
 
 ---
 
-## Daily Workflow
+## Future: Migrating to vudrag.com
 
-### Making Code Changes
+When ready to point `vudrag.com` to this site:
+
+### Option A: Add vudrag.com as Addon Domain (Recommended)
+
+1. **In cPanel** → **Domains** → **Create a New Domain**
+   - Domain: `vudrag.com`
+   - Document root: `/home/varazdin/vudrag.varazdin.studio/` (share with existing subdomain)
+   - Check "Share document root"
+
+2. **Update Node.js App** in cPanel:
+   - Add `vudrag.com` as an additional Application URL (or create a second app pointing to the same root)
+
+3. **DNS at vudrag.com's registrar:**
+   - Set A record: `@` → `194.56.74.62`
+   - Set CNAME: `www` → `vudrag.com`
+   - Or point nameservers to Cloudflare and manage there
+
+4. **Update CORS_ORIGIN** env variable:
+   - Change to: `https://vudrag.com,https://vudrag.varazdin.studio`
+
+5. **Run AutoSSL** to provision SSL for the new domain
+
+6. **Optional redirect**: Add to `.htaccess` to redirect the old subdomain:
+   ```apache
+   RewriteEngine On
+   RewriteCond %{HTTP_HOST} ^vudrag\.varazdin\.studio$ [NC]
+   RewriteRule ^(.*)$ https://vudrag.com/$1 [L,R=301]
+   ```
+
+### Option B: Replace Subdomain Entirely
+
+1. Change the subdomain's document root to a placeholder
+2. Set up `vudrag.com` as the primary domain for this site
+3. Update all env variables and CORS settings
+4. Update `.env.production` if using absolute URLs
+
+> **Note**: Keep `vudrag.varazdin.studio` as a staging/development URL even after `vudrag.com` goes live.
+
+---
+
+## Server File Structure
+
+```
+/home/varazdin/vudrag.varazdin.studio/
+├── index.html              # Frontend entry page
+├── gallery.html            # Gallery page
+├── sculpture.html          # Sculpture detail page
+├── archive.html            # Archive page
+├── contact.html            # Contact page
+├── login.html              # Login page
+├── splat-hero.html         # Standalone splat hero
+├── splat-viewer.html       # Interactive splat viewer
+├── assets/                 # Vite-built JS/CSS bundles
+├── images/                 # Compressed WebP images
+├── textures/               # Title textures (WebP)
+├── splats/                 # Gaussian splat .sog files
+├── environments/           # HDR environment maps
+├── models/                 # 3D models (GLB)
+├── admin/                  # CMS admin panel (static HTML/JS/CSS)
+├── public/                 # Public assets served by Express
+├── dist/                   # Copy of Vite build output
+├── cms/                    # Node.js CMS application
+│   ├── server.js           # Express server (Passenger entry point)
+│   ├── package.json        # CMS dependencies
+│   ├── node_modules/       # Symlink → CloudLinux virtual env
+│   ├── data/               # JSON flat-file database
+│   │   ├── splats.json
+│   │   ├── galleries.json
+│   │   ├── collections.json
+│   │   ├── films.json
+│   │   ├── sculptures.json
+│   │   ├── site-content.json
+│   │   ├── grid-order.json
+│   │   └── users.json
+│   └── services/
+│       └── mailer.js       # Email service (Resend)
+└── wordpress-backups/      # (unrelated, pre-existing)
+```
+
+---
+
+## Environment Variables
+
+Set in **cPanel → Setup Node.js App → Environment Variables**:
+
+| Variable | Value | Description |
+|----------|-------|-------------|
+| `JWT_SECRET` | `vudrag-cpanel-prod-2026-s3cur3k3y` | JWT signing key |
+| `ADMIN_PASSWORD` | *(your password)* | CMS admin login |
+| `CORS_ORIGIN` | `https://vudrag.varazdin.studio` | Allowed CORS origin |
+
+> `process.env.PORT` is set automatically by Passenger — do not set manually.
+
+---
+
+## Deployment Workflow
+
+### How Deployment Works
+
+1. **Build locally** with `npm run build` (creates `dist/`)
+2. **Commit & push** to GitHub (including `dist/`)
+3. **Pull & Deploy** in cPanel's Git Version Control
+4. The `.cpanel.yml` file copies files to the correct locations
+5. **Restart** the Node.js app in cPanel
+
+### Step-by-Step Deploy
 
 ```bash
-# 1. Make changes locally
-# 2. Test locally
-npm run dev                    # Frontend on localhost:3000
-cd cms && npm start            # CMS on localhost:3001
+# 1. Build the frontend
+npm run build
 
-# 3. Commit and push
-git add .
-git commit -m "Your changes"
+# 2. Stage everything (dist/ is tracked in git)
+git add -A
+
+# 3. Commit with a descriptive message
+git commit -m "Your changes description"
+
+# 4. Push to GitHub
 git push origin main
-
-# 4. Wait 1-3 minutes
-# Both Vercel and Render auto-deploy!
 ```
 
-### Managing Content
+Then in **cPanel**:
 
-Use the Admin Panel at:
-```
-https://YOUR-RENDER-URL.onrender.com/admin
+5. Go to **Git™ Version Control** → your repo → **Pull or Deploy**
+6. Click **"Update from Remote"**
+7. Click **"Deploy HEAD Commit"**
+8. Go to **Setup Node.js App** → click **Restart**
+
+### First-Time Setup
+
+If setting up for the first time on a new cPanel account:
+
+1. **Create subdomain** in cPanel → Domains
+2. **Setup Node.js App** in cPanel:
+   - Node.js version: 22
+   - Application mode: Production
+   - Application root: `vudrag.varazdin.studio/cms`
+   - Application URL: `vudrag.varazdin.studio`
+   - Application startup file: `server.js`
+3. **Add environment variables** (see table above)
+4. **Clone repo** in Git Version Control:
+   - Repository URL: `https://github.com/timon2200/vudrag-site.git`
+   - Deploy key or credentials as needed
+5. **Deploy HEAD Commit**
+6. **Run NPM Install** in Node.js App settings
+7. **Restart** the app
+8. **Add DNS record** in Cloudflare (A record → server IP)
+9. **Run AutoSSL** in cPanel → SSL/TLS Status
+
+### What `.cpanel.yml` Does
+
+The `.cpanel.yml` file in the repo root defines deployment tasks. It copies the pre-built files from the git repo to the document root:
+
+```yaml
+---
+deployment:
+  tasks:
+    - /bin/cp -R dist/* /home/varazdin/vudrag.varazdin.studio/
+    - /bin/cp -R admin /home/varazdin/vudrag.varazdin.studio/
+    - /bin/cp -R public/* /home/varazdin/vudrag.varazdin.studio/
+    - /bin/cp -R cms/server.js /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp -R cms/data /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp -R cms/services /home/varazdin/vudrag.varazdin.studio/cms/
+    - /bin/cp cms/package.json /home/varazdin/vudrag.varazdin.studio/cms/
 ```
 
-Changes via admin panel are saved directly to Render - no git push needed.
+> **Note**: `dist/` is committed to git (removed from `.gitignore`). The frontend is built locally before pushing.
+
+### CloudLinux Node.js Virtual Environment
+
+CloudLinux manages `node_modules` through a virtual environment, NOT a regular folder. The `node_modules` inside `cms/` is a **symlink** to `/home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/`. 
+
+**Never upload a `node_modules` folder directly** — use cPanel's "Run NPM Install" button instead.
+
+To activate the virtual environment manually (e.g., via Terminal):
+```bash
+source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/vudrag.varazdin.studio/cms
+```
+
+---
+
+## How Passenger Serves the Site
+
+With cPanel's Node.js app setup, Apache Passenger intercepts **all requests** to `vudrag.varazdin.studio` and routes them through the Express app in `cms/server.js`.
+
+The Express server handles requests in this order:
+
+1. **`/cms-admin`** → Serves admin panel static files from `admin/`
+2. **Document root static files** → Serves `index.html`, `gallery.html`, CSS, JS, images, splats from `../` (parent of cms)
+3. **`/public` static files** → Images, splats, models from `public/`
+4. **`/api/*`** → CMS API routes (CRUD for content data)
+5. **SPA fallback** → Any unmatched non-API GET request serves `index.html`
+
+---
+
+## Image Optimization
+
+All images are converted to **WebP** format for optimal loading:
+
+| Original | WebP | Savings |
+|----------|------|---------|
+| `8.png` (6.2MB) | `8.webp` (853KB) | 86% |
+| `title-texture.png` (708KB) | `title-texture.webp` (70KB) | 90% |
+| 11 JPG files (~2MB total) | WebP (~1.9MB) | ~5–35% each |
+
+All code references (JS, CSS, JSON) use `.webp` extensions. The only exception is YouTube thumbnail URLs which remain `.jpg` (external service).
+
+---
+
+## SSL Certificate
+
+SSL is managed by **cPanel AutoSSL** (Let's Encrypt):
+
+- **Domain**: `vudrag.varazdin.studio`
+- **www**: `www.vudrag.varazdin.studio`
+- **Auto-renews**: Yes, via AutoSSL
+- **Expires**: Check SSL/TLS Status in cPanel
+
+To force HTTPS, add to the `.htaccess` in the document root:
+```apache
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+```
 
 ---
 
 ## Troubleshooting
 
-### "API calls failing"
-- Check browser console for CORS errors
-- Verify `CORS_ORIGIN` in Render matches your Vercel domain exactly
-- Check that `.env.production` has the correct Render URL
+### "Cannot GET /"
+The Node.js app needs to serve the frontend files. Check that `cms/server.js` has:
+```javascript
+const DOCUMENT_ROOT = join(__dirname, '..');
+app.use(express.static(DOCUMENT_ROOT));
+```
 
-### "Admin panel not loading"
-- Visit `https://YOUR-RENDER-URL.onrender.com/admin` directly
-- Check Render logs for errors
+### "Run NPM Install" fails
+- Usually DNS-related: the server must resolve the subdomain URL
+- Ensure the DNS A record exists in **Cloudflare** (not just cPanel's Zone Editor)
+- Wait for DNS propagation, then retry
 
-### "Free tier sleeping"
-- Render free tier spins down after 15 minutes of inactivity
-- First request after sleep takes ~30 seconds (cold start)
-- Consider upgrading to Starter ($7/mo) for always-on
+### CORS errors
+- The `.env.production` should use relative API path: `VITE_API_BASE=/api`
+- Since frontend and API are on the same domain, requests are same-origin
+- No CORS issues when using relative paths
 
-### "Images/splats not showing"
-- Verify files exist in `public/` folder
-- Check that Vercel deployed the `dist` folder correctly
-- Large splat files may need a CDN (Cloudflare R2 recommended)
+### DNS not resolving
+- DNS for `varazdin.studio` is managed by **Cloudflare**, not WHM
+- Add/edit records in the Cloudflare dashboard
+- Flush local DNS cache: `sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder`
+
+### Site showing cPanel default page
+- Accessing by IP shows the default page (expected on shared hosting)
+- Always access via domain name: `https://vudrag.varazdin.studio`
+
+### Node.js app not starting
+- Check stderr log in cPanel → Setup Node.js App
+- Verify `server.js` exists in `/home/varazdin/vudrag.varazdin.studio/cms/`
+- Verify environment variables are set
 
 ---
 
@@ -194,16 +394,11 @@ Changes via admin panel are saved directly to Render - no git push needed.
 
 | Service | Tier | Monthly Cost |
 |---------|------|--------------|
-| Vercel | Hobby | **FREE** |
-| Render | Free | **FREE** |
+| WHM/cPanel | Existing server | **Included** |
+| Cloudflare DNS | Free | **FREE** |
+| SSL (AutoSSL) | Free | **FREE** |
 
-**Total: $0/month** for basic usage!
-
-### When to Upgrade
-
-- **Render Starter ($7/mo)**: Always-on, no cold starts
-- **Vercel Pro ($20/mo)**: Team features, analytics
-- **Cloudflare R2**: Free 10GB for large splat/media files
+**Total: $0 additional/month** (uses existing server infrastructure)
 
 ---
 
@@ -211,7 +406,10 @@ Changes via admin panel are saved directly to Render - no git push needed.
 
 | What | URL |
 |------|-----|
-| **Live Site** | `https://your-project.vercel.app` |
-| **CMS API** | `https://your-cms.onrender.com/api` |
-| **Admin Panel** | `https://your-cms.onrender.com/admin` |
-| **API Health Check** | `https://your-cms.onrender.com/api/config.json` |
+| **Live Site** | `https://vudrag.varazdin.studio` |
+| **Admin Panel** | `https://vudrag.varazdin.studio/cms-admin` |
+| **API Endpoint** | `https://vudrag.varazdin.studio/api` |
+| **API Health Check** | `https://vudrag.varazdin.studio/api/config.json` |
+| **cPanel** | `https://cpanel.varazdin.studio` |
+| **WHM** | `https://whm.varazdin.studio` |
+| **GitHub Repo** | `https://github.com/timon2200/vudrag-site.git` |

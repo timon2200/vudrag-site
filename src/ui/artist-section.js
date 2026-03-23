@@ -17,7 +17,7 @@ const FALLBACK_ARTIST_DATA = {
     born: '1989, Croatia',
     tagline: 'Sculptor of Light & Steel',
     quote: '"Each weld is a meditation—twenty thousand moments of attention fused into form."',
-    portrait: 'https://images.unsplash.com/photo-1560421683-6856ea585c78?w=800&q=80',
+    portrait: '/images/vudrag author.webp',
     videoUrl: 'https://www.youtube.com/embed/FWGdlVFq39g',
     biography: {
         intro: 'Born into a family with a metalworking legacy, Nikola was raised amidst forges and workshops, developing an early bond with metal that would define his artistic vision.',

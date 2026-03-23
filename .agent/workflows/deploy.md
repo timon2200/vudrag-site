@@ -1,73 +1,94 @@
 ---
-description: Commit, push, and verify deployment works correctly
+description: Commit, push, and deploy to cPanel (vudrag.varazdin.studio)
 ---
 
 # Deploy Workflow
 
-This workflow commits local changes, pushes to GitHub, and verifies both Render (CMS) and Vercel (Frontend) deployments are working.
+This workflow builds the frontend, commits changes, pushes to GitHub, and deploys to the cPanel server at `vudrag.varazdin.studio`.
 
 ## Pre-Deploy Checks
 
 // turbo
 1. Check git status to see what files have changed:
    ```bash
-   cd /Users/test/Documents/vudrag-site-2 && git status
+   cd /Users/timonterzic/Documents/vudrag-site && git status
    ```
 
 // turbo
-2. Run the production build locally to catch any build errors:
+2. Run the production build locally to create `dist/`:
    ```bash
-   cd /Users/test/Documents/vudrag-site-2 && npm run build
+   cd /Users/timonterzic/Documents/vudrag-site && npm run build
    ```
    - If build fails, stop and fix the errors before continuing.
 
 // turbo
-3. Verify .env.production has the correct Render API URL:
+3. Verify .env.production has the correct relative API path:
    ```bash
-   cat /Users/test/Documents/vudrag-site-2/.env.production
+   cat /Users/timonterzic/Documents/vudrag-site/.env.production
    ```
-   - Should contain: `VITE_API_BASE=https://vudrag-cms.onrender.com/api`
+   - Should contain: `VITE_API_BASE=/api`
 
 ## Commit and Push
 
-4. Stage all changes and commit with a descriptive message:
+4. Stage all changes (including dist/) and commit with a descriptive message:
    ```bash
-   cd /Users/test/Documents/vudrag-site-2 && git add . && git commit -m "<describe what changed>"
+   cd /Users/timonterzic/Documents/vudrag-site && git add -A && git commit -m "<describe what changed>"
    ```
    - Generate a meaningful commit message based on the changed files.
 
-5. Push to GitHub to trigger auto-deploys:
+5. Push to GitHub to prepare for deployment:
    ```bash
-   cd /Users/test/Documents/vudrag-site-2 && git push origin main
+   cd /Users/timonterzic/Documents/vudrag-site && git push origin main
    ```
+
+## Deploy on cPanel
+
+6. Tell the user to perform these steps in cPanel:
+   - Go to **Git™ Version Control** → `vudrag-site` repo → **Pull or Deploy**
+   - Click **"Update from Remote"**
+   - Click **"Deploy HEAD Commit"**
+   - Go to **Setup Node.js App** → click **Restart**
 
 ## Post-Deploy Verification
 
-6. Wait 60-90 seconds for deployments to complete, then verify:
+7. Wait 30 seconds for the app to restart, then verify:
 
-7. **Check Render CMS API is responding:**
-   - Use browser_subagent or read_url_content to test: `https://vudrag-cms.onrender.com/api/sculptures`
-   - Should return JSON array of sculptures
-   - If error or empty, check Render dashboard logs for issues
+8. **Check the frontend is loading:**
+   - Use browser_subagent or read_url_content to test: `https://vudrag.varazdin.studio`
+   - The page should load with content
 
-8. **Check Vercel Frontend is loading:**
-   - Use browser_subagent to visit: `https://vudrag-site.vercel.app`
-   - Verify the page loads without errors
-   - Check browser console for any API connection errors
+9. **Check the CMS API is responding:**
+   - Use read_url_content to test: `https://vudrag.varazdin.studio/api/config.json`
+   - Should return JSON data
 
-9. **Report deployment status to user:**
-   - Summarize what was committed
-   - Confirm both services are responding
-   - Note any warnings or issues found
+10. **Check the admin panel:**
+    - Verify `https://vudrag.varazdin.studio/cms-admin` loads the admin interface
+
+11. **Report deployment status to user:**
+    - Summarize what was committed
+    - Confirm the site and API are responding
+    - Note any warnings or issues found
 
 ## Troubleshooting
 
-If Render API fails:
-- Check logs at: https://dashboard.render.com/web/srv-d5vmoq56ubrc73clvig0/logs
-- Verify environment variables are set correctly
-- Check if the service is still building
+If the site shows "Cannot GET /":
+- The Node.js app needs to be restarted in cPanel
+- Check that server.js was deployed correctly
 
-If Vercel fails:
-- Check build logs in Vercel dashboard
-- Verify the build completed successfully
-- Check for any import/export errors in the build output
+If API returns errors:
+- Check cPanel → Setup Node.js App → stderr logs
+- Verify environment variables are set (JWT_SECRET, ADMIN_PASSWORD, CORS_ORIGIN)
+
+If "Run NPM Install" fails:
+- This happens when DNS isn't resolving. CloudLinux checks the URL
+- Verify DNS A record exists in Cloudflare (not cPanel Zone Editor)
+
+## Reference URLs
+
+| What | URL |
+|------|-----|
+| **Live Site** | https://vudrag.varazdin.studio |
+| **Admin Panel** | https://vudrag.varazdin.studio/cms-admin |
+| **API** | https://vudrag.varazdin.studio/api |
+| **cPanel** | https://cpanel.varazdin.studio |
+| **GitHub** | https://github.com/timon2200/vudrag-site.git |
