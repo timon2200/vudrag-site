@@ -170,6 +170,14 @@ body {
     -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 
+@media (max-width: 768px) {
+    .archive-hero {
+        min-height: 40vh;
+        padding: 40px 0;
+        margin-top: 60px;
+    }
+}
+
 /* === Sculpture Hero Styles (Ported from Login) === */
 .sculpture__crown {
     display: flex;
@@ -682,7 +690,11 @@ body {
 
     .feed-container {
         padding: 0 16px;
-        margin: -40px auto 60px;
+        margin: -40px auto 30px;
+    }
+
+    .feed-grid {
+        gap: 60px;
     }
 
     .post-card {
