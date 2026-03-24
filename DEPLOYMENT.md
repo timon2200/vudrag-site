@@ -188,7 +188,7 @@ When ready to point `vudrag.com` to this site:
 ├── models/                 # 3D models (GLB)
 ├── admin/                  # CMS admin panel (static HTML/JS/CSS)
 ├── public/                 # Public assets served by Express
-├── dist/                   # Copy of Vite build output
+├── dist/                   # Vite build output (built on server during deploy)
 ├── cms/                    # Node.js CMS application
 │   ├── server.js           # Express server (Passenger entry point)
 │   ├── package.json        # CMS dependencies
@@ -227,34 +227,30 @@ Set in **cPanel → Setup Node.js App → Environment Variables**:
 
 ### How Deployment Works
 
-1. **Build locally** with `npm run build` (creates `dist/`)
-2. **Commit & push** to GitHub (including `dist/`)
-3. **Pull & Deploy** in cPanel's Git Version Control
-4. The `.cpanel.yml` file copies files to the correct locations
-5. **Restart** the Node.js app in cPanel
+1. **Commit & push** source code to GitHub (`dist/` is gitignored — only source is pushed)
+2. **Pull & Deploy** in cPanel's Git Version Control
+3. The `.cpanel.yml` file **builds the frontend on the server** (`npm ci && npm run build`) and copies files to the correct locations
+4. **Restart** the Node.js app in cPanel
 
 ### Step-by-Step Deploy
 
 ```bash
-# 1. Build the frontend
-npm run build
-
-# 2. Stage everything (dist/ is tracked in git)
+# 1. Stage source changes
 git add -A
 
-# 3. Commit with a descriptive message
+# 2. Commit with a descriptive message
 git commit -m "Your changes description"
 
-# 4. Push to GitHub
+# 3. Push to GitHub
 git push origin main
 ```
 
 Then in **cPanel**:
 
-5. Go to **Git™ Version Control** → your repo → **Pull or Deploy**
-6. Click **"Update from Remote"**
-7. Click **"Deploy HEAD Commit"**
-8. Go to **Setup Node.js App** → click **Restart**
+4. Go to **Git™ Version Control** → your repo → **Pull or Deploy**
+5. Click **"Update from Remote"**
+6. Click **"Deploy HEAD Commit"** (this triggers the server-side build)
+7. Go to **Setup Node.js App** → click **Restart**
 
 ### First-Time Setup
 
@@ -279,22 +275,25 @@ If setting up for the first time on a new cPanel account:
 
 ### What `.cpanel.yml` Does
 
-The `.cpanel.yml` file in the repo root defines deployment tasks. It copies the pre-built files from the git repo to the document root:
+The `.cpanel.yml` file in the repo root defines deployment tasks. It **builds the frontend on the server** using the Node.js 22 virtual environment, then copies files to the document root:
 
 ```yaml
 ---
 deployment:
   tasks:
-    - /bin/cp -R dist/* /home/varazdin/vudrag.varazdin.studio/
-    - /bin/cp -R admin /home/varazdin/vudrag.varazdin.studio/
-    - /bin/cp -R public/* /home/varazdin/vudrag.varazdin.studio/
-    - /bin/cp -R cms/server.js /home/varazdin/vudrag.varazdin.studio/cms/
-    - /bin/cp -R cms/data /home/varazdin/vudrag.varazdin.studio/cms/
-    - /bin/cp -R cms/services /home/varazdin/vudrag.varazdin.studio/cms/
-    - /bin/cp cms/package.json /home/varazdin/vudrag.varazdin.studio/cms/
+    # Build frontend on the server
+    - source nodevenv/.../22/bin/activate && npm ci && npm run build
+    # Copy build output + assets to document root
+    - /bin/cp -R dist/* .../vudrag.varazdin.studio/
+    - /bin/cp -R public/* .../vudrag.varazdin.studio/
+    - /bin/cp -R admin .../vudrag.varazdin.studio/
+    # Copy CMS backend
+    - /bin/cp cms/server.js .../vudrag.varazdin.studio/cms/
+    - /bin/cp cms/package.json .../vudrag.varazdin.studio/cms/
+    - /bin/cp -R cms/services/* .../vudrag.varazdin.studio/cms/services/
 ```
 
-> **Note**: `dist/` is committed to git (removed from `.gitignore`). The frontend is built locally before pushing.
+> **Note**: `dist/` is in `.gitignore` — the frontend is built on the server, not locally. This keeps git pushes fast (~2MB source code vs ~64MB build artifacts).
 
 ### CloudLinux Node.js Virtual Environment
 

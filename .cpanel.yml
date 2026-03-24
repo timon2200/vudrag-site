@@ -1,7 +1,9 @@
 ---
 deployment:
   tasks:
-    # --- Copy frontend (pre-built dist/) to document root ---
+    # --- Build frontend on the server ---
+    - export HOME=/home/varazdin && source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/repositories/vudrag-site && npm ci --prefer-offline && npm run build
+    # --- Copy frontend build output to document root ---
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/dist/* /home/varazdin/vudrag.varazdin.studio/
     # --- Copy public assets (splats, images, etc.) ---
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/public/* /home/varazdin/vudrag.varazdin.studio/
