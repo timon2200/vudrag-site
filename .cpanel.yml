@@ -7,9 +7,12 @@ deployment:
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/public/* /home/varazdin/vudrag.varazdin.studio/
     # --- Copy CMS backend files ---
     - /bin/mkdir -p /home/varazdin/vudrag.varazdin.studio/cms/services
+    - /bin/mkdir -p /home/varazdin/vudrag.varazdin.studio/cms/data
     - /bin/cp /home/varazdin/repositories/vudrag-site/cms/server.js /home/varazdin/vudrag.varazdin.studio/cms/
     - /bin/cp /home/varazdin/repositories/vudrag-site/cms/package.json /home/varazdin/vudrag.varazdin.studio/cms/
     - /bin/cp /home/varazdin/repositories/vudrag-site/cms/package-lock.json /home/varazdin/vudrag.varazdin.studio/cms/
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/cms/services/* /home/varazdin/vudrag.varazdin.studio/cms/services/
+    # --- Copy CMS data (collections, site-content, etc.) ---
+    - /bin/cp -R /home/varazdin/repositories/vudrag-site/cms/data/* /home/varazdin/vudrag.varazdin.studio/cms/data/
     # --- Copy admin panel ---
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/admin /home/varazdin/vudrag.varazdin.studio/
