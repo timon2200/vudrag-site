@@ -14,7 +14,7 @@ import { CONFIG, SCROLL } from './templates/splat-hero/config.js';
 import { state } from './state.js';
 import { setupCamera, updateCamera, getTransitionIntensity } from './templates/splat-hero/systems/camera.js';
 import { setupParticles, updateParticleInteraction } from './templates/splat-hero/systems/particles.js';
-import { loadAssets, setupSplats, applyCustomShaders, updateSplatTransitions, updateSplatInteraction } from './templates/splat-hero/systems/splats.js';
+import { loadAssets, loadRemainingAssets, setupSplats, applyCustomShaders, updateSplatTransitions, updateSplatInteraction } from './templates/splat-hero/systems/splats.js';
 import { setupPostEffects, updatePostEffects, adjustEffectsForTransition } from './templates/splat-hero/systems/post-effects.js';
 
 /**
@@ -69,6 +69,9 @@ async function init() {
         const loadingScreen = document.getElementById('loading-screen');
         loadingScreen.classList.add('loaded');
     }, 800);
+
+    // Background-load remaining splat assets after page is interactive
+    loadRemainingAssets().catch(e => console.warn('Background splat loading error:', e));
 
     console.log('✅ 3D Splat Viewer initialized!');
 }

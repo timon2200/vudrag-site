@@ -8,23 +8,23 @@ import { state } from '../state.js';
 import { PLASMA_SHADER_GLSL } from '../shaders/plasma.glsl.js';
 
 /**
- * Load all splat assets
+ * Load only the first splat asset (for fast initial page open)
  */
 export async function loadAssets() {
     const app = state.app;
-    console.log('📦 Loading splat assets...');
+    console.log('📦 Loading first splat asset...');
 
-    const assets = [];
+    // Initialize splatAssets array with nulls for all splats
+    state.splatAssets = new Array(CONFIG.splats.length).fill(null);
 
-    CONFIG.splats.forEach((splat) => {
-        const asset = new Asset(splat.name, 'gsplat', {
-            url: `./${splat.file}`
-        });
-        state.splatAssets.push(asset);
-        assets.push(asset);
+    // Only load the first splat eagerly
+    const firstSplat = CONFIG.splats[0];
+    const firstAsset = new Asset(firstSplat.name, 'gsplat', {
+        url: `./${firstSplat.file}`
     });
+    state.splatAssets[0] = firstAsset;
 
-    const loader = new AssetListLoader(assets, app.assets);
+    const loader = new AssetListLoader([firstAsset], app.assets);
 
     await new Promise((resolve, reject) => {
         loader.load((err) => {
@@ -32,13 +32,82 @@ export async function loadAssets() {
                 console.error('Asset load error:', err);
                 reject(err);
             } else {
-                console.log('✅ All splat assets loaded!');
+                console.log('✅ First splat asset loaded!');
                 resolve();
             }
         });
     });
 
     state.isLoaded = true;
+}
+
+/**
+ * Load remaining splat assets in the background (called after page is interactive)
+ */
+export async function loadRemainingAssets() {
+    const app = state.app;
+    const device = app.graphicsDevice;
+    const shaderLanguage = device.isWebGPU ? 'wgsl' : 'glsl';
+
+    for (let i = 1; i < CONFIG.splats.length; i++) {
+        const splatConfig = CONFIG.splats[i];
+        console.log(`📦 Background loading splat: ${splatConfig.name}...`);
+
+        const asset = new Asset(splatConfig.name, 'gsplat', {
+            url: `./${splatConfig.file}`
+        });
+
+        const loader = new AssetListLoader([asset], app.assets);
+
+        await new Promise((resolve, reject) => {
+            loader.load((err) => {
+                if (err) {
+                    console.warn(`Failed to background-load ${splatConfig.name}:`, err);
+                    resolve(); // Don't block on failure
+                } else {
+                    state.splatAssets[i] = asset;
+
+                    // If entity already exists (created with null asset), attach the gsplat component now
+                    const entity = state.splatEntities[i];
+                    if (entity && !entity.gsplat) {
+                        entity.addComponent('gsplat', { asset });
+
+                        // Apply shader
+                        if (entity.gsplat && entity.gsplat.instance && shaderLanguage === 'glsl') {
+                            try {
+                                const material = entity.gsplat.instance.material;
+                                material.getShaderChunks(shaderLanguage).set('gsplatModifyVS', PLASMA_SHADER_GLSL);
+                                material.update();
+                                const initialTransition = 1.0;
+                                material.setParameter('uTransition', initialTransition);
+                                const g = splatConfig.grading || {};
+                                material.setParameter('uBrightness', g.brightness ?? 1.0);
+                                material.setParameter('uContrast', g.contrast ?? 1.0);
+                                material.setParameter('uSaturation', g.saturation ?? 1.0);
+                                material.setParameter('uExposure', g.exposure ?? 0.0);
+                                material.setParameter('uGamma', g.gamma ?? 1.0);
+                                material.setParameter('uTintR', g.tintR ?? 1.0);
+                                material.setParameter('uTintG', g.tintG ?? 1.0);
+                                material.setParameter('uTintB', g.tintB ?? 1.0);
+                                material.setParameter('uHueShift', g.hueShift ?? 0.0);
+                                material.setParameter('uShadows', g.shadows ?? 0.0);
+                                material.setParameter('uHighlights', g.highlights ?? 1.0);
+                                entity.splatConfig = splatConfig;
+                                console.log(`🎨 Applied shader to background-loaded ${splatConfig.name}`);
+                            } catch (e) {
+                                console.warn(`Could not apply shader to ${splatConfig.name}:`, e);
+                            }
+                        }
+                    }
+
+                    console.log(`✅ Background loaded: ${splatConfig.name}`);
+                    resolve();
+                }
+            });
+        });
+    }
+
+    console.log('✅ All remaining splat assets loaded in background!');
 }
 
 /**
@@ -57,9 +126,11 @@ export function setupSplats() {
         // Store initial rotation for mouse interaction
         entity.initialRotation = new Vec3(...splatConfig.rotation);
 
-        entity.addComponent('gsplat', {
-            asset: state.splatAssets[index]
-        });
+        // Only add gsplat component if the asset is already loaded
+        const asset = state.splatAssets[index];
+        if (asset) {
+            entity.addComponent('gsplat', { asset });
+        }
 
         entity.enabled = (index === 0);
 
@@ -70,7 +141,7 @@ export function setupSplats() {
         app.root.addChild(entity);
         state.splatEntities.push(entity);
 
-        console.log(`🎭 Splat "${splatConfig.name}" added`);
+        console.log(`🎭 Splat "${splatConfig.name}" added${asset ? '' : ' (asset pending)'}`);
     });
 }
 

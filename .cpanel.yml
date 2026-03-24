@@ -2,7 +2,8 @@
 deployment:
   tasks:
     # --- Build frontend on the server ---
-    - export HOME=/home/varazdin && source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/repositories/vudrag-site && npm ci --prefer-offline && npm run build
+    # NODE_ENV must be set to development so npm ci installs devDependencies (Vite)
+    - /bin/bash -c 'export HOME=/home/varazdin && export NODE_ENV=development && source /home/varazdin/nodevenv/vudrag.varazdin.studio/cms/22/bin/activate && cd /home/varazdin/repositories/vudrag-site && npm ci --include=dev && npm run build'
     # --- Copy frontend build output to document root ---
     - /bin/cp -R /home/varazdin/repositories/vudrag-site/dist/* /home/varazdin/vudrag.varazdin.studio/
     # --- Copy public assets (splats, images, etc.) ---

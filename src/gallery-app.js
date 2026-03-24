@@ -518,7 +518,7 @@ async function init() {
         // Load environment/skybox
         await loadEnvironment(app, galleryData.environment || 'environments');
 
-        await loadAssets(app, galleryData);
+        await loadFirstAsset(app, galleryData);
         await spawnSculptures(app, galleryData);
 
         // Load pedestal model
@@ -539,6 +539,10 @@ async function init() {
 
         // Start fade-in for first sculpture
         startFadeIn();
+
+        // Background-load remaining sculpture assets
+        loadRemainingGalleryAssets(app, galleryData)
+            .catch(e => console.warn('Background gallery loading error:', e));
 
         console.log('✅ Viewing Room Ready');
     } catch (e) {
@@ -746,27 +750,67 @@ function setupCamera(app) {
 }
 
 /**
- * Load Assets
+ * Load only the first sculpture's asset (for fast page open)
  */
-function loadAssets(app, gallery) {
-    const assets = [];
-
-    gallery.sculptures.forEach(item => {
-        const asset = new pc.Asset(item.id, 'gsplat', {
-            url: `./${item.file}`
-        });
-        assets.push(asset);
-        item.asset = asset;
+function loadFirstAsset(app, gallery) {
+    const firstItem = gallery.sculptures[0];
+    const asset = new pc.Asset(firstItem.id, 'gsplat', {
+        url: `./${firstItem.file}`
     });
+    firstItem.asset = asset;
 
-    const loader = new pc.AssetListLoader(assets, app.assets);
+    const loader = new pc.AssetListLoader([asset], app.assets);
 
     return new Promise((resolve, reject) => {
         loader.load((err) => {
             if (err) reject(err);
-            else resolve();
+            else {
+                console.log(`✅ First sculpture asset loaded: ${firstItem.title}`);
+                resolve();
+            }
         });
     });
+}
+
+/**
+ * Load remaining sculpture assets in the background
+ */
+async function loadRemainingGalleryAssets(app, gallery) {
+    for (let i = 1; i < gallery.sculptures.length; i++) {
+        const item = gallery.sculptures[i];
+        console.log(`📦 Background loading: ${item.title}...`);
+
+        const asset = new pc.Asset(item.id, 'gsplat', {
+            url: `./${item.file}`
+        });
+
+        const loader = new pc.AssetListLoader([asset], app.assets);
+
+        await new Promise((resolve) => {
+            loader.load((err) => {
+                if (err) {
+                    console.warn(`Failed to background-load ${item.title}:`, err);
+                    resolve();
+                } else {
+                    item.asset = asset;
+
+                    // Attach gsplat component to pre-created entity
+                    const entity = galleryState.entities[i];
+                    if (entity && !entity.gsplat) {
+                        entity.addComponent('gsplat', { asset });
+                        if (entity.gsplat) {
+                            applyAnimationShader(entity.gsplat, app);
+                        }
+                    }
+
+                    console.log(`✅ Background loaded: ${item.title}`);
+                    resolve();
+                }
+            });
+        });
+    }
+
+    console.log('✅ All gallery sculpture assets loaded in background!');
 }
 
 /**
@@ -785,9 +829,12 @@ async function spawnSculptures(app, gallery) {
         entity.setEulerAngles(...rot);
         entity.setLocalScale(...scale);
 
-        entity.addComponent('gsplat', {
-            asset: item.asset
-        });
+        // Only add gsplat component if asset is already loaded
+        if (item.asset) {
+            entity.addComponent('gsplat', {
+                asset: item.asset
+            });
+        }
 
         entity.enabled = (index === 0);
         app.root.addChild(entity);
@@ -878,6 +925,22 @@ async function switchItem(index) {
         // Fade out current
         await startFadeOut();
 
+        // Wait for target sculpture to be loaded if it hasn't finished yet
+        const newEntity = galleryState.entities[index];
+        if (!newEntity.gsplat) {
+            console.log(`⏳ Waiting for sculpture ${index} to load...`);
+            await new Promise((resolve) => {
+                const check = () => {
+                    if (newEntity.gsplat) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 200);
+                    }
+                };
+                check();
+            });
+        }
+
         // Hide old, show new
         galleryState.entities.forEach((ent, i) => {
             ent.enabled = (i === index);
@@ -887,7 +950,6 @@ async function switchItem(index) {
         updateUI();
 
         // Apply animation shader to new entity (in case not applied yet)
-        const newEntity = galleryState.entities[index];
         if (newEntity.gsplat) {
             applyAnimationShader(newEntity.gsplat, galleryState.app);
         }
@@ -1153,6 +1215,22 @@ function initDraggablePanel() {
             // Fade out current 3D model
             await startFadeOut();
 
+            // Wait for target sculpture to be loaded if it hasn't finished yet
+            const newEntity = galleryState.entities[index];
+            if (!newEntity.gsplat) {
+                console.log(`⏳ Waiting for sculpture ${index} to load...`);
+                await new Promise((resolve) => {
+                    const check = () => {
+                        if (newEntity.gsplat) {
+                            resolve();
+                        } else {
+                            setTimeout(check, 200);
+                        }
+                    };
+                    check();
+                });
+            }
+
             // Show new model
             galleryState.entities.forEach((ent, i) => {
                 ent.enabled = (i === index);
@@ -1161,7 +1239,6 @@ function initDraggablePanel() {
             galleryState.currentIndex = index;
 
             // Apply shader
-            const newEntity = galleryState.entities[index];
             if (newEntity.gsplat) {
                 applyAnimationShader(newEntity.gsplat, galleryState.app);
             }
