@@ -18,7 +18,8 @@ const FALLBACK_CATEGORIES = [
         subtitle: 'The Net-Work Technique',
         description: 'Semi-transparent lattices where light and shadow become the true medium',
         count: 17,
-        image: '/images/8.webp'
+        image: '/images/8.webp',
+        pageType: 'network'
     },
     {
         id: 'coins',
@@ -26,7 +27,8 @@ const FALLBACK_CATEGORIES = [
         subtitle: 'Medals & Numismatics',
         description: 'Microrealism engraved in negative form — miniature universes of precision',
         count: 12,
-        image: '/images/66.webp'
+        image: '/images/66.webp',
+        pageType: 'coins'
     },
     {
         id: 'polygonal',

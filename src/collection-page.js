@@ -76,6 +76,9 @@ async function init() {
             case 'network':
                 templateModule = await import('./templates/network/network-page.js');
                 break;
+            case 'coins':
+                templateModule = await import('./templates/coins/coins-page.js');
+                break;
             // Future templates:
             // case 'slider': templateModule = await import('./templates/slider/slider-page.js'); break;
             // case 'film': templateModule = await import('./templates/film/film-page.js'); break;

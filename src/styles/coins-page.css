@@ -1,0 +1,842 @@
+/* ═══════════════════════════════════════════════════════
+   Coins Collection Page — "The Vault"
+   Premium numismatics showcase with cinematic video hero,
+   vault-door reveal, and collector's vitrine grid.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Video Hero ───────────────────────────────────── */
+
+.coins-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #050508;
+}
+
+.coins-hero__video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.coins-hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.coins-hero__video--youtube {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+}
+
+.coins-hero__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+    transition: opacity 1.2s ease;
+}
+
+.coins-hero__poster.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.coins-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background:
+        linear-gradient(to bottom,
+            rgba(5, 5, 8, 0.3) 0%,
+            transparent 30%,
+            transparent 60%,
+            rgba(5, 5, 8, 0.7) 100%);
+    pointer-events: none;
+}
+
+.coins-hero__unmute {
+    position: absolute;
+    bottom: 6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(5, 5, 8, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 167, 122, 0.25);
+    border-radius: 100px;
+    color: var(--color-gold, #c9a77a);
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: unmute-pulse 3s ease-in-out infinite;
+}
+
+.coins-hero__unmute:hover {
+    background: rgba(201, 167, 122, 0.15);
+    border-color: rgba(201, 167, 122, 0.5);
+}
+
+.coins-hero__unmute.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(20px);
+}
+
+.coins-hero__unmute svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+@keyframes unmute-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.coins-hero__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.coins-hero__progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-gold, #c9a77a), var(--color-gold-light, #e5d4b8));
+    transition: width 0.3s linear;
+}
+
+.coins-hero__scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+
+.coins-hero__scroll-hint.is-visible {
+    opacity: 1;
+}
+
+.coins-hero__scroll-hint span {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(246, 246, 246, 0.5);
+}
+
+.coins-hero__scroll-hint svg {
+    color: rgba(201, 167, 122, 0.5);
+    animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+.coins-hero__back {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(246, 246, 246, 0.6);
+    text-decoration: none;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.coins-hero__back:hover {
+    color: var(--color-gold, #c9a77a);
+}
+
+
+/* ─── Vault Reveal ─────────────────────────────────── */
+
+.coins-vault {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #050508;
+}
+
+.coins-vault__door {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.coins-vault__panel {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #0a0a0e;
+    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.coins-vault__panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(201, 167, 122, 0.4) 30%,
+        rgba(201, 167, 122, 0.6) 50%,
+        rgba(201, 167, 122, 0.4) 70%,
+        transparent 100%
+    );
+}
+
+.coins-vault__panel--left {
+    left: 0;
+}
+
+.coins-vault__panel--left::after {
+    right: 0;
+}
+
+.coins-vault__panel--right {
+    right: 0;
+}
+
+.coins-vault__panel--right::after {
+    left: 0;
+}
+
+/* Vault open state */
+.coins-vault.is-revealed .coins-vault__panel--left {
+    transform: translateX(-100%);
+}
+
+.coins-vault.is-revealed .coins-vault__panel--right {
+    transform: translateX(100%);
+}
+
+.coins-vault__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+}
+
+.coins-vault.is-revealed .coins-vault__content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.coins-vault__watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(6rem, 15vw, 18rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(201, 167, 122, 0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.coins-vault__eyebrow {
+    display: block;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold, #c9a77a);
+    margin-bottom: 2rem;
+}
+
+.coins-vault__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--color-light, #F6F6F6);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.coins-vault__credential {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid rgba(201, 167, 122, 0.2);
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-gold, #c9a77a);
+}
+
+.coins-vault__divider {
+    width: 60px;
+    height: 1px;
+    margin: 0 auto;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--color-gold, #c9a77a),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.8s ease 1.2s;
+}
+
+.coins-vault.is-revealed .coins-vault__divider {
+    opacity: 1;
+}
+
+
+/* ─── Introduction ─────────────────────────────────── */
+
+.coins-intro {
+    position: relative;
+    padding: clamp(6rem, 12vh, 10rem) var(--page-margin, 8vw);
+    background: #050508;
+    overflow: hidden;
+}
+
+.coins-intro__content {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.coins-intro__eyebrow {
+    display: block;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold, #c9a77a);
+    margin-bottom: 1.5rem;
+}
+
+.coins-intro__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--color-light, #F6F6F6);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.coins-intro__divider {
+    width: 40px;
+    height: 1px;
+    margin: 0 auto 2rem;
+    background: var(--color-gold, #c9a77a);
+    opacity: 0.5;
+}
+
+.coins-intro__text {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--color-body-text, #a0a0a8);
+    letter-spacing: 0.01em;
+}
+
+
+/* ─── Vitrine Grid (Collector's Cabinet) ──────────── */
+
+.coins-vitrine {
+    position: relative;
+    padding: clamp(4rem, 8vh, 8rem) var(--page-margin, 8vw);
+    background: #050508;
+}
+
+.coins-vitrine__header {
+    text-align: center;
+    margin-bottom: clamp(3rem, 6vh, 5rem);
+}
+
+.coins-vitrine__label {
+    display: block;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold, #c9a77a);
+    margin-bottom: 1rem;
+}
+
+.coins-vitrine__heading {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--color-light, #F6F6F6);
+    margin-bottom: 1rem;
+}
+
+.coins-vitrine__divider {
+    width: 40px;
+    height: 1px;
+    margin: 0 auto;
+    background: var(--color-gold, #c9a77a);
+    opacity: 0.5;
+}
+
+.coins-vitrine__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ─── Vitrine Card ─── */
+
+.coins-card {
+    position: relative;
+    background: #0a0a0e;
+    border: 1px solid rgba(201, 167, 122, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+        border-color 0.5s ease,
+        box-shadow 0.5s ease;
+    will-change: transform;
+}
+
+.coins-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201, 167, 122, 0.3);
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(201, 167, 122, 0.06);
+}
+
+.coins-card__image-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #080810;
+}
+
+/* Velvet noise texture overlay */
+.coins-card__image-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(201, 167, 122, 0.04) 0%,
+            transparent 70%
+        );
+    pointer-events: none;
+    transition: background 0.5s ease;
+}
+
+.coins-card:hover .coins-card__image-wrap::before {
+    background:
+        radial-gradient(ellipse at center,
+            rgba(201, 167, 122, 0.1) 0%,
+            transparent 60%
+        );
+}
+
+/* Spotlight halo */
+.coins-card__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+        radial-gradient(circle at 50% 40%,
+            rgba(255, 255, 255, 0.03) 0%,
+            transparent 60%
+        );
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    opacity: 0.5;
+}
+
+.coins-card:hover .coins-card__spotlight {
+    opacity: 1;
+    background:
+        radial-gradient(circle at 50% 40%,
+            rgba(255, 255, 255, 0.06) 0%,
+            transparent 50%
+        );
+}
+
+.coins-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    min-height: 40px;
+}
+
+.coins-card:hover .coins-card__image {
+    transform: scale(1.05);
+}
+
+/* No-image placeholder */
+.coins-card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.coins-card__placeholder-icon {
+    width: 48px;
+    height: 48px;
+    color: rgba(201, 167, 122, 0.15);
+}
+
+.coins-card__content {
+    padding: 1.25rem 1.5rem 1.5rem;
+    border-top: 1px solid rgba(201, 167, 122, 0.08);
+}
+
+.coins-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.coins-card__year {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--color-gold, #c9a77a);
+}
+
+.coins-card__denomination {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--color-muted, #8a8a9a);
+}
+
+.coins-card__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--color-light, #F6F6F6);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+}
+
+/* Gold underline on hover — matches Network cards */
+.coins-card__underline {
+    width: 0;
+    height: 1px;
+    background: var(--color-gold, #c9a77a);
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.coins-card:hover .coins-card__underline {
+    width: 100%;
+}
+
+/* ─── Detail Drawer ─── */
+
+.coins-card__drawer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    background: #0c0c12;
+    border-top: 0 solid rgba(201, 167, 122, 0);
+}
+
+.coins-card.is-expanded .coins-card__drawer {
+    max-height: 400px;
+    padding: 1.5rem;
+    border-top: 1px solid rgba(201, 167, 122, 0.1);
+}
+
+.coins-card__description {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-body-text, #a0a0a8);
+    letter-spacing: 0.01em;
+}
+
+.coins-card__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: rgba(5, 5, 8, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 167, 122, 0.15);
+    border-radius: 50%;
+    color: var(--color-gold, #c9a77a);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.coins-card.is-expanded .coins-card__close {
+    opacity: 1;
+}
+
+.coins-card__close:hover {
+    background: rgba(201, 167, 122, 0.15);
+}
+
+
+/* ─── Inquire CTA ──────────────────────────────────── */
+
+.coins-inquire {
+    padding: clamp(6rem, 12vh, 10rem) var(--page-margin, 8vw);
+    background: #050508;
+    text-align: center;
+}
+
+.coins-inquire__container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.coins-inquire__crown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.coins-inquire__line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(201, 167, 122, 0.4)
+    );
+}
+
+.coins-inquire__diamond {
+    color: var(--color-gold, #c9a77a);
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+
+.coins-inquire__label {
+    display: block;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-muted, #8a8a9a);
+    margin-bottom: 1rem;
+}
+
+.coins-inquire__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--color-light, #F6F6F6);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.coins-inquire__title-accent {
+    color: var(--color-gold, #c9a77a);
+    font-style: italic;
+}
+
+.coins-inquire__text {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-body-text, #a0a0a8);
+    margin-bottom: 2.5rem;
+}
+
+.coins-inquire__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    border: 1px solid rgba(201, 167, 122, 0.3);
+    background: transparent;
+    color: var(--color-gold, #c9a77a);
+    text-decoration: none;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+}
+
+.coins-inquire__cta:hover {
+    background: rgba(201, 167, 122, 0.08);
+    border-color: rgba(201, 167, 122, 0.5);
+    transform: translateX(4px);
+}
+
+.coins-inquire__cta svg {
+    transition: transform 0.3s ease;
+}
+
+.coins-inquire__cta:hover svg {
+    transform: translateX(4px);
+}
+
+
+/* ─── Scroll Reveal ────────────────────────────────── */
+
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ─── Responsive ───────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .coins-vitrine__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .coins-hero__back {
+        top: 1rem;
+        left: 1.25rem;
+    }
+
+    .coins-hero__unmute {
+        bottom: 4.5rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.65rem;
+    }
+
+    .coins-vault__panel::after {
+        display: none;
+    }
+
+    .coins-vitrine__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .coins-card__image {
+        width: 85%;
+        height: 85%;
+    }
+
+    .coins-card__content {
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .coins-card__title {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coins-vitrine__grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .coins-card__image-wrap {
+        aspect-ratio: 4 / 3;
+    }
+
+    .coins-vault__title {
+        font-size: 2rem;
+    }
+
+    .coins-card.is-expanded .coins-card__drawer {
+        padding: 1rem;
+    }
+}

@@ -4,6 +4,7 @@ export const COLLECTIONS = [
         title: 'Network',
         subtitle: 'The Net-Work Technique',
         description: 'Thousands of welded steel rods forge semi-transparent lattices — forms that simultaneously shield and reveal.',
+        pageType: 'network',
         works: [
             {
                 title: 'Madonna and the Veil',
@@ -24,6 +25,7 @@ export const COLLECTIONS = [
         title: 'Coins',
         subtitle: 'Medals & Numismatics',
         description: 'Masterful hand-engraving for the Croatian National Bank and ECB.',
+        pageType: 'coins',
         works: [
             {
                 title: 'Euro Coins',

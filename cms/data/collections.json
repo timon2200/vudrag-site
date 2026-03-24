@@ -13,12 +13,6 @@
     "pageContent": {
       "heroSlides": [
         {
-          "image": "/images/Network.webp",
-          "title": "THE NET-WORK",
-          "subtitle": "Where Steel Becomes Skin",
-          "eyebrow": "The Signature Technique"
-        },
-        {
           "youtubeId": "MXH7LyQzSDs",
           "image": "/images/8.webp",
           "title": "THE MAKING",
@@ -295,36 +289,50 @@
     "id": "coins",
     "title": "Coins",
     "subtitle": "Medals & Numismatics",
-    "pageType": "gallery",
+    "pageType": "coins",
     "description": "Microrealism and hyperrealism engraved in negative form — coin prototypes no taller than 1.2mm in relief, each a miniature universe of precision. Recognized as an 'A1' class medalist globally.",
     "image": "/images/66.webp",
+    "pageContent": {
+      "video": {
+        "type": "youtube",
+        "src": "jkFG8-GsZq8",
+        "poster": "/images/66.webp"
+      },
+      "introduction": {
+        "eyebrow": "A1 Class Medalist",
+        "title": "The Engraver's Art",
+        "text": "Before the monumental sculptures came the miniature marvels. For over 15 years, Vudrag has honed a discipline of extreme precision — a craft he initially embraced through formal academy training and then deepened through dedicated study of 18th- and 19th-century masters like Oscar Roty, Jules-Clément Chaplain, and Victor Vernon. What makes his achievement truly exceptional is the method: this micro-realism is accomplished primarily through traditional hand-engraving, with minimal reliance on digital technology. Working directly on plaster models often smaller than 15 centimetres in diameter with a relief not exceeding 1.2 millimetres, Vudrag's hand-carved lines achieve breathtaking detail. With the modernization of coin making, he has astutely adopted new technologies — not as a replacement for tradition, but as an enhancement — combining his engraved hyper-realistic relief with techniques like micro-painting and bi-metal minting, uniting sculpture, painting, and engraving within a single, concentrated field.",
+        "credential": "Executive author of the euro and cent circulation coins for the national side of the Republic of Croatia"
+      },
+      "vaultTitle": "Coins & Medals"
+    },
     "works": [
       {
         "title": "Euro Circulation Coins",
         "year": "2022",
         "dimensions": "1c – 2€",
-        "description": "Executive author of the Croatian national side. Glagolitic script, Nikola Tesla, the Marten, and the Map—icons of identity minted into the everyday currency of a continent.",
+        "description": "The official circulating Euro coins of the Republic of Croatia, where Vudrag's medallic artistry achieves a remarkable technical and symbolic innovation. These coins feature an unprecedented two-layer design: beneath each primary motif — the silhouette of Croatia, the portrait of Nikola Tesla, the indigenous marten, and the historic Glagolitic script — lies a foundational layer of the national checkerboard coat of arms. Croatia's map appears to emerge from the very fabric of the nation's heraldic identity; Tesla's genius is framed by the historical patterns of his homeland; and the Glagolitic script, Europe's oldest Slavic alphabet, gains additional resonance when visually rooted in the checkerboard that has symbolized Croatian statehood since the Middle Ages. This architectural approach transforms everyday currency into portable monuments.",
         "image": "/images/works/euro-coins.webp"
       },
       {
         "title": "Croatian Black Lizard",
         "year": "2024",
         "dimensions": "10, 4, 100 euro",
-        "description": "Gold and silver coins capturing the endemic black lizard. Deep patina mirroring volcanic soil, engraved at a microscopic scale to honor a rare survivor of the natural world.",
+        "description": "Part of a series dedicated to indigenous species, this coin elevates a native reptile into a powerful symbol of national heritage. The lizard, an inhabitant of Croatia's unique volcanic island Brusnik, is captured in a moment of poised tension, its sleek form rendered through deep sculptural relief and subtle micro-engraving that suggests the fine, granular texture of its skin. The creature is finished in an intense, deep black patina — a result of advanced finishing techniques — that gives it a formidable, almost fossilized presence, mirroring the dark, volcanic soils of its habitat. Not merely a depiction of an animal, but a symbolic portrait of enduring life specific to the Croatian land, a creature forged in gold that carries the silent, potent energy of its primordial homeland.",
         "image": "/images/works/black-lizard.webp"
       },
       {
         "title": "King Tomislav — 1100th Anniversary",
         "year": "2025",
         "dimensions": "200, 100, 10, 8, 4 euro",
-        "description": "Commemorating 1100 years of the Croatian Kingdom (925–2025). Micro-engraved royal insignia and profile, forged in gold and silver to mark a millennium of statehood.",
+        "description": "This bi-metallic coin crowns Vudrag's numismatic work, minted for the 1100th anniversary of Croatia's first king. The obverse presents a hyper-realistic profile: every knot of cloak and facet of the crown rendered by micro-engraving, then accented with selective micro-gold plating that deepens shadow and highlights. The king's determined gaze emerges from relief scarcely half a millimetre high. The reverse shifts from portrait to parable — an olive tree bursts from bare stone, its roots gripping the rock, its branches spreading across a polished silver field. Gold fused to a silver core is more than decoration: gold evokes royal authority, silver the enduring fabric of the state; their union turns legal tender into a pocket-sized monument. By compressing epic narrative into a 30-millimetre planchet, Vudrag achieves the depth of public sculpture on a surface meant to pass from hand to hand.",
         "image": "/images/works/king-tomislav-coin.webp"
       },
       {
         "title": "King Tomislav 2 Euro",
         "year": "2025",
         "dimensions": "2€ commemorative",
-        "description": "Croatian commemorative 2 Euro coin, marking the foundational moment of Croatian statehood.",
+        "description": "For the circulating commemorative, Vudrag retained Croatia's iconic red and white checkerboard as the base grid, then elevated one layer above that bears the king's stance sitting on a horse. The gesture links today's state emblem to its medieval origin, presenting modern sovereignty as a direct outgrowth of Tomislav's coronation in 925. A companion design, 'Entry into the Eurozone,' reverses the hierarchy: the Euro symbol arches in relief with its seamless integration to Croatian checkerboard spaces. Together, the pair offers citizens both a pocket-sized chronicle of 1,100 years of kingship and a tangible emblem of Croatia's newest chapter in Europe.",
         "image": "/images/works/king-tomislav-2euro.webp"
       },
       {
@@ -352,7 +360,7 @@
         "title": "Dalmatian",
         "year": "2022",
         "dimensions": "10, 50, 1000 HRK",
-        "description": "The Dalmatian dog, its spots rendered as the silhouettes of Croatian islands. Geography encoded in a coat—a playful yet precise tribute to one of Croatia's most recognizable global symbols.",
+        "description": "In this exquisite gold and silver coin, Vudrag celebrates the beloved Dalmatian breed while paying homage to its Croatian origins. His signature hyper-realistic relief captures the dog's muscular form and alert posture with remarkable vitality, but the true genius emerges in the intricate detailing of its iconic spots: the subtle silhouettes of the Dalmatian islands themselves. This unexpected conceptual move creates a poetic dialogue between the breed and its homeland, weaving geography into genetics. The dog's coat becomes a living map, where the patterns of nature and culture merge — transforming a breed portrait into a layered narrative of heritage, identity, and the enduring bond between a land and its natural symbols.",
         "image": "/images/works/dalmatian-dog.webp"
       },
       {
@@ -373,7 +381,7 @@
         "title": "Višnjan",
         "year": "2022",
         "dimensions": "1000 HRK",
-        "description": "Honoring the Višnjan Observatory. A coin that looks to the stars, celebrating the small town that discovers worlds beyond our own.",
+        "description": "This commemorative coin masterfully synthesizes celestial ambition and terrestrial heritage. The obverse presents the Višnjan Astronomy Observatory with extraordinary precision, where micro-engraving captures each individual stone with photographic clarity. The reverse reveals a powerful allegory: the indigenous Istrian Boškarin bull carries the Višnjan cityscape upon its back, a tribute to the enduring agricultural strength that forms the foundation for all human achievement. Together, these faces form a complete narrative where the Boškarin symbolizes resilient foundations while the observatory represents soaring curiosity — binding heaven and earth into a harmonious medallic poem.",
         "image": "/images/works/visnjan.webp"
       },
       {

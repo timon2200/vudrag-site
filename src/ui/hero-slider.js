@@ -31,7 +31,7 @@ const FALLBACK_SLIDES = [
         subtitle: 'Latticework & Light',
         eyebrow: 'The Net-Work Series',
         objectPosition: 'center 50%',
-        link: '/gallery.html',
+        link: '/collection.html?id=networking',
     },
     {
         image: '/images/Atlas.webp',
