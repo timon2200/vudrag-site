@@ -1,0 +1,1 @@
+const l={SPLAT_GALLERY:"splat_gallery"},e={app:null,camera:null,splatEntities:[],splatAssets:[],time:0,scrollProgress:0,targetScrollProgress:0,currentSplatIndex:0,currentSection:l.SPLAT_GALLERY,selectedCategory:null,mouse:{x:0,y:0},isScrolling:!1,lastScrollTime:0,particles:null,textOverlay:null,debugPanel:null,isLoaded:!1};export{e as s};
