@@ -105,7 +105,8 @@ async function fetchCategoriesFromCMS() {
                 subtitle: collection.subtitle || '',
                 description: collection.description || '',
                 image: collection.image || '',
-                count: collection.works?.length || 0
+                count: collection.works?.length || 0,
+                pageType: collection.pageType || 'gallery'
             }));
         }
         return FALLBACK_CATEGORIES;
@@ -387,8 +388,13 @@ function handleCategoryClick(categoryId) {
         windowScrollY: window.scrollY
     }));
 
-    // Navigate to category gallery
-    window.location.href = `/gallery.html?category=${categoryId}`;
+    // Route based on pageType
+    const pageType = category.pageType || 'gallery';
+    if (pageType === 'gallery') {
+        window.location.href = `/gallery.html?category=${categoryId}`;
+    } else {
+        window.location.href = `/collection.html?id=${categoryId}`;
+    }
 }
 
 /**

@@ -10,7 +10,7 @@
     position: relative;
     min-height: 100vh;
     padding: 15vh var(--page-margin);
-    background: linear-gradient(180deg, #1a1a1a 0%, var(--color-canvas) 30%, var(--color-canvas) 70%, #1a1a1a 100%);
+    background: var(--color-canvas);
     overflow: hidden;
 }
 

@@ -484,6 +484,16 @@ app.get('/api/collections', (req, res) => {
     res.json(collections);
 });
 
+// Public endpoint - single collection by ID (needed for collection pages)
+app.get('/api/collections/:id', (req, res) => {
+    const collections = loadJSON('collections.json') || [];
+    const collection = collections.find(c => c.id === req.params.id);
+    if (!collection) {
+        return res.status(404).json({ error: 'Collection not found' });
+    }
+    res.json(collection);
+});
+
 app.put('/api/collections/:id', authMiddleware, (req, res) => {
     const collections = loadJSON('collections.json') || [];
     const index = collections.findIndex(c => c.id === req.params.id);

@@ -3,12 +3,79 @@
     "id": "networking",
     "title": "Network",
     "subtitle": "The Net-Work Technique",
+    "pageType": "network",
     "description": "Thousands of welded steel rods forge semi-transparent lattices — forms that simultaneously shield and reveal, where the interplay of light and shadow becomes the true medium.",
     "image": "/images/8.webp",
     "segments": [
       "Self Standing",
       "Wall"
     ],
+    "pageContent": {
+      "heroSlides": [
+        {
+          "image": "/images/Network.webp",
+          "title": "THE NET-WORK",
+          "subtitle": "Where Steel Becomes Skin",
+          "eyebrow": "The Signature Technique"
+        },
+        {
+          "youtubeId": "MXH7LyQzSDs",
+          "image": "/images/8.webp",
+          "title": "THE MAKING",
+          "subtitle": "Each Weld, a Single Breath",
+          "eyebrow": "The Forge"
+        }
+      ],
+      "introduction": {
+        "eyebrow": "Nikola Vudrag",
+        "title": "The Net-Work",
+        "text": "Thousands of short steel rods — mute, identical fragments — await transformation. Through a ritual of up to 20,000 individual welds, Vudrag transmutes these industrial units into organic lattices that simultaneously shield and reveal. The gaps between rods are not absences, but invitations for light to pass. What emerges is neither solid nor void, but something between — a semi-transparent veil where the interplay of light and shadow becomes the true medium.",
+        "quote": "Each weld is executed as a single, mindful breath."
+      },
+      "patterns": [
+        {
+          "id": "shield",
+          "title": "Shield",
+          "subtitle": "Dense Armored Surfaces",
+          "description": "Dense, deliberate, and unyielding, these works transform welded steel rods into armored surfaces, a mesh so tightly fused it becomes a metallic hide. Gaps appear only as calculated negative space, while the relentless overlap of rods creates an almost impenetrable texture. The craftsmanship is severe: raw grinding polishes the surface to a reflective sheen, while strategic torch burns pull forth hidden hues — deep blues, violets, and golds seared into the steel's core. The metallic finish catches light like blade edges, but where the torch lingers, the fire liberates its inner spectrum. This is welding as alchemy: force and precision transmuting rigid rods into a radiant, resilient skin.",
+          "images": ["/images/weld-process-01.webp", "/images/weld-process-02.webp"],
+          "finishLabels": ["Metallic", "Dark Silver"]
+        },
+        {
+          "id": "brut",
+          "title": "Brut",
+          "subtitle": "Raw Visceral Form",
+          "description": "Raw, unrefined, and charged with the force of creation, these works embrace the brutal beauty of welded steel in its most visceral state. Metal rods surge outward in chaotic yet deliberate formations, their paths scorched by the torch, their joints scarred by visible welds. The rusted variants, eaten by oxidation, appear as unearthed artifacts, crumbling yet enduring. Matte finishes absorb light like aged steel, while high-gloss lacquer seals the raw force beneath a glassy veneer, turning fury into monument. This is welding as archaeology: each piece a relic of force, time, and transformation.",
+          "images": ["/images/weld-process-03.webp", "/images/weld-process-04.webp"],
+          "finishLabels": ["Rusted", "Torch Blackened"]
+        },
+        {
+          "id": "organic",
+          "title": "Organic",
+          "subtitle": "Flowing Metallic Growth",
+          "description": "This series captures the dynamic energy and flow from a single focal point, branching outward in organic patterns as if shaped by unseen currents. The artist leaves gravity to guide the material into flowing, almost botanical forms, where each weld becomes a joint in an evolving metallic organism. The rust version, treated with oxidizing chemicals, mimics the weathered beauty of driftwood or coral. The silver variants evoke the sleek tension of molten rivers frozen in time. Both can be rendered in matte or high-gloss finishes, amplifying either the piece's earthy tactility or its sculptural fluidity.",
+          "images": ["/images/weld-process-05.webp", "/images/weld-process-06.webp"],
+          "finishLabels": ["Silver", "Rust"]
+        },
+        {
+          "id": "sumerian",
+          "title": "Sumerian",
+          "subtitle": "Ancient Cuneiform Reborn",
+          "description": "This series reinterprets the ancient elegance of Sumerian cuneiform through contemporary fabrication. By fusing slender steel rods into intricate mesh patterns, the artist transforms industrial material into a lyrical exploration of form and texture. A richly textured rust version, achieved through controlled chemical oxidation, evokes archaeological fragments steeped in time. The silver variants, treated with precise torch work, present a sleek modern duality — the high-gloss catches light like liquid metal, while the matte absorbs it, deepening the geometric shadows.",
+          "images": ["/images/weld-process-07.webp", "/images/weld-process-08.webp"],
+          "finishLabels": ["Silver", "Rust"]
+        }
+      ],
+      "technique": {
+        "title": "The Method",
+        "text": "Vudrag's signature method begins with piles of short steel rods — mute, identical fragments. Through a ritual of up to 20,000 welds, he transforms these industrial units into organic lattices. An austere primary form — sphere, amphora, face — dissolves into a lattice where the calculated framework testifies to humanity's hunger for perfection, while the wandering infill celebrates our fallibility.",
+        "stats": [
+          { "value": "20,000+", "label": "Welds Per Sculpture" },
+          { "value": "17", "label": "Works in Collection" },
+          { "value": "4", "label": "Pattern Variants" }
+        ]
+      }
+    },
     "works": [
       {
         "title": "Madonna and the Veil",
@@ -152,6 +219,7 @@
     "id": "nature",
     "title": "Nature",
     "subtitle": "Flora & Landscape",
+    "pageType": "gallery",
     "description": "Organic forms reimagined through industrial precision. A dialogue between the fragile impermanence of nature and the heavy eternity of steel.",
     "image": "/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp",
     "works": [
@@ -168,6 +236,7 @@
     "id": "portraits",
     "title": "Portraits",
     "subtitle": "Bronze Busts",
+    "pageType": "gallery",
     "description": "Disciplined realism capturing the private pulse behind the public face — each bust a testament to the enduring dialogue between bronze, memory, and the figures who shaped history.",
     "image": "/images/56.webp",
     "works": [
@@ -226,6 +295,7 @@
     "id": "coins",
     "title": "Coins",
     "subtitle": "Medals & Numismatics",
+    "pageType": "gallery",
     "description": "Microrealism and hyperrealism engraved in negative form — coin prototypes no taller than 1.2mm in relief, each a miniature universe of precision. Recognized as an 'A1' class medalist globally.",
     "image": "/images/66.webp",
     "works": [
@@ -319,6 +389,7 @@
     "id": "polygonal",
     "title": "Polygonal",
     "subtitle": "Geometric Forms",
+    "pageType": "gallery",
     "description": "Metal polygon plates converge into monumental animal forms and crystalline geometries — where mathematical precision meets mythological weight.",
     "image": "/images/93.webp",
     "segments": [
@@ -380,6 +451,7 @@
     "id": "public-works",
     "title": "Public Works",
     "subtitle": "Monumental & Interventions",
+    "pageType": "gallery",
     "description": "Large-scale commissions that transform public space — from 12-meter Tesla monuments to interactive water gates, each installation altering the dialogue between art, architecture, and the community that surrounds it.",
     "image": "/images/95.webp",
     "segments": [

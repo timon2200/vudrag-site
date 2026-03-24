@@ -47,8 +47,8 @@ async function init() {
     setupScrollReveal();
     await setupCategoryHub();
     await setupArtistSection();
-    await setupWorksShowcase();
     await setupVideoShowcase();
+    await setupWorksShowcase();
     await setupFooter();
     createMenuOverlay();
 

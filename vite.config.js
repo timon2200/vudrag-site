@@ -17,7 +17,8 @@ export default defineConfig({
                 login: 'login.html',
                 archive: 'archive.html',
                 splatViewer: 'splat-viewer.html',
-                splatHero: 'splat-hero.html'
+                splatHero: 'splat-hero.html',
+                collection: 'collection.html'
             },
             output: {
                 manualChunks: {
