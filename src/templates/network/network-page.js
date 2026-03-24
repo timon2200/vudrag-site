@@ -45,6 +45,7 @@ function buildHTML(collection, heroSlides, intro, patterns, works, technique) {
         ${buildIntroduction(intro)}
         ${buildWorksGallery(works)}
         ${buildPatternShowcase(patterns)}
+        ${buildInquire()}
     `;
 }
 
@@ -324,6 +325,36 @@ function buildTechnique(technique) {
                     `).join('')}
                 </div>
             ` : ''}
+        </section>
+    `;
+}
+
+// ─── Inquire CTA ─────────────────────────────────
+
+function buildInquire() {
+    return `
+        <section class="nw-inquire" id="nw-inquire">
+            <div class="nw-inquire__container" data-reveal>
+                <div class="nw-inquire__crown">
+                    <span class="nw-inquire__line"></span>
+                    <span class="nw-inquire__diamond">◈</span>
+                    <span class="nw-inquire__line"></span>
+                </div>
+                <span class="nw-inquire__label">Commissions & Inquiries</span>
+                <h3 class="nw-inquire__title">
+                    <span>Let's </span>
+                    <span class="nw-inquire__title-accent">Connect</span>
+                </h3>
+                <p class="nw-inquire__text">
+                    For custom welded sculpture commissions, exhibition inquiries, or to discuss a collaborative project — I welcome your message.
+                </p>
+                <a href="/contact.html" class="nw-inquire__cta">
+                    <span>Get in Touch</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
         </section>
     `;
 }

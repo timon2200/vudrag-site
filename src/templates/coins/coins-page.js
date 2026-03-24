@@ -41,6 +41,7 @@ function buildHTML(collection, video, intro, vaultTitle, works) {
         ${buildIntroduction(intro)}
         ${buildVitrine(works)}
         ${buildInquire()}
+        ${buildSidePanel()}
     `;
 }
 
@@ -178,13 +179,10 @@ function buildVitrine(works) {
 function buildCoinCard(work, index) {
     const hasImage = work.image && work.image.length > 0;
 
+    const desc = (work.description || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
     return `
-        <article class="coins-card" data-reveal data-reveal-delay="${Math.min(index, 5)}" data-index="${index}">
-            <button class="coins-card__close" aria-label="Close details">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-            </button>
+        <article class="coins-card" data-reveal data-reveal-delay="${Math.min(index, 5)}" data-index="${index}" data-description="${desc}">
             <div class="coins-card__image-wrap">
                 <div class="coins-card__spotlight"></div>
                 ${hasImage
@@ -204,12 +202,34 @@ function buildCoinCard(work, index) {
                     <span class="coins-card__denomination">${work.dimensions || ''}</span>
                 </div>
                 <h3 class="coins-card__title">${work.title}</h3>
-                <div class="coins-card__underline"></div>
-            </div>
-            <div class="coins-card__drawer">
-                <p class="coins-card__description">${work.description || ''}</p>
             </div>
         </article>
+    `;
+}
+
+// ─── Side Panel ──────────────────────────────────
+
+function buildSidePanel() {
+    return `
+        <div class="coins-panel" id="coins-panel">
+            <div class="coins-panel__backdrop"></div>
+            <aside class="coins-panel__sheet">
+                <button class="coins-panel__close" aria-label="Close panel">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <div class="coins-panel__image-wrap">
+                    <img class="coins-panel__image" src="" alt="" draggable="false" />
+                </div>
+                <div class="coins-panel__body">
+                    <span class="coins-panel__eyebrow"></span>
+                    <h3 class="coins-panel__title"></h3>
+                    <div class="coins-panel__divider"></div>
+                    <p class="coins-panel__description"></p>
+                </div>
+            </aside>
+        </div>
     `;
 }
 
@@ -260,8 +280,10 @@ function setupVideoHero(container, videoConfig) {
     const progressBar = hero.querySelector('#coins-progress');
     const scrollHint = hero.querySelector('#coins-scroll-hint');
     const poster = hero.querySelector('.coins-hero__poster');
+    const overlay = hero.querySelector('.coins-hero__overlay');
 
     let isMuted = true;
+    let ytPlayer = null;
 
     // Show scroll hint after delay
     setTimeout(() => {
@@ -275,7 +297,37 @@ function setupVideoHero(container, videoConfig) {
         return;
     }
 
-    // Hide poster once video starts playing
+    // ── YouTube IFrame Player API ──
+    if (iframe && videoConfig.type === 'youtube') {
+        // Load YouTube IFrame API if not already loaded
+        if (!window.YT || !window.YT.Player) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        }
+
+        const initYTPlayer = () => {
+            ytPlayer = new window.YT.Player(iframe, {
+                events: {
+                    onReady: () => {
+                        // Hide poster once we know the player is ready and playing
+                        if (poster) {
+                            setTimeout(() => poster.classList.add('is-hidden'), 1500);
+                        }
+                    }
+                }
+            });
+        };
+
+        // Wait for API to be available
+        if (window.YT && window.YT.Player) {
+            initYTPlayer();
+        } else {
+            window.onYouTubeIframeAPIReady = initYTPlayer;
+        }
+    }
+
+    // Hide poster once video starts playing (MP4)
     if (video && poster) {
         video.addEventListener('playing', () => {
             poster.classList.add('is-hidden');
@@ -296,16 +348,26 @@ function setupVideoHero(container, videoConfig) {
         });
     }
 
-    // Unmute toggle
-    if (unmuteBtn) {
-        unmuteBtn.addEventListener('click', () => {
-            isMuted = !isMuted;
+    // ── Toggle mute helper ──
+    function toggleMute() {
+        isMuted = !isMuted;
 
-            if (video) {
-                video.muted = isMuted;
+        // Toggle on YouTube player
+        if (ytPlayer && ytPlayer.isMuted) {
+            if (isMuted) {
+                ytPlayer.mute();
+            } else {
+                ytPlayer.unMute();
             }
+        }
 
-            // Update button state
+        // Toggle on native video
+        if (video) {
+            video.muted = isMuted;
+        }
+
+        // Update button state
+        if (unmuteBtn) {
             const label = unmuteBtn.querySelector('span');
             const svg = unmuteBtn.querySelector('svg');
 
@@ -323,6 +385,23 @@ function setupVideoHero(container, videoConfig) {
                     <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
                 `;
             }
+        }
+    }
+
+    // Click anywhere on overlay to toggle mute
+    if (overlay) {
+        overlay.style.cursor = 'pointer';
+        overlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMute();
+        });
+    }
+
+    // Keep button click working too
+    if (unmuteBtn) {
+        unmuteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMute();
         });
     }
 
@@ -402,74 +481,103 @@ function setupScrollReveal(container) {
     elements.forEach(el => observer.observe(el));
 }
 
-// ─── Vitrine Interaction ─────────────────────────
+// ─── Vitrine Interaction (hover tilt + side panel) ─
 
 function setupVitrineInteraction(container) {
     const cards = container.querySelectorAll('.coins-card');
 
-    cards.forEach(card => {
-        // Hover tilt effect (desktop only)
-        if (window.matchMedia('(hover: hover)').matches) {
-            const imageWrap = card.querySelector('.coins-card__image-wrap');
-            
+    // Hover tilt (desktop only)
+    if (window.matchMedia('(hover: hover)').matches) {
+        cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
-                if (card.classList.contains('is-expanded')) return;
-                
                 const rect = card.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width;
                 const y = (e.clientY - rect.top) / rect.height;
-                
-                const rotateY = (x - 0.5) * 6;   // ±3 degrees
-                const rotateX = (0.5 - y) * 4;    // ±2 degrees
-                
+                const rotateY = (x - 0.5) * 6;
+                const rotateX = (0.5 - y) * 4;
                 card.style.transform = `translateY(-4px) perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
 
             card.addEventListener('mouseleave', () => {
-                if (card.classList.contains('is-expanded')) return;
                 card.style.transform = '';
             });
-        }
-
-        // Click to expand drawer
-        card.addEventListener('click', (e) => {
-            // Don't toggle if clicking close button
-            if (e.target.closest('.coins-card__close')) {
-                card.classList.remove('is-expanded');
-                card.style.transform = '';
-                return;
-            }
-
-            // Toggle this card
-            const wasExpanded = card.classList.contains('is-expanded');
-
-            // Close all other expanded cards
-            cards.forEach(c => {
-                if (c !== card) c.classList.remove('is-expanded');
-            });
-
-            if (!wasExpanded) {
-                card.classList.add('is-expanded');
-                card.style.transform = 'translateY(-4px)';
-
-                // Scroll card into view if needed
-                setTimeout(() => {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-            } else {
-                card.classList.remove('is-expanded');
-                card.style.transform = '';
-            }
         });
+    }
 
-        // Close button
-        const closeBtn = card.querySelector('.coins-card__close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                card.classList.remove('is-expanded');
-                card.style.transform = '';
-            });
+    // Click → open side panel
+    setupSidePanel(container, cards);
+}
+
+// ─── Side Panel ──────────────────────────────────
+
+function setupSidePanel(container, cards) {
+    const panel = container.querySelector('#coins-panel');
+    if (!panel) return;
+
+    const backdrop = panel.querySelector('.coins-panel__backdrop');
+    const sheet = panel.querySelector('.coins-panel__sheet');
+    const closeBtn = panel.querySelector('.coins-panel__close');
+    const panelImage = panel.querySelector('.coins-panel__image');
+    const panelEyebrow = panel.querySelector('.coins-panel__eyebrow');
+    const panelTitle = panel.querySelector('.coins-panel__title');
+    const panelDesc = panel.querySelector('.coins-panel__description');
+
+    let activeCard = null;
+
+    function openPanel(card) {
+        const index = parseInt(card.dataset.index, 10);
+        const img = card.querySelector('.coins-card__image');
+        const title = card.querySelector('.coins-card__title');
+        const year = card.querySelector('.coins-card__year');
+        const denom = card.querySelector('.coins-card__denomination');
+
+        // Populate panel
+        if (panelImage) {
+            panelImage.src = img ? img.src : '';
+            panelImage.alt = img ? img.alt : '';
+            panelImage.style.display = img ? '' : 'none';
+        }
+        if (panelTitle) panelTitle.textContent = title ? title.textContent : '';
+        if (panelEyebrow) panelEyebrow.textContent = [year?.textContent, denom?.textContent].filter(Boolean).join(' · ');
+
+        // Get description from CMS data embedded in card
+        // We read it from the works array via the index
+        const descEl = card.closest('.coins-vitrine');
+        // Fetch description from data attribute or fallback
+        if (panelDesc) panelDesc.textContent = card.dataset.description || '';
+
+        // Highlight active card
+        if (activeCard) activeCard.classList.remove('is-active');
+        card.classList.add('is-active');
+        activeCard = card;
+
+        // Open
+        panel.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel() {
+        panel.classList.remove('is-open');
+        document.body.style.overflow = '';
+        if (activeCard) {
+            activeCard.classList.remove('is-active');
+            activeCard = null;
+        }
+    }
+
+    // Card click
+    cards.forEach(card => {
+        card.addEventListener('click', () => openPanel(card));
+    });
+
+    // Close triggers
+    if (closeBtn) closeBtn.addEventListener('click', closePanel);
+    if (backdrop) backdrop.addEventListener('click', closePanel);
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && panel.classList.contains('is-open')) {
+            closePanel();
         }
     });
 }

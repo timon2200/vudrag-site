@@ -452,22 +452,45 @@
     position: relative;
     background: #0a0a0e;
     border: 1px solid rgba(201, 167, 122, 0.12);
-    border-radius: 4px;
+    border-radius: 3px;
     overflow: hidden;
     cursor: pointer;
     transition:
-        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
         border-color 0.5s ease,
         box-shadow 0.5s ease;
     will-change: transform;
 }
 
+/* Gold underline — matches Network work cards */
+.coins-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            rgba(201, 167, 122, 0) 0%,
+            rgba(201, 167, 122, 0.5) 50%,
+            rgba(201, 167, 122, 0) 100%);
+    transform: scaleX(0);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+               opacity 0.5s ease;
+    z-index: 10;
+}
+
+.coins-card:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
 .coins-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(201, 167, 122, 0.3);
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.4),
-        0 0 40px rgba(201, 167, 122, 0.06);
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(201, 167, 122, 0.06);
 }
 
 .coins-card__image-wrap {
@@ -590,73 +613,147 @@
     letter-spacing: 0.03em;
     color: var(--color-light, #F6F6F6);
     line-height: 1.3;
-    margin-bottom: 0.5rem;
 }
 
-/* Gold underline on hover — matches Network cards */
-.coins-card__underline {
-    width: 0;
-    height: 1px;
-    background: var(--color-gold, #c9a77a);
-    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+/* ─── Side Panel ─── */
+
+.coins-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0s 0.45s;
 }
 
-.coins-card:hover .coins-card__underline {
-    width: 100%;
+.coins-panel.is-open {
+    pointer-events: auto;
+    visibility: visible;
+    transition: visibility 0s 0s;
 }
 
-/* ─── Detail Drawer ─── */
-
-.coins-card__drawer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1),
-                padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    background: #0c0c12;
-    border-top: 0 solid rgba(201, 167, 122, 0);
-}
-
-.coins-card.is-expanded .coins-card__drawer {
-    max-height: 400px;
-    padding: 1.5rem;
-    border-top: 1px solid rgba(201, 167, 122, 0.1);
-}
-
-.coins-card__description {
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.82rem;
-    font-weight: 300;
-    line-height: 1.75;
-    color: var(--color-body-text, #a0a0a8);
-    letter-spacing: 0.01em;
-}
-
-.coins-card__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
+.coins-panel__backdrop {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 10;
-    background: rgba(5, 5, 8, 0.6);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(201, 167, 122, 0.15);
-    border-radius: 50%;
-    color: var(--color-gold, #c9a77a);
-    cursor: pointer;
+    inset: 0;
+    background: rgba(5, 5, 8, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     opacity: 0;
-    transition: opacity 0.3s ease, background 0.3s ease;
+    transition: opacity 0.4s ease;
 }
 
-.coins-card.is-expanded .coins-card__close {
+.coins-panel.is-open .coins-panel__backdrop {
     opacity: 1;
 }
 
-.coins-card__close:hover {
-    background: rgba(201, 167, 122, 0.15);
+.coins-panel__sheet {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(440px, 85vw);
+    background: linear-gradient(180deg, #0e0e14 0%, #0a0a0f 100%);
+    border-left: 1px solid rgba(201, 167, 122, 0.12);
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+}
+
+.coins-panel.is-open .coins-panel__sheet {
+    transform: translateX(0);
+}
+
+.coins-panel__close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(5, 5, 8, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 167, 122, 0.2);
+    border-radius: 50%;
+    color: var(--color-gold, #c9a77a);
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.coins-panel__close:hover {
+    background: rgba(201, 167, 122, 0.12);
+    border-color: rgba(201, 167, 122, 0.5);
+}
+
+.coins-panel__image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #080810;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.coins-panel__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coins-panel__body {
+    padding: 2rem 2rem 3rem;
+    flex: 1;
+}
+
+.coins-panel__eyebrow {
+    display: block;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-gold, #c9a77a);
+    margin-bottom: 0.75rem;
+}
+
+.coins-panel__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--color-light, #F6F6F6);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+}
+
+.coins-panel__divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold, #c9a77a), transparent);
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}
+
+.coins-panel__description {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--color-body-text, #a0a0a8);
+}
+
+/* Active card highlight */
+.coins-card.is-active {
+    border-color: rgba(201, 167, 122, 0.4);
+    box-shadow:
+        0 0 40px rgba(201, 167, 122, 0.08),
+        0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 
