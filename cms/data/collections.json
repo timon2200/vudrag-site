@@ -434,76 +434,34 @@
       "labours": [
         {
           "number": 1,
-          "title": "The Nemean Lion",
-          "sculpted": false,
-          "mythology": "The lion's impenetrable hide could not be pierced by any weapon. Hercules strangled the beast with bare hands and wore its skin as armor — the first lesson: some battles cannot be won with tools, only with the self."
-        },
-        {
-          "number": 2,
-          "title": "The Lernaean Hydra",
-          "sculpted": false,
-          "mythology": "For every head severed, two grew in its place. Hercules learned that brute force multiplies certain evils. Only by cauterizing each wound — sealing destruction with fire — could the cycle be broken. The second lesson: wisdom must accompany strength."
-        },
-        {
-          "number": 3,
-          "title": "The Ceryneian Hind",
-          "sculpted": false,
-          "mythology": "Sacred to Artemis, the golden-horned hind could not be harmed. Hercules pursued it for an entire year before capturing it alive — the third lesson: some sacred things demand patience, not conquest."
-        },
-        {
-          "number": 4,
-          "title": "The Erymanthian Boar",
-          "sculpted": false,
-          "mythology": "A creature of ungovernable rage, dwelling in the winter snows. Hercules drove it into deep drifts where its fury was rendered impotent — the fourth lesson: the wild force within us is subdued not by opposing it, but by changing the terrain."
-        },
-        {
-          "number": 5,
           "title": "The Augean Stables",
           "sculpted": true,
           "work": "The Stables (Augeas)",
           "credential": null
         },
         {
-          "number": 6,
+          "number": 2,
           "title": "The Stymphalian Birds",
           "sculpted": true,
           "work": "The Stymphalian Birds",
           "credential": null
         },
         {
-          "number": 7,
+          "number": 3,
           "title": "The Cretan Bull",
           "sculpted": true,
           "work": "The Cretan Bull",
           "credential": null
         },
         {
-          "number": 8,
-          "title": "The Mares of Diomedes",
-          "sculpted": false,
-          "mythology": "Man-eating horses fed on human flesh by their master. Hercules freed them by feeding Diomedes to his own beasts — the eighth lesson: tyrants are ultimately consumed by their own cruelty."
-        },
-        {
-          "number": 9,
-          "title": "The Belt of Hippolyta",
-          "sculpted": false,
-          "mythology": "The Amazon queen offered her belt freely, but Hera sowed distrust among her warriors. What could have been received in peace was taken in war — the ninth lesson: suspicion destroys what generosity would have given."
-        },
-        {
-          "number": 10,
-          "title": "The Cattle of Geryon",
-          "sculpted": false,
-          "mythology": "A journey to the edge of the known world to claim the red cattle of the three-bodied giant. Hercules erected the Pillars that bear his name — the tenth lesson: some quests redefine the boundaries of the possible."
-        },
-        {
-          "number": 11,
+          "number": 4,
           "title": "The Apples of the Hesperides",
           "sculpted": true,
           "work": "Gardens of the Hesperides",
           "credential": "Malta Biennale 2024"
         },
         {
-          "number": 12,
+          "number": 5,
           "title": "Atlas & Prometheus",
           "sculpted": true,
           "isFeature": true,
@@ -512,15 +470,18 @@
       ],
       "venice": {
         "eyebrow": "60th Venice Biennale",
-        "title": "Atlas & Prometheus",
-        "subtitle": "The Force of Pushing — The Force of Pulling",
+        "title": "The Forge",
+        "subtitle": "Where Geometry Meets the Body",
+        "text": "Every polygonal sculpture begins as flat CorTen steel plate — cut with plasma torch along calculated seams, folded by hydraulic press, and joined by hand-welding. The polygon is never decorative. It is structural. Each facet carries load, distributes tension, resolves the mathematics of weight into form. What emerges is neither organic nor mechanical — it is the geometry of exertion itself.",
         "atlas": {
-          "label": "PUSH",
-          "description": "The force of pushing. A hand gripping a pillar, exerting upward force against tremendous pressure. It symbolizes the continuous effort required to uphold the ideals of civilization."
+          "label": "BEARING",
+          "title": "The Weight of Form",
+          "description": "The sculptor becomes the sculpture. Each plate must be lifted, held, aligned by hand before it is welded into permanence. The body is a jig — arms as clamps, shoulders as supports. In this image, the artist bears Atlas before Atlas can bear the world."
         },
         "prometheus": {
-          "label": "PULL",
-          "description": "The force of pulling. Bound by a chain, the hand struggles for liberation. A symbol of rebellion and the pursuit of knowledge against the constraints of authority."
+          "label": "FORGING",
+          "title": "Fire as Language",
+          "description": "The plasma torch cuts at 20,000°C — a controlled lightning bolt that separates steel along lines drawn in chalk. The sparks are not waste; they are the material's resistance made visible. Each cut is irrevocable. There is no undo in metal."
         }
       }
     },

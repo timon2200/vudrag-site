@@ -789,6 +789,24 @@
     letter-spacing: 0.1em;
 }
 
+/* Philosophy text block */
+.pg-venice__philosophy {
+    max-width: 750px;
+    margin: 0 auto 6vh;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.pg-venice__philosophy-text {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--color-body-text, #a0a0a8);
+    letter-spacing: 0.02em;
+}
+
 /* Split layout */
 .pg-venice__split {
     position: relative;

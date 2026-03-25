@@ -1,8 +1,9 @@
-async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlides:s=[],introduction:o={},patterns:l=[],technique:i={}}=a||{};t.innerHTML=u(e,s,o,l,n),requestAnimationFrame(()=>{$(t),L(t),x(t),q(t),E(t)})}function u(t,e,a,n,r,s){return`
+async function C(t,e){const{pageContent:a,works:r=[],segments:s=[]}=e,{heroSlides:n=[],introduction:o={},patterns:l=[],technique:i={}}=a||{};t.innerHTML=g(e,n,o,l,r),requestAnimationFrame(()=>{k(t),q(t),x(t),E(t),I(t)})}function g(t,e,a,r,s,n){return`
         ${h(e)}
         ${m(a)}
-        ${b(r)}
-        ${y(n)}
+        ${b(s)}
+        ${y(r)}
+        ${$()}
     `}function h(t){return t.length?`
         <section class="nw-hero" id="nw-hero">
             ${t.map((e,a)=>`
@@ -36,12 +37,12 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
                 <span>Back</span>
             </a>
         </section>
-    `:""}function f(t,e){if(t.youtubeId){const a=t.youtubeId,n=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${a}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin)].join("&"),r=`https://www.youtube.com/embed/${a}?${n}`;return`
+    `:""}function f(t,e){if(t.youtubeId){const a=t.youtubeId,r=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${a}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin)].join("&"),s=`https://www.youtube.com/embed/${a}?${r}`;return`
             <div class="nw-hero__video-wrap">
                 <iframe
                     class="nw-hero__video"
-                    ${e?`src="${r}"`:""}
-                    data-src="${r}"
+                    ${e?`src="${s}"`:""}
+                    data-src="${s}"
                     frameborder="0"
                     allow="autoplay; encrypted-media"
                     allowfullscreen
@@ -74,14 +75,14 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
                 <div class="nw-patterns__divider"></div>
             </header>
             <div class="nw-patterns__grid">
-                ${t.map((e,a)=>{const n=e.images||[e.image,e.image],r=e.finishLabels||["Finish A","Finish B"];return`
+                ${t.map((e,a)=>{const r=e.images||[e.image,e.image],s=e.finishLabels||["Finish A","Finish B"];return`
                     <article class="nw-pattern-card" data-reveal data-reveal-delay="${a+1}">
                         <div class="nw-comparator" data-comparator>
                             <div class="nw-comparator__image-wrap nw-comparator__image-wrap--left">
-                                <img class="nw-comparator__image" src="${n[0]}" alt="${e.title} — ${r[0]}" loading="lazy" draggable="false" />
+                                <img class="nw-comparator__image" src="${r[0]}" alt="${e.title} — ${s[0]}" loading="lazy" draggable="false" />
                             </div>
                             <div class="nw-comparator__image-wrap nw-comparator__image-wrap--right">
-                                <img class="nw-comparator__image" src="${n[1]}" alt="${e.title} — ${r[1]}" loading="lazy" draggable="false" />
+                                <img class="nw-comparator__image" src="${r[1]}" alt="${e.title} — ${s[1]}" loading="lazy" draggable="false" />
                             </div>
                             <div class="nw-comparator__divider" data-comparator-handle>
                                 <div class="nw-comparator__line"></div>
@@ -91,8 +92,8 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
                                     </svg>
                                 </div>
                             </div>
-                            <span class="nw-comparator__label nw-comparator__label--left">${r[0]}</span>
-                            <span class="nw-comparator__label nw-comparator__label--right">${r[1]}</span>
+                            <span class="nw-comparator__label nw-comparator__label--left">${s[0]}</span>
+                            <span class="nw-comparator__label nw-comparator__label--right">${s[1]}</span>
                         </div>
                         <div class="nw-pattern-card__content">
                             <span class="nw-pattern-card__number">${String(a+1).padStart(2,"0")}</span>
@@ -104,7 +105,7 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
                 `}).join("")}
             </div>
         </section>
-    `:""}function b(t){if(!t.length)return"";const e=t.filter(s=>s.segment==="Self Standing"),a=t.filter(s=>s.segment==="Wall"),n=t.filter(s=>!s.segment);let r=[];return e.length&&(r.push({type:"divider",label:"Self Standing",count:e.length}),e.forEach(s=>r.push({type:"work",data:s}))),a.length&&(r.push({type:"divider",label:"Wall",count:a.length}),a.forEach(s=>r.push({type:"work",data:s}))),n.length&&n.forEach(s=>r.push({type:"work",data:s})),`
+    `:""}function b(t){if(!t.length)return"";const e=t.filter(n=>n.segment==="Self Standing"),a=t.filter(n=>n.segment==="Wall"),r=t.filter(n=>!n.segment);let s=[];return e.length&&(s.push({type:"divider",label:"Self Standing",count:e.length}),e.forEach(n=>s.push({type:"work",data:n}))),a.length&&(s.push({type:"divider",label:"Wall",count:a.length}),a.forEach(n=>s.push({type:"work",data:n}))),r.length&&r.forEach(n=>s.push({type:"work",data:n})),`
         <section class="nw-gallery" id="nw-gallery">
             <header class="nw-gallery__header" data-reveal>
                 <span class="nw-gallery__label">The Collection</span>
@@ -119,14 +120,14 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
             </header>
             <div class="nw-gallery__track-wrapper">
                 <div class="nw-gallery__track" id="nw-gallery-track">
-                    ${r.map((s,o)=>{if(s.type==="divider")return`
+                    ${s.map((n,o)=>{if(n.type==="divider")return`
                                 <div class="nw-gallery__segment-divider">
-                                    <span class="nw-gallery__segment-watermark">${s.label.toUpperCase()}</span>
+                                    <span class="nw-gallery__segment-watermark">${n.label.toUpperCase()}</span>
                                     <div class="nw-gallery__segment-info">
-                                        <span class="nw-gallery__segment-count">${s.count} Works</span>
+                                        <span class="nw-gallery__segment-count">${n.count} Works</span>
                                     </div>
                                 </div>
-                            `;const l=s.data;return`
+                            `;const l=n.data;return`
                             <article class="nw-work-card" data-index="${o}">
                                 <div class="nw-work-card__image-wrap">
                                     <img class="nw-work-card__image" src="${l.image}" alt="${l.title}" loading="lazy" />
@@ -149,4 +150,28 @@ async function I(t,e){const{pageContent:a,works:n=[],segments:r=[]}=e,{heroSlide
                 </div>
             </div>
         </section>
-    `}function $(t){const e=t.querySelector("#nw-hero");if(!e)return;const a=e.querySelectorAll(".nw-hero__slide"),n=e.querySelectorAll(".nw-hero__dot");let r=0;const s=new IntersectionObserver(c=>{c.forEach(w=>{var _,g,v;const d=parseInt(w.target.dataset.index,10);if(w.isIntersecting&&w.intersectionRatio>=.5){if(d===r)return;(_=a[r])==null||_.classList.remove("is-active"),(g=n[r])==null||g.classList.remove("is-active"),S(a[r]),r=d,w.target.classList.add("is-active"),(v=n[d])==null||v.classList.add("is-active"),k(w.target)}})},{root:e,threshold:[.1,.5]});a.forEach(c=>s.observe(c)),n.forEach(c=>{c.addEventListener("click",()=>{const w=parseInt(c.dataset.index,10),d=a[w];d&&d.scrollIntoView({behavior:"smooth",block:"start"})})});let o=0;const l=120;let i=!1;const p=e.querySelector(".nw-hero__pagination");e.addEventListener("wheel",c=>{if(i)return;if(e.scrollTop+e.clientHeight>=e.scrollHeight-2&&c.deltaY>0){if(o+=c.deltaY,o>=l){i=!0,o=0,e.style.overflowY="hidden",e.style.scrollSnapType="none",p&&(p.style.opacity="0");const d=t.querySelector("#nw-intro");d&&d.scrollIntoView({behavior:"smooth",block:"start"})}return}o=0},{passive:!0}),window.addEventListener("scroll",()=>{i&&window.scrollY<=5&&(i=!1,e.style.overflowY="",e.style.scrollSnapType="",p&&(p.style.opacity=""))},{passive:!0})}function k(t){const e=t==null?void 0:t.querySelector(".nw-hero__video");!e||!e.dataset.src||e.getAttribute("src")!==e.dataset.src&&(e.src=e.dataset.src)}function S(t){const e=t==null?void 0:t.querySelector(".nw-hero__video");e&&e.removeAttribute("src")}function L(t){const e=t.querySelectorAll("[data-reveal]"),a=new IntersectionObserver(n=>{n.forEach(r=>{if(r.isIntersecting){const s=parseInt(r.target.dataset.revealDelay||"0",10);setTimeout(()=>{r.target.classList.add("is-revealed")},s*150),a.unobserve(r.target)}})},{threshold:.15,rootMargin:"0px 0px -40px 0px"});e.forEach(n=>a.observe(n))}function x(t){t.querySelectorAll("[data-comparator]").forEach(a=>{const n=a.querySelector(".nw-comparator__image-wrap--right"),r=a.querySelector("[data-comparator-handle]");if(!n||!r)return;let s=!1,o=50;function l(i){const p=a.getBoundingClientRect(),c=i-p.left;o=Math.max(5,Math.min(95,c/p.width*100)),requestAnimationFrame(()=>{n.style.clipPath=`inset(0 0 0 ${o}%)`,n.style.webkitClipPath=`inset(0 0 0 ${o}%)`,r.style.left=`${o}%`})}a.addEventListener("mousedown",i=>{s=!0,a.classList.add("is-dragging"),l(i.clientX),i.preventDefault()}),window.addEventListener("mousemove",i=>{s&&l(i.clientX)}),window.addEventListener("mouseup",()=>{s&&(s=!1,a.classList.remove("is-dragging"))}),a.addEventListener("touchstart",i=>{s=!0,a.classList.add("is-dragging"),l(i.touches[0].clientX)},{passive:!0}),a.addEventListener("touchmove",i=>{s&&(l(i.touches[0].clientX),i.preventDefault())},{passive:!1}),a.addEventListener("touchend",()=>{s=!1,a.classList.remove("is-dragging")})})}function q(t){const e=t.querySelector("#nw-gallery-track"),a=t.querySelector("#nw-gallery-progress");if(!e)return;e.addEventListener("scroll",()=>{const o=e.scrollLeft,l=e.scrollWidth-e.clientWidth,i=l>0?o/l*100:0;a&&(a.style.width=`${i}%`)},{passive:!0});let n=!1,r=0,s=0;e.addEventListener("mousedown",o=>{n=!0,e.classList.add("is-dragging"),r=o.pageX-e.offsetLeft,s=e.scrollLeft}),e.addEventListener("mouseleave",()=>{n=!1,e.classList.remove("is-dragging")}),e.addEventListener("mouseup",()=>{n=!1,e.classList.remove("is-dragging")}),e.addEventListener("mousemove",o=>{if(!n)return;o.preventDefault();const i=(o.pageX-e.offsetLeft-r)*1.5;e.scrollLeft=s-i})}function E(t){const e=t.querySelector(".nw-hero__back");e&&e.addEventListener("click",a=>{a.preventDefault(),sessionStorage.getItem("vudrag_scroll_position"),window.location.href="/"})}export{I as mount};
+    `}function $(){return`
+        <section class="nw-inquire" id="nw-inquire">
+            <div class="nw-inquire__container" data-reveal>
+                <div class="nw-inquire__crown">
+                    <span class="nw-inquire__line"></span>
+                    <span class="nw-inquire__diamond">◈</span>
+                    <span class="nw-inquire__line"></span>
+                </div>
+                <span class="nw-inquire__label">Commissions & Inquiries</span>
+                <h3 class="nw-inquire__title">
+                    <span>Let's </span>
+                    <span class="nw-inquire__title-accent">Connect</span>
+                </h3>
+                <p class="nw-inquire__text">
+                    For custom welded sculpture commissions, exhibition inquiries, or to discuss a collaborative project — I welcome your message.
+                </p>
+                <a href="/contact.html" class="nw-inquire__cta">
+                    <span>Get in Touch</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+    `}function k(t){const e=t.querySelector("#nw-hero");if(!e)return;const a=e.querySelectorAll(".nw-hero__slide"),r=e.querySelectorAll(".nw-hero__dot");let s=0;const n=new IntersectionObserver(c=>{c.forEach(w=>{var _,u,v;const d=parseInt(w.target.dataset.index,10);if(w.isIntersecting&&w.intersectionRatio>=.5){if(d===s)return;(_=a[s])==null||_.classList.remove("is-active"),(u=r[s])==null||u.classList.remove("is-active"),L(a[s]),s=d,w.target.classList.add("is-active"),(v=r[d])==null||v.classList.add("is-active"),S(w.target)}})},{root:e,threshold:[.1,.5]});a.forEach(c=>n.observe(c)),r.forEach(c=>{c.addEventListener("click",()=>{const w=parseInt(c.dataset.index,10),d=a[w];d&&d.scrollIntoView({behavior:"smooth",block:"start"})})});let o=0;const l=120;let i=!1;const p=e.querySelector(".nw-hero__pagination");e.addEventListener("wheel",c=>{if(i)return;if(e.scrollTop+e.clientHeight>=e.scrollHeight-2&&c.deltaY>0){if(o+=c.deltaY,o>=l){i=!0,o=0,e.style.overflowY="hidden",e.style.scrollSnapType="none",p&&(p.style.opacity="0");const d=t.querySelector("#nw-intro");d&&d.scrollIntoView({behavior:"smooth",block:"start"})}return}o=0},{passive:!0}),window.addEventListener("scroll",()=>{i&&window.scrollY<=5&&(i=!1,e.style.overflowY="",e.style.scrollSnapType="",p&&(p.style.opacity=""))},{passive:!0})}function S(t){const e=t==null?void 0:t.querySelector(".nw-hero__video");!e||!e.dataset.src||e.getAttribute("src")!==e.dataset.src&&(e.src=e.dataset.src)}function L(t){const e=t==null?void 0:t.querySelector(".nw-hero__video");e&&e.removeAttribute("src")}function q(t){const e=t.querySelectorAll("[data-reveal]"),a=new IntersectionObserver(r=>{r.forEach(s=>{if(s.isIntersecting){const n=parseInt(s.target.dataset.revealDelay||"0",10);setTimeout(()=>{s.target.classList.add("is-revealed")},n*150),a.unobserve(s.target)}})},{threshold:.15,rootMargin:"0px 0px -40px 0px"});e.forEach(r=>a.observe(r))}function x(t){t.querySelectorAll("[data-comparator]").forEach(a=>{const r=a.querySelector(".nw-comparator__image-wrap--right"),s=a.querySelector("[data-comparator-handle]");if(!r||!s)return;let n=!1,o=50;function l(i){const p=a.getBoundingClientRect(),c=i-p.left;o=Math.max(5,Math.min(95,c/p.width*100)),requestAnimationFrame(()=>{r.style.clipPath=`inset(0 0 0 ${o}%)`,r.style.webkitClipPath=`inset(0 0 0 ${o}%)`,s.style.left=`${o}%`})}a.addEventListener("mousedown",i=>{n=!0,a.classList.add("is-dragging"),l(i.clientX),i.preventDefault()}),window.addEventListener("mousemove",i=>{n&&l(i.clientX)}),window.addEventListener("mouseup",()=>{n&&(n=!1,a.classList.remove("is-dragging"))}),a.addEventListener("touchstart",i=>{n=!0,a.classList.add("is-dragging"),l(i.touches[0].clientX)},{passive:!0}),a.addEventListener("touchmove",i=>{n&&(l(i.touches[0].clientX),i.preventDefault())},{passive:!1}),a.addEventListener("touchend",()=>{n=!1,a.classList.remove("is-dragging")})})}function E(t){const e=t.querySelector("#nw-gallery-track"),a=t.querySelector("#nw-gallery-progress");if(!e)return;e.addEventListener("scroll",()=>{const o=e.scrollLeft,l=e.scrollWidth-e.clientWidth,i=l>0?o/l*100:0;a&&(a.style.width=`${i}%`)},{passive:!0});let r=!1,s=0,n=0;e.addEventListener("mousedown",o=>{r=!0,e.classList.add("is-dragging"),s=o.pageX-e.offsetLeft,n=e.scrollLeft}),e.addEventListener("mouseleave",()=>{r=!1,e.classList.remove("is-dragging")}),e.addEventListener("mouseup",()=>{r=!1,e.classList.remove("is-dragging")}),e.addEventListener("mousemove",o=>{if(!r)return;o.preventDefault();const i=(o.pageX-e.offsetLeft-s)*1.5;e.scrollLeft=n-i})}function I(t){const e=t.querySelector(".nw-hero__back");e&&e.addEventListener("click",a=>{a.preventDefault(),sessionStorage.getItem("vudrag_scroll_position"),window.location.href="/"})}export{C as mount};

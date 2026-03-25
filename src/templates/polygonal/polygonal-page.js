@@ -36,15 +36,13 @@ export async function mount(container, collection) {
     }
 
     // Separate polygonal works by segment
-    const openWorks = works.filter(w => w.segment === 'Open');
     const closedWorks = works.filter(w => w.segment === 'Closed Lighting');
 
-    container.innerHTML = buildHTML(hero, introduction, works, labours, venice, openWorks, closedWorks, herculesWorks);
+    container.innerHTML = buildHTML(hero, introduction, works, labours, venice, closedWorks, herculesWorks);
 
     requestAnimationFrame(() => {
         setupCloudParallax(container);
         setupScrollReveal(container);
-        setupHorizontalGallery(container);
         setupBackButton(container);
     });
 }
@@ -53,14 +51,13 @@ export async function mount(container, collection) {
 // HTML Builders
 // ═══════════════════════════════════════════
 
-function buildHTML(hero, intro, works, labours, venice, openWorks, closedWorks, herculesWorks) {
+function buildHTML(hero, intro, works, labours, venice, closedWorks, herculesWorks) {
     return `
         ${buildCloudHero(hero)}
         ${buildIntroduction(intro)}
         ${buildPoseidonWall(works)}
         ${buildLaboursJourney(labours, herculesWorks)}
         ${buildVeniceFeature(venice, herculesWorks)}
-        ${buildMenagerieGallery(openWorks)}
         ${buildDiamondVault(closedWorks)}
         ${buildInquire()}
     `;
@@ -189,59 +186,36 @@ function buildLabourBand(labour, index, herculesWorks) {
     const isEven = index % 2 === 1;
     const num = String(labour.number).padStart(2, '0');
 
-    if (labour.sculpted) {
-        // Find matching work data for image
-        const matchedWork = herculesWorks.find(w =>
-            w.title === labour.work ||
-            w.title.includes(labour.work?.split(' ')[0] || '___')
-        );
-        const image = matchedWork?.image || '';
-        const desc = matchedWork?.description || '';
-        const dims = matchedWork?.dimensions || '';
-        const year = matchedWork?.year || '';
+    // Find matching work data for image (exact title or contains full work name)
+    const matchedWork = herculesWorks.find(w =>
+        w.title === labour.work ||
+        (labour.work && w.title.toLowerCase().includes(labour.work.toLowerCase()))
+    );
+    const image = matchedWork?.image || '';
+    const desc = matchedWork?.description || '';
+    const dims = matchedWork?.dimensions || '';
+    const year = matchedWork?.year || '';
 
-        return `
-            <article class="pg-labour pg-labour--sculpted ${isEven ? 'pg-labour--reversed' : ''}" data-reveal data-reveal-delay="${Math.min(index, 3)}">
-                <div class="pg-labour__image-wrap">
-                    ${image
-                        ? `<img class="pg-labour__image" src="${image}" alt="${labour.title}" loading="lazy" draggable="false" />`
-                        : `<div class="pg-labour__placeholder"></div>`
-                    }
+    return `
+        <article class="pg-labour ${isEven ? 'pg-labour--reversed' : ''}" data-reveal data-reveal-delay="${Math.min(index, 3)}">
+            <div class="pg-labour__image-wrap">
+                ${image
+                    ? `<img class="pg-labour__image" src="${image}" alt="${labour.title}" loading="lazy" draggable="false" />`
+                    : `<div class="pg-labour__placeholder"></div>`
+                }
+            </div>
+            <div class="pg-labour__content">
+                <span class="pg-labour__number">${num}</span>
+                <h3 class="pg-labour__title">${labour.title}</h3>
+                ${labour.credential ? `<span class="pg-labour__credential">${labour.credential}</span>` : ''}
+                <div class="pg-labour__meta">
+                    ${year ? `<span>${year}</span>` : ''}
+                    ${dims ? `<span>${dims}</span>` : ''}
                 </div>
-                <div class="pg-labour__content">
-                    <span class="pg-labour__number">${num}</span>
-                    <h3 class="pg-labour__title">${labour.title}</h3>
-                    ${labour.credential ? `<span class="pg-labour__credential">${labour.credential}</span>` : ''}
-                    <div class="pg-labour__meta">
-                        ${year ? `<span>${year}</span>` : ''}
-                        ${dims ? `<span>${dims}</span>` : ''}
-                    </div>
-                    <p class="pg-labour__description">${desc}</p>
-                </div>
-            </article>
-        `;
-    } else {
-        // Unsculpted — ghosted outline with mythological text
-        return `
-            <article class="pg-labour pg-labour--outline ${isEven ? 'pg-labour--reversed' : ''}" data-reveal data-reveal-delay="${Math.min(index, 3)}">
-                <div class="pg-labour__silhouette">
-                    <span class="pg-labour__silhouette-number">${num}</span>
-                    <div class="pg-labour__silhouette-icon">
-                        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="0.5">
-                            <polygon points="40,5 75,25 75,60 40,75 5,60 5,25" opacity="0.3"/>
-                            <polygon points="40,15 65,30 65,55 40,65 15,55 15,30" opacity="0.15"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="pg-labour__content">
-                    <span class="pg-labour__number">${num}</span>
-                    <h3 class="pg-labour__title pg-labour__title--outline">${labour.title}</h3>
-                    <span class="pg-labour__status">Awaiting the forge</span>
-                    <p class="pg-labour__mythology">${labour.mythology || ''}</p>
-                </div>
-            </article>
-        `;
-    }
+                <p class="pg-labour__description">${desc}</p>
+            </div>
+        </article>
+    `;
 }
 
 // ─── Venice Biennale — Atlas & Prometheus ────────
@@ -254,39 +228,36 @@ function buildVeniceFeature(venice, herculesWorks) {
 
     return `
         <section class="pg-venice" id="pg-venice">
-            <div class="pg-venice__watermark" aria-hidden="true">BIENNALE</div>
+            <div class="pg-venice__watermark" aria-hidden="true">FORGE</div>
             <header class="pg-venice__header" data-reveal>
                 <span class="pg-venice__eyebrow">${venice.eyebrow}</span>
                 <h2 class="pg-venice__title">${venice.title}</h2>
                 <div class="pg-venice__divider"></div>
                 <p class="pg-venice__subtitle">${venice.subtitle}</p>
             </header>
+            ${venice.text ? `
+                <div class="pg-venice__philosophy" data-reveal>
+                    <p class="pg-venice__philosophy-text">${venice.text}</p>
+                </div>
+            ` : ''}
             <div class="pg-venice__split" data-reveal>
                 <div class="pg-venice__panel pg-venice__panel--atlas">
-                    ${atlasWork?.image ? `<img class="pg-venice__image" src="${atlasWork.image}" alt="Atlas" loading="lazy" draggable="false" />` : ''}
+                    ${atlasWork?.image ? `<img class="pg-venice__image" src="${atlasWork.image}" alt="Bearing Atlas" loading="lazy" draggable="false" />` : ''}
                     <div class="pg-venice__panel-content">
-                        <span class="pg-venice__panel-label">${venice.atlas?.label || 'PUSH'}</span>
-                        <h3 class="pg-venice__panel-title">Atlas</h3>
+                        <span class="pg-venice__panel-label">${venice.atlas?.label || 'BEARING'}</span>
+                        <h3 class="pg-venice__panel-title">${venice.atlas?.title || 'The Weight of Form'}</h3>
                         <p class="pg-venice__panel-text">${venice.atlas?.description || ''}</p>
-                        <div class="pg-venice__panel-meta">
-                            <span>2024</span>
-                            <span>100 × 100 × 350 cm</span>
-                        </div>
                     </div>
                 </div>
                 <div class="pg-venice__divider-line">
                     <div class="pg-venice__divider-glow"></div>
                 </div>
                 <div class="pg-venice__panel pg-venice__panel--prometheus">
-                    ${prometheusWork?.image ? `<img class="pg-venice__image" src="${prometheusWork.image}" alt="Prometheus" loading="lazy" draggable="false" />` : ''}
+                    ${prometheusWork?.image ? `<img class="pg-venice__image" src="${prometheusWork.image}" alt="Forging Prometheus" loading="lazy" draggable="false" />` : ''}
                     <div class="pg-venice__panel-content">
-                        <span class="pg-venice__panel-label">${venice.prometheus?.label || 'PULL'}</span>
-                        <h3 class="pg-venice__panel-title">Prometheus</h3>
+                        <span class="pg-venice__panel-label">${venice.prometheus?.label || 'FORGING'}</span>
+                        <h3 class="pg-venice__panel-title">${venice.prometheus?.title || 'Fire as Language'}</h3>
                         <p class="pg-venice__panel-text">${venice.prometheus?.description || ''}</p>
-                        <div class="pg-venice__panel-meta">
-                            <span>2024</span>
-                            <span>100 × 100 × 350 cm</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -294,54 +265,7 @@ function buildVeniceFeature(venice, herculesWorks) {
     `;
 }
 
-// ─── Open Menagerie Gallery ──────────────────────
 
-function buildMenagerieGallery(openWorks) {
-    // Exclude Poseidon (already featured above)
-    const menagerieWorks = openWorks.filter(w => !w.title?.includes('Poseidon'));
-    if (!menagerieWorks.length) return '';
-
-    return `
-        <section class="pg-menagerie" id="pg-menagerie">
-            <div class="pg-menagerie__watermark" aria-hidden="true">OPEN</div>
-            <header class="pg-menagerie__header" data-reveal>
-                <span class="pg-menagerie__label">The Collection</span>
-                <h2 class="pg-menagerie__title">The Menagerie</h2>
-                <div class="pg-menagerie__divider"></div>
-                <p class="pg-menagerie__hint">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                    Scroll horizontally to explore
-                </p>
-            </header>
-            <div class="pg-menagerie__track-wrapper">
-                <div class="pg-menagerie__track" id="pg-menagerie-track">
-                    ${menagerieWorks.map((w, i) => `
-                        <article class="pg-menagerie__card" data-index="${i}">
-                            <div class="pg-menagerie__card-image-wrap">
-                                <img class="pg-menagerie__card-image" src="${w.image}" alt="${w.title}" loading="lazy" draggable="false" />
-                            </div>
-                            <div class="pg-menagerie__card-overlay"></div>
-                            <div class="pg-menagerie__card-content">
-                                <div class="pg-menagerie__card-meta">
-                                    <span>${w.year}</span>
-                                    ${w.dimensions ? `<span>${w.dimensions}</span>` : ''}
-                                </div>
-                                <h3 class="pg-menagerie__card-title">${w.title}</h3>
-                                <p class="pg-menagerie__card-description">${w.description}</p>
-                            </div>
-                            <div class="pg-menagerie__card-glow"></div>
-                        </article>
-                    `).join('')}
-                </div>
-                <div class="pg-menagerie__progress">
-                    <div class="pg-menagerie__progress-bar" id="pg-menagerie-progress"></div>
-                </div>
-            </div>
-        </section>
-    `;
-}
 
 // ─── Diamond Vault ───────────────────────────────
 
@@ -473,51 +397,7 @@ function setupScrollReveal(container) {
     elements.forEach(el => observer.observe(el));
 }
 
-// ─── Horizontal Gallery ──────────────────────────
 
-function setupHorizontalGallery(container) {
-    const track = container.querySelector('#pg-menagerie-track');
-    const progressBar = container.querySelector('#pg-menagerie-progress');
-    if (!track) return;
-
-    // Progress bar
-    track.addEventListener('scroll', () => {
-        const scrollLeft = track.scrollLeft;
-        const maxScroll = track.scrollWidth - track.clientWidth;
-        const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-        if (progressBar) progressBar.style.width = `${progress}%`;
-    }, { passive: true });
-
-    // Mouse drag
-    let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
-
-    track.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        track.classList.add('is-dragging');
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-    });
-
-    track.addEventListener('mouseleave', () => {
-        isDragging = false;
-        track.classList.remove('is-dragging');
-    });
-
-    track.addEventListener('mouseup', () => {
-        isDragging = false;
-        track.classList.remove('is-dragging');
-    });
-
-    track.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        track.scrollLeft = scrollLeft - walk;
-    });
-}
 
 // ─── Back Button ─────────────────────────────────
 
