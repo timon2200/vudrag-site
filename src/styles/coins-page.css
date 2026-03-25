@@ -170,10 +170,10 @@
 }
 
 .coins-hero__back {
-    position: absolute;
-    top: 1.5rem;
-    left: 2rem;
-    z-index: 10;
+    position: fixed;
+    top: 28px;
+    left: 1.5rem;
+    z-index: 1001;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -184,11 +184,13 @@
     font-weight: 300;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, gap 0.3s ease;
+    padding: 0 0.5rem;
 }
 
 .coins-hero__back:hover {
     color: var(--color-gold, #c9a77a);
+    gap: 0.75rem;
 }
 
 
@@ -202,6 +204,26 @@
     justify-content: center;
     overflow: hidden;
     background: #050508;
+}
+
+.coins-vault::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom,
+            rgba(5, 5, 8, 0.6) 0%,
+            rgba(5, 5, 8, 0.4) 40%,
+            rgba(5, 5, 8, 0.6) 100%),
+        url('/images/coins/coins on a table.jpeg') center / cover no-repeat;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.coins-vault > * {
+    position: relative;
+    z-index: 1;
 }
 
 .coins-vault__door {
@@ -352,7 +374,25 @@
     overflow: hidden;
 }
 
+.coins-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom,
+            rgba(5, 5, 8, 0.7) 0%,
+            rgba(5, 5, 8, 0.5) 40%,
+            rgba(5, 5, 8, 0.5) 60%,
+            rgba(5, 5, 8, 0.7) 100%),
+        url('/images/coins/collection-coins-medals-bg.webp') center / cover no-repeat;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .coins-intro__content {
+    position: relative;
+    z-index: 1;
     max-width: 720px;
     margin: 0 auto;
     text-align: center;

@@ -39,6 +39,7 @@ export const COLLECTIONS = [
         title: 'Polygonal',
         subtitle: 'Geometric Forms',
         description: 'Mathematical precision meets mythological weight in polygon-plate sculpture.',
+        pageType: 'polygonal',
         works: [
             {
                 title: 'Poseidon, The Olympian',

@@ -1,18 +1,33 @@
 # Project Trajectory: Vudrag Sculpture Portfolio
 
-> **Status:** Hero & Navigation Core Complete ✅ — Building Collection Pages
-> **Stack:** Vite + PlayCanvas + Gaussian Splatting + Custom GLSL
+> **Status:** Network & Coins Collection Pages Complete ✅ — Building Polygonal Collection Page  
+> **Stack:** Vite + PlayCanvas + GSAP + Gaussian Splatting + Custom GLSL  
+> **Live:** [vudrag.varazdin.studio](https://vudrag.varazdin.studio)
 
 ---
 
-## Current State
+## Current State (March 2025)
 
-The **Hero Section** and **Core Navigation** are complete.
+The site is **deployed and live** at `vudrag.varazdin.studio`. The full homepage experience, two collection pages, CMS, and deployment pipeline are operational.
 
-- **Hero 3D Experience**: Full Gaussian Splat support with plasma transitions and HDR.
-- **Category Hub**: Implemented with 3D-tilt interactive cards and scroll reveal.
-- **Navigation**: Sticky header with progress bar, full-screen menu overlay, and fluid physics line.
-- **Transition System**: Seamless "fade-to-blur" transition from 3D hero to 2D content.
+### What's Built & Working
+
+- **Homepage Hero Slider**: GSAP ScrollTrigger-driven cinematic carousel with desert storm particle system (800+ particles, wisps, embers) and scroll-driven parallax.
+- **3D Splat Gallery** (`gallery.html`): Full PlayCanvas-powered Gaussian Splat viewer with plasma transitions, HDR post-processing, and fluid spring-physics navigation.
+- **Collection Template System** (`collection.html`): Dynamic page router that fetches collection data from CMS and mounts the appropriate template (Network, Coins, or fallback to gallery).
+- **Network Collection Page**: Premium welded-sculpture showcase with works gallery grid, draggable split-screen finish comparator (Silver vs. Rust), and cinematic detail panels.
+- **Coins Collection Page**: Numismatics showcase with a responsive grid and cinematic slide-in side panel for coin details, replacing in-card drawers.
+- **Sculpture Detail Pages** (`sculpture.html`): Ken Burns hero, floating info cards, process/technique/vision sections, technical gallery with lightbox, and related works grid.
+- **Video Showcase Section**: CMS-driven film/video content display.
+- **Artist Biography Section**: With portrait, video background (YouTube embed), quote, and bio.
+- **Works Showcase**: Portfolio grid with CMS-managed ordering.
+- **Category Hub**: 3D tilt cards for browsing collections with scroll-reveal.
+- **Contact Page**: Sculptural presentation with ambient particles and glow effects.
+- **Archive Page**: Password-protected client portal with block-based posts.
+- **Login & Auth System**: JWT authentication, email-based password reset (Resend API), user management.
+- **CMS Admin Panel**: Visual content editor for all site sections.
+- **Deployment Pipeline**: Git-based deploy via cPanel + `.cpanel.yml` + automated workflow.
+- **Image Optimization**: All images converted to WebP format.
 
 ---
 
@@ -23,268 +38,134 @@ The **Hero Section** and **Core Navigation** are complete.
 The site functions as a **digital brand embassy**, not an online store. It prioritizes storytelling, silence, and "weighted" interaction over immediate commerce.
 
 ### Core Principles
-1.  **The Atelier (Homepage):** A "Brand Universe" entry point. Full-screen video of the artist at work (clay, marble dust). Minimal text.
-2.  **The Collection:** Organized by **Series** (e.g., "Elemental Fragments"), not by product type.
-3.  **The Singular Page:** A "viewing room" experience for each sculpture.
-    *   No public prices.
-    *   "Request the Portfolio" instead of "Add to Cart".
-    *   Macro photography to show "Material Truth".
-4.  **Commissioning Journey:** A dedicated section selling the collaborative process of creating a legacy piece.
-5.  **The Archive:** Password-protected portal for existing clients (provenance, installation guides).
+1. **The Atelier (Homepage):** A "Brand Universe" entry point with cinematic hero slider.
+2. **The Collection:** Organized by **Series** (e.g., "Network", "Coins & Medals"), each with a unique template.
+3. **The Singular Page:** A "viewing room" experience for each sculpture — no public prices, "Inquire" instead of "Buy".
+4. **The Archive:** Password-protected portal for existing clients.
+5. **Contact & Salon:** Minimal, by-appointment messaging.
 
 ---
 
-## Phase 1: Hero Integration & Polish
+## Completed Phases
 
-| Task | Status | Notes |
-|------|--------|-------|
-| Plasma explosion transitions | ✅ Done | Custom GLSL vertex shader |
-| HDR post-effects pipeline | ✅ Done | CameraFrame with tunable panels |
-| Fluid navigation system | ✅ Done | Spring-physics simulation |
-| Magnetic scroll snapping | ✅ Done | 40/60 threshold with idle detection |
-| Debug panels (P/E/S/G/D/M) | ✅ Done | Development-only tuning |
-| Hero gradient overlay | ✅ Done | Depth enhancement |
-| Loading screen | ✅ Done | Premium spinner with font preload |
+### Phase 1: Hero & Navigation ✅
+| Task | Status |
+|------|--------|
+| GSAP ScrollTrigger hero slider | ✅ Done |
+| Desert storm particle system (800+ particles) | ✅ Done |
+| Gaussian Splat plasma transitions (custom GLSL) | ✅ Done |
+| HDR post-effects pipeline (CameraFrame) | ✅ Done |
+| Fluid spring-physics navigation | ✅ Done |
+| Magnetic scroll snapping (40/60 threshold) | ✅ Done |
+| Sticky header with progress bar | ✅ Done |
+| Full-screen menu overlay | ✅ Done |
+| 3D interactive category hub cards | ✅ Done |
+| Loading screen with font preload | ✅ Done |
 
-### Remaining Hero Polish
-- [ ] **Fine-tune per-sculpture color grading** — adjust brightness/contrast/saturation via `G` panel
-- [ ] **Mobile optimization** — reduce particles, simplify post-effects
-- [ ] **Loading progress indicator** — show actual asset loading percentage
+### Phase 2: Content Pages ✅
+| Task | Status |
+|------|--------|
+| Sculpture detail pages (Ken Burns, info cards, gallery) | ✅ Done |
+| Artist biography section (video background) | ✅ Done |
+| Contact page (sculptural design, particles) | ✅ Done |
+| Dynamic footer (CMS-powered) | ✅ Done |
+| Video divider components | ✅ Done |
+| Video showcase section (film data) | ✅ Done |
+| Works showcase grid | ✅ Done |
 
----
+### Phase 3: CMS & Admin ✅
+| Task | Status |
+|------|--------|
+| Express.js headless CMS | ✅ Done |
+| Admin panel UI | ✅ Done |
+| JWT auth + user management | ✅ Done |
+| Password reset flow (Resend email) | ✅ Done |
+| Image cropper component | ✅ Done |
+| Site content editor (footer, contact, artist) | ✅ Done |
+| Asset management with uploads | ✅ Done |
+| Archive posts system | ✅ Done |
+| Film management | ✅ Done |
 
-## Phase 2: Gallery App Integration
+### Phase 4: Collection Pages (In Progress)
+| Task | Status |
+|------|--------|
+| Collection template router (`collection-page.js`) | ✅ Done |
+| Network collection page (works grid, finish comparator) | ✅ Done |
+| Coins collection page (grid + side panel details) | ✅ Done |
+| Coin asset optimization (WebP conversion) | ✅ Done |
+| Polygonal collection page (Poseidon, Atlas, Hercules) | 🔲 Designing |
 
-You have a **separate gallery web app** that needs to be integrated into this main branch.
-
-### Integration Strategy
-
-| Approach | Pros | Cons |
-|----------|------|------|
-| **A) Embed as iframe** | Quick, isolated | Poor UX transitions |
-| **B) Merge codebase** | Seamless. Single build | Migration effort |
-| **C) Route-based lazy load** | Clean separation, shared shell | Requires routing setup |
-
-**Recommended: Option C — Route-based integration**
-
-```
-vudrag-site-2/
-├── src/
-│   ├── main.js              # Entry orchestrator
-│   ├── routes/
-│   │   ├── hero-gallery.js  # Current splat hero (default route)
-│   │   └── collection/
-│   │       └── gallery.js   # Imported gallery app
-│   └── shared/
-│       ├── header.js        # Sticky header component
-│       └── transitions.js   # Shared animation utilities
-```
-
-### Integration Action Items
-- [ ] **Analyze gallery app structure** — identify dependencies and entry points
-- [ ] **Create shared navigation** — unified header/footer across both experiences
-- [ ] **Implement route transitions** — smooth PlayCanvas-to-gallery crossfades
-- [ ] **Shared state management** — sync scroll position, active category, etc.
-
----
-
-## Phase 3: Website Sections (Beyond Hero)
-
-Following the "Unified Scene Strategy" from the Patek design approach:
-
-### 3.1 Category Hub (Post-Hero)
-The section that appears after the splat gallery:
-
-- [x] **Design category cards** — Persona, Sumerian, Portraits, Coins, Monuments
-- [x] **Fade-and-slide reveals** — 20px upward motion, 0.8s duration
-- [x] **Scroll-triggered animations** — staggered timing per category
-- [x] **PlayCanvas integration** — 3D card tilt effect (CSS 3D transform)
-
-### 3.2 Collection Pages
-Individual category deep-dives:
-
-- [ ] **Gallery grid layout** — asymmetric, editorial style
-- [ ] **Full-screen sculpture viewer** — extended splat experience
-- [ ] **Material close-ups** — mandatory macro shots per design spec
-- [ ] **Curator notes** — narrative body text with generous leading
-
-### 3.3 Artist Section
-- [ ] **Biography page** — artist statement with Cormorant Garamond typography
-- [ ] **Process video** — silent loops (no controls visible)
-- [ ] **"Net-work" philosophy** — conceptual content integration
-
-### 3.4 Commissioning Journey
-- [ ] **Process methodology** — from consultation to maquette to installation
-- [ ] **Bespoke promise** — selling the collaboration/legacy
-- [ ] **Appointment request** — high-touch form
-
-### 3.5 The Archive (Client Portal)
-- [ ] **Password protection** — exclusive access authentication
-- [ ] **Provenance docs** — digital certificates of authenticity
-- [ ] **Installation guides** — technical PDFs
-- [ ] **Past works** — list of acquired pieces
-
-### 3.6 Contact & Salon
-- [ ] **Minimal contact interface** — single email, phone, salon address
-- [ ] **Privacy focus** — "By Appointment" messaging
-
----
-
-## Phase 4: Navigation & UX
-
-### 4.1 Header System
-- [x] **Sticky minimal header** — 1px white line + logo + menu items (progress bar included)
-- [x] **Scroll-aware reveal** — appears after hero section
-- [x] **Mobile hamburger** — full-screen menu overlay
-
-### 4.2 Page Transitions
-- [ ] **Fade and lift** — 0.8s duration, 20px vertical offset
-- [ ] **Progress indicators** — subtle, inline with luxury aesthetic
-- [ ] **Preload next sections** — prevent loading jank
-
-### 4.3 Scroll Behavior
-- [ ] **Weighted scroll feel** — custom scroll physics site-wide
-- [ ] **Parallax depth** — text 100%, images 85% scroll speed
-- [ ] **Hover ease-out curves** — no instant snaps
-
----
-
-## Phase 5: Production Readiness
-
-### 5.1 Performance
-- [ ] **Lazy load splat assets** — load on-demand per category
-- [ ] **Image optimization** — WebP format, responsive srcset
-- [ ] **Code splitting** — separate chunks for hero vs. collection
-- [ ] **Mobile-first optimization** — detect device, reduce complexity
-
-### 5.2 SEO & Accessibility
-- [ ] **Meta tags** — per-page title, description, OG images
-- [ ] **Semantic HTML** — proper heading hierarchy
-- [ ] **Keyboard navigation** — ensure all interactions are accessible
-- [ ] **ARIA labels** — for interactive 3D elements
-
-### 5.3 Analytics & Tracking
-- [ ] **View tracking** — which sculptures get attention
-- [ ] **Scroll depth** — engagement metrics
-- [ ] **Inquiry funnel** — conversion tracking
-
----
-
-## Technical Decisions
-
-### Why Continue with PlayCanvas?
-The hero section proves PlayCanvas is the right choice:
-
-1. **Native Gaussian Splat support** — first-class `.sog` file loading
-2. **Custom shader injection** — `gsplatModifyVS` for plasma effects
-3. **HDR pipeline** — CameraFrame provides cinematic quality
-4. **Performance** — WebGL2/WebGPU with tree-shaking via ES modules
-
-### State Architecture
-Maintain centralized state in `state.js`:
-
-```javascript
-export const state = {
-    // Core
-    app: null,
-    camera: null,
-    
-    // Splats
-    splatEntities: [],
-    currentSplatIndex: 0,
-    
-    // Scroll
-    scrollProgress: 0,
-    targetScrollProgress: 0,
-    
-    // Section (for future routing)
-    currentSection: 'hero', // 'hero' | 'collection' | 'artist' | 'contact'
-    
-    // Gallery integration
-    galleryState: null // Imported gallery app state
-};
-```
+### Phase 5: Deployment ✅
+| Task | Status |
+|------|--------|
+| cPanel hosting (CloudLinux Passenger, Node.js 22) | ✅ Done |
+| Git-based deploy via `.cpanel.yml` | ✅ Done |
+| Automated deploy workflow (`.agent/workflows/deploy.md`) | ✅ Done |
+| AutoSSL (Let's Encrypt) | ✅ Done |
+| Cloudflare DNS configuration | ✅ Done |
+| WebP image optimization (all images) | ✅ Done |
+| Splat lazy loading (eager first + background rest) | ✅ Done |
 
 ---
 
 ## Immediate Next Steps
 
-### Priority 1: Collection Pages (Phase 3.2)
-The Category Hub is ready but links to nowhere. We need to build the grid views for each category.
-1. Create `src/sections/` directory structure.
-2. Build a reusable `CollectionGrid` component.
-3. Connect Category Hub clicks to the routing system.
+### Priority 1: Polygonal Collection Page
+Design and implement the "Polygonal" collection page featuring:
+- **Poseidon** — cinematic hero feature
+- **Atlas** — major feature piece
+- **Labours of Hercules** — themed series
+- Three design concepts under evaluation
 
-### Priority 2: Gallery App Integration (Phase 2)
-Decide on the integration strategy for the existing gallery app.
-- **Recommended**: Route-based integration (Option C above).
+### Priority 2: Remaining Collection Pages
+Build templates for remaining collections:
+- Persona (portrait sculptures)
+- Nature / Elemental
+- Monuments
 
-### Priority 3: Content Population (Phase 2.5)
-We have the structured data (`content/collections_data.js`). Now we need to:
-1.  **Refine category-hub.js**: Update categories to match the new 6-part structure: Persona, Elemental, Sumerian, Nature, Portraits, Numismatics.
-2.  **Asset Gathering**: Locate high-res images for "Iron Maiden", "Waterdrop", "Tesla", "Euro Coins" to replace placeholders.
-3.  **Implement Detail View**: Create the "Viewing Room" layout to display the rich text descriptions we now have.
+### Priority 3: Polish & Mobile
+- [ ] Mobile optimization (responsive layouts, reduced GPU load)
+- [ ] SEO meta tags per page
+- [ ] Accessibility (keyboard nav, ARIA labels)
+- [ ] Performance profiling
+- [ ] Analytics integration
 
 ---
 
-## File Structure (Target)
+## Technical Decisions
 
-```
-vudrag-site-2/
-├── public/
-│   ├── splats/           # .sog files organized by category
-│   ├── images/           # Hero and category imagery
-│   └── videos/           # Process loops (silent)
-├── src/
-│   ├── main.js           # Entry orchestrator
-│   ├── config.js         # Centralized configuration
-│   ├── state.js          # Global state
-│   ├── router.js         # Section/page routing
-│   ├── systems/          # PlayCanvas systems
-│   │   ├── camera.js
-│   │   ├── particles.js
-│   │   ├── post-effects.js
-│   │   ├── scroll.js
-│   │   └── splats.js
-│   ├── ui/               # Overlay components
-│   │   ├── fluid-navigation.js
-│   │   ├── text-overlay.js
-│   │   ├── sticky-header.js
-│   │   └── category-hub.js
-│   ├── sections/         # Page sections
-│   │   ├── hero.js
-│   │   ├── collection.js
-│   │   ├── artist.js
-│   │   └── contact.js
-│   ├── gallery/          # Integrated gallery app
-│   │   └── (imported components)
-│   └── styles/           # CSS modules
-│       ├── variables.css
-│       ├── typography.css
-│       └── components.css
-├── index.html
-├── ARCHITECTURE.md
-├── PROJECT_TRAJECTORY.md  # This file
-└── vite.config.js
-```
+### Stack Choices
+| Technology | Rationale |
+|------------|-----------|
+| **PlayCanvas** | Native Gaussian Splat `.sog` support, custom shader injection, HDR pipeline |
+| **GSAP + ScrollTrigger** | Cinematic scroll-driven hero slider with compressed timing |
+| **Lenis** | Smooth scroll behavior |
+| **Swiper** | Touch-friendly carousels |
+| **Express.js flat-file CMS** | Lightweight, no database needed, JSON data in `cms/data/` |
+| **Vite** | Fast builds, ES module support, multi-page app config |
+
+### Architecture Pattern
+The site uses a **multi-page app (MPA)** pattern with Vite:
+- 9 HTML entry points compiled separately
+- Shared UI components imported per page
+- Dynamic template routing for collection pages via `?id=` query param
+- CMS API provides content; frontend fetches on load with graceful fallbacks
 
 ---
 
 ## Design System Reference
 
-Quick reference from the style guide:
-
-| Token | Value | RAL Approx | Usage |
-|-------|-------|------------|-------|
-| `--color-canvas` | `#212121` | RAL 7021 | Primary background (Dark Grey) |
-| `--color-surface` | `#383E42` | RAL 7016 | Content panels (Anthracite) |
-| `--color-ink` | `#0A0A0A` | RAL 9005 | Headlines (Jet Black) - sparse |
-| `--color-stone` | `#7E8479` | RAL 7004 | Body text (Signal Grey) |
-| `--color-light` | `#F6F6F6` | RAL 9016 | Accents (Pure White) - restrained |
-| `--font-primary` | `Cormorant` | N/A | Display/Lead |
-| `--font-secondary` | `Inter` | N/A | UI/Body |
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--background` | `#050508` | Deep void canvas |
+| `--accent` | `#c9a77a` | Warm gold highlights |
+| `--stone` | `#6b6b7a` | Muted body text |
+| `--font-primary` | `Cormorant Garamond` | Display/Lead |
+| `--font-secondary` | `Inter` | UI/Body |
+| `--font-signature` | `Mrs Saint Delafield` | Cursive signatures |
+| Transition | `0.8s cubic-bezier` | Luxurious ease |
 
 ---
 
-*Document created: January 2026*
-*Last updated: January 2026*
+*Document created: January 2025*  
+*Last updated: March 2025*

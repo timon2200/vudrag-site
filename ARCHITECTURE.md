@@ -1,255 +1,272 @@
-# Vudrag SuperSplat - Architecture Documentation
+# Vudrag — Architecture Documentation
 
-> A dark, moody web experience showcasing 3D Gaussian Splat sculptures with custom plasma transitions, HDR post-processing, and fluid navigation.
+> A dark, cinematic web experience showcasing sculptural works with 3D Gaussian Splats, GSAP-driven hero transitions, and a lightweight CMS.
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **PlayCanvas** | 3D engine (ES modules via npm) |
-| **Vite** | Build tool & dev server |
-| **Gaussian Splatting** | 3D rendering technique for photorealistic sculptures |
-| **Custom GLSL Shaders** | Plasma explosion/implosion transitions |
-| **CameraFrame** | HDR post-processing (bloom, vignette, color grading) |
-| **Canvas 2D** | Fluid navigation overlay with spring physics |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Vite** | 5.4 | Build tool & dev server (multi-page app) |
+| **PlayCanvas** | ≥2.5 | 3D engine for Gaussian Splat rendering |
+| **GSAP** | ≥3.14 | ScrollTrigger hero slider, scroll-driven animations |
+| **Lenis** | ≥1.3 | Smooth scroll behavior |
+| **Swiper** | ≥12.1 | Touch-friendly carousels |
+| **Express.js** | — | CMS API server |
+| **Custom GLSL** | — | Plasma transition & particle wave shaders |
+| **CameraFrame** | — | PlayCanvas HDR post-processing |
+
+---
 
 ## Project Structure
 
 ```
-vudrag-site-2/
+vudrag-site/
+├── index.html                          # Homepage (hero slider + sections)
+├── gallery.html                        # 3D Gaussian Splat gallery
+├── collection.html                     # Dynamic collection template router
+├── sculpture.html                      # Sculpture detail page
+├── contact.html                        # Contact page
+├── archive.html                        # Password-protected archive
+├── login.html                          # Authentication page
+├── splat-hero.html                     # Standalone splat hero experience
+├── splat-viewer.html                   # Interactive splat viewer
+├── vite.config.js                      # Vite config (9 entry points)
+├── package.json                        # Frontend dependencies
+├── .cpanel.yml                         # cPanel deployment tasks
+├── .env / .env.production              # Environment variables
 ├── src/
-│   ├── main.js              # Entry point - orchestrates all modules
-│   ├── config.js            # Centralized configuration
-│   ├── state.js             # Global application state
-│   ├── cms/
-│   │   ├── server.js        # Express API server
-│   │   └── services/
-│   │       └── mailer.js    # Resend email service wrapper
+│   ├── main.js                         # Homepage entry ─ orchestrates all modules
+│   ├── collection-page.js              # Collection template router (network/coins/…)
+│   ├── gallery-app.js                  # PlayCanvas 3D gallery logic
+│   ├── sculpture-page.js              # Sculpture detail page logic
+│   ├── contact.js                      # Contact page logic
+│   ├── archive.js                      # Archive page logic
+│   ├── login.js                        # Login page logic
+│   ├── reset-password.js              # Password reset logic
+│   ├── splat-hero.js                   # Standalone splat hero page
+│   ├── splat-viewer.js                 # Interactive splat viewer page
+│   ├── config.js                       # Centralized splat configuration
+│   ├── state.js                        # Global application state
 │   ├── shaders/
-│   │   └── plasma.glsl.js   # Custom GLSL plasma transition shader
+│   │   ├── plasma.glsl.js             # Plasma explosion transition shader
+│   │   └── particle-wave.glsl.js      # Particle wave shader
 │   ├── systems/
-│   │   ├── camera.js        # Orbital camera with sway and breathing
-│   │   ├── hero-transition.js # Handles fade/blur when scrolling past hero
-│   │   ├── particles.js     # Ambient dust particle system
-│   │   ├── post-effects.js  # HDR bloom, vignette, color grading
-│   │   ├── scroll.js        # Magnetic snap scroll behavior
-│   │   └── splats.js        # Gaussian splat loading & transitions
-│   └── ui/
-│       ├── category-hub.js      # 3D interactive category cards
-│       ├── debug-panel.js       # Particle tuning (dev only)
-│       ├── fluid-navigation.js  # Spring-physics navigation line
-│       ├── interaction-hint.js  # Scroll interaction cue
-│       ├── menu-overlay.js      # Full-screen hamburger menu
-│       ├── scroll-reveal.js     # Element reveal animation observer
-│       ├── splat-debug-panel.js # Splat & camera tuning (dev only)
-│       └── text-overlay.js    # Sculpture title/subtitle display
-├── index.html               # HTML entry point with loading screen
-├── style.css                # Global styles
-├── package.json             # Dependencies (playcanvas, vite)
-├── vite.config.js           # Vite configuration
-├── content/                 # Static content
-│   ├── artist_bio.md        # Biography & Philosophy
-│   └── collections_data.js  # Structured arrangement of works
-├── gs_*.sog                 # Gaussian Splat asset files
-└── ARCHITECTURE.md          # This file
+│   │   ├── camera.js                   # Orbital camera with sway & breathing
+│   │   ├── hero-transition.js         # Hero fade/blur when scrolling past
+│   │   ├── navigation.js              # Page navigation utilities
+│   │   ├── particles.js               # Ambient dust particle system
+│   │   ├── post-effects.js            # HDR bloom, vignette, color grading
+│   │   ├── scroll.js                   # Magnetic snap scroll behavior
+│   │   └── splats.js                   # Splat loading, transitions, shaders
+│   ├── templates/
+│   │   ├── network/
+│   │   │   └── network-page.js        # Network collection template (~25KB)
+│   │   ├── coins/
+│   │   │   └── coins-page.js          # Coins collection template (~22KB)
+│   │   └── splat-hero/                # Reusable splat hero template
+│   │       ├── config.js, state.js
+│   │       ├── shaders/, systems/, ui/
+│   │       └── data/
+│   ├── ui/
+│   │   ├── hero-slider.js             # GSAP ScrollTrigger hero carousel
+│   │   ├── desert-storm.js            # Desert storm particle system (800+)
+│   │   ├── category-hub.js            # 3D tilt cards for collections
+│   │   ├── artist-section.js          # Artist biography section
+│   │   ├── works-showcase.js          # Portfolio grid display
+│   │   ├── video-showcase.js          # Film/video showcase section
+│   │   ├── video-divider.js           # Cinematic video transitions
+│   │   ├── footer.js                   # CMS-powered dynamic footer
+│   │   ├── sticky-header.js           # Minimal sticky header
+│   │   ├── menu-overlay.js            # Full-screen hamburger menu
+│   │   ├── scroll-reveal.js           # Scroll-triggered reveal animations
+│   │   ├── fluid-navigation.js        # Spring-physics navigation line
+│   │   ├── text-overlay.js            # Sculpture title/subtitle display
+│   │   ├── interaction-hint.js        # Scroll interaction cue
+│   │   ├── debug-panel.js             # Particle tuning (dev only)
+│   │   ├── splat-debug-panel.js       # Splat & camera tuning (dev only)
+│   │   ├── splat-grading-panel.js     # Color grading panel (dev only)
+│   │   └── pedestal-transform-panel.js # Pedestal debug panel (dev only)
+│   ├── styles/                         # 23 CSS files (per-component)
+│   │   ├── variables.css               # Design tokens
+│   │   ├── hero-slider.css, hero-pinned.css
+│   │   ├── network-page.css (~31KB), coins-page.css (~22KB)
+│   │   ├── sculpture-page.css (~37KB)
+│   │   ├── contact.css, login.css, archive.css
+│   │   ├── artist-section.css, footer.css, video-showcase.css
+│   │   ├── category-hub.css, works-showcase.css
+│   │   ├── menu-overlay.css, sticky-header.css
+│   │   ├── scroll-reveal.css, luxury-typography.css
+│   │   ├── gallery-overlay.css, video-divider.css
+│   │   ├── main-background.css, maska-effects.css
+│   │   └── force-bg.css
+│   ├── data/
+│   │   └── galleries.js               # Frontend gallery fallback data
+│   └── sections/                       # (empty — reserved)
+├── content/
+│   ├── artist_bio.md                   # Artist biography text
+│   ├── collections_data.js            # Structured collections (legacy)
+│   └── collections_update_example.js  # Example update script
+├── public/
+│   ├── gs_*.sog                       # Gaussian Splat files (3)
+│   ├── images/                         # WebP images (hero, works, coins, weld-process)
+│   │   ├── coins/                     # 35 coin photos (PNG originals + WebP)
+│   │   └── works/                     # 17 work images (WebP)
+│   ├── models/                         # GLB 3D models (pedestal)
+│   ├── splats/                         # Additional splat files
+│   ├── textures/                       # Title textures
+│   └── environments/                   # HDR environment maps
+├── admin/
+│   ├── index.html                     # Admin panel UI (~23KB)
+│   ├── src/
+│   │   ├── app.js                     # Admin panel JavaScript
+│   │   └── image-cropper.js           # Image cropper component
+│   └── styles/
+│       ├── admin.css                  # Admin panel styles
+│       └── image-cropper.css          # Cropper styles
+├── cms/
+│   ├── server.js                       # Express API (~862 lines)
+│   ├── package.json                   # CMS dependencies
+│   ├── services/
+│   │   └── mailer.js                  # Resend email service
+│   ├── data/                           # JSON flat-file database
+│   │   ├── collections.json           # Collections & works (~35KB)
+│   │   ├── sculptures.json            # Detail page narratives
+│   │   ├── site-content.json          # Footer, contact, artist section
+│   │   ├── splats.json                # 3D splat configuration
+│   │   ├── galleries.json             # Gallery definitions
+│   │   ├── films.json                 # Film/video showcase data
+│   │   ├── archive-posts.json         # Archive posts (client portal)
+│   │   ├── grid-order.json            # Works showcase display order
+│   │   └── users.json                 # Admin user accounts
+│   └── README.md                       # CMS API documentation
+├── design/
+│   └── strategic_brief.md             # Design philosophy & structure
+├── .agent/
+│   ├── workflows/
+│   │   └── deploy.md                  # Deployment workflow
+│   └── skills/
+│       ├── compress-glb/              # GLB compression skill
+│       └── vudrag-voice/              # Copy writing style guide
+├── ARCHITECTURE.md                     # This file
+├── DEPLOYMENT.md                       # Hosting & deploy guide
+├── PROJECT_TRAJECTORY.md              # Roadmap & status
+└── README.md                          # Project overview
 ```
+
+---
 
 ## Running the Project
 
 ### Local Development
 ```bash
 npm install
-npm run dev     # Frontend dev server at localhost:3000/3001
+npm run dev     # Frontend at http://localhost:3000
 
 # In a separate terminal:
-cd cms && npm install && node server.js  # CMS at localhost:3001
+cd cms && npm install && node server.js  # CMS at http://localhost:3001
 ```
+
+Vite proxies `/api` requests to port 3001 automatically.
 
 ### Production
-The site is hosted on **cPanel with CloudLinux Passenger** at [vudrag.varazdin.studio](https://vudrag.varazdin.studio). Both frontend and CMS are served by a single Node.js app via Apache Passenger.
+Hosted on **cPanel with CloudLinux Passenger** at [vudrag.varazdin.studio](https://vudrag.varazdin.studio). Both frontend and CMS are served by a single Node.js app.
 
-See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full hosting setup and deploy workflow.
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full deploy workflow.
 
 ---
 
-## Design System & Philosophy
+## Application Architecture
 
-### Refined Monochrome Palette
-Based on RAL approximations for a "private gallery" aesthetic:
-- **Canvas (`#212121` / RAL 7021)**: Deep dark grey, not pure black.
-- **Surface (`#383E42` / RAL 7016)**: Anthracite for subtle separation.
-- **Ink (`#0A0A0A` / RAL 9005)**: Jet black for critical headers.
-- **Stone (`#7E8479` / RAL 7004)**: Soft grey for body text.
+### Multi-Page App (MPA)
 
-### Site Architecture Pattern
-The site follows a **Digital Monograph** structure:
-1.  **The Atelier**: Homepage brand universe (video loop).
-2.  **Series**: Grouping of works (not "categories").
-3.  **Viewing Room**: Singular sculpture experience (Hero -> Detail -> Provenance).
-4.  **Commission**: Bespoke process explanation.
-5.  **Archive**: Password-protected client area.
-6.  **Salon**: Contact/Appointment.
+The site is built as a **multi-page application** with 9 HTML entry points compiled by Vite:
 
-### Core Architecture
+| Entry | HTML | JS Entry | Purpose |
+|-------|------|----------|---------|
+| Homepage | `index.html` | `src/main.js` | Hero slider, sections, category hub |
+| Gallery | `gallery.html` | `src/gallery-app.js` | PlayCanvas 3D splat gallery |
+| Collection | `collection.html` | `src/collection-page.js` | Dynamic template router |
+| Sculpture | `sculpture.html` | `src/sculpture-page.js` | Individual sculpture detail |
+| Contact | `contact.html` | `src/contact.js` | Contact information |
+| Archive | `archive.html` | `src/archive.js` | Password-protected client portal |
+| Login | `login.html` | `src/login.js` | Authentication |
+| Splat Hero | `splat-hero.html` | `src/splat-hero.js` | Standalone splat experience |
+| Splat Viewer | `splat-viewer.html` | `src/splat-viewer.js` | Interactive splat viewer |
 
-### State Management
+### Homepage Flow (`main.js`)
 
-All application state is centralized in `src/state.js`:
+The homepage orchestrator initializes components in sequence:
 
-```javascript
-export const state = {
-    app: null,              // PlayCanvas Application instance
-    camera: null,           // Camera entity
-    splatEntities: [],      // Array of gaussian splat entities
-    splatAssets: [],        // Loaded splat assets
-    time: 0,                // Elapsed time for animations
-    scrollProgress: 0,      // Current scroll position (0-1)
-    targetScrollProgress: 0, // Target scroll (for smooth interpolation)
-    currentSplatIndex: 0,   // Currently displayed sculpture
-    isLoaded: false,
-    lastScrollTime: 0,      // For magnetic snap detection
-    isScrolling: false,     // Whether user is actively scrolling
-    mouse: { x: 0, y: 0 },  // Normalized mouse position (-1 to 1)
-    particles: null,        // Ambient particle entity
-    textOverlay: null,      // Text overlay container
-    debugPanel: null        // Debug panel element
-};
+```
+setupHeroSlider()        → GSAP ScrollTrigger hero carousel
+createStickyHeader()     → Minimal header (appears after hero)
+setupScrollReveal()      → Intersection Observer for reveals
+setupCategoryHub()       → 3D tilt cards (fetches from CMS)
+setupArtistSection()     → Artist bio (fetches from CMS)
+setupVideoShowcase()     → Film section (fetches from CMS)
+setupWorksShowcase()     → Portfolio grid (fetches from CMS)
+setupFooter()            → Dynamic footer (fetches from CMS)
+createMenuOverlay()      → Full-screen navigation menu
+hideLoadingScreen()      → Fade out loading screen
 ```
 
-### Configuration
+### Collection Template System (`collection-page.js`)
 
-All configurable values are in `src/config.js`:
+The collection page uses a **dynamic template router**:
 
-```javascript
-export const CONFIG = {
-    splats: [
-        {
-            name: 'Maska',
-            file: 'gs_Maska_Vudrag.sog',
-            position: [0, 0.25, 0],
-            rotation: [-5, -45, 185],
-            scale: 0.80,
-            title: 'MASKA',
-            subtitle: 'The face beneath the surface',
-            number: '01'
-        },
-        // ... more splats
-    ],
-    camera: {
-        baseDistance: 3.5,
-        minDistance: 2.8,
-        verticalOffset: 0.4,
-        fov: 50
-    },
-    transition: {
-        speed: 3.0,
-        plasmaIntensity: 1.5
-    },
-    colors: {
-        background: new Color(0.015, 0.015, 0.025, 1)
-    }
-};
+1. Reads `?id=` from URL
+2. Fetches collection data from `GET /api/collections/:id`
+3. Routes based on `collection.pageType`:
+   - `"network"` → `src/templates/network/network-page.js`
+   - `"coins"` → `src/templates/coins/coins-page.js`
+   - Default → redirects to `gallery.html?category=...`
+4. Calls `templateModule.mount(root, collection)` to render
+5. Initializes shared UI (menu overlay, footer)
 
-export const SCROLL = {
-    SNAP_THRESHOLD: 0.4,
-    IDLE_TIMEOUT: 150
-};
+### CMS Data Flow
+
+All dynamic content is fetched from the CMS API:
+
+```
+Frontend Component  →  GET /api/endpoint  →  CMS reads JSON file  →  Returns data
+                                                cms/data/*.json
 ```
 
----
+**Public endpoints** (no auth): `collections`, `collections/:id`, `sculptures`, `sculptures/:id`, `site-content`, `grid-order`, `films`, `config.json`
 
-## Module System
-
-### Main Entry Point (`src/main.js`)
-
-Orchestrates initialization and the update loop:
-
-1. Creates PlayCanvas Application
-2. Loads splat assets
-3. Sets up camera, splats, particles, post-effects
-4. Sets up UI (text overlay, fluid navigation)
-5. Conditionally loads debug panels in dev mode
-6. Runs the main update loop
-
-### Systems
-
-#### Splats (`src/systems/splats.js`)
-- `loadAssets()` - Async load of all `.sog` splat files
-- `setupSplats()` - Create entities with position, rotation, scale
-- `applyCustomShaders()` - Inject plasma GLSL shader into materials
-- `updateSplatTransitions()` - Handle transition values based on scroll
-- `updateSplatInteraction()` - Mouse-responsive rotation
-
-#### Camera (`src/systems/camera.js`)
-- `setupCamera()` - Create camera with background color and FOV
-- `updateCamera()` - Orbital movement with auto-sway and breathing
-- `getTransitionIntensity()` - Calculate current transition intensity
-
-#### Particles (`src/systems/particles.js`)
-- `createParticleTexture()` - Procedural soft gradient texture
-- `setupParticles()` - Configure ambient dust particle system
-- `updateParticleInteraction()` - Gentle rotation based on mouse
-
-#### Post-Effects (`src/systems/post-effects.js`)
-- `setupPostEffects()` - Initialize CameraFrame for HDR processing
-- `updatePostEffects()` - Per-frame effect updates
-- `adjustEffectsForTransition()` - Intensify bloom during plasma explosions
-- `createPostEffectsDebugPanel()` - Dev panel for tuning effects
-
-#### Scroll (`src/systems/scroll.js`)
-- `setupScrollControl()` - Mouse wheel, touch, keyboard handlers
-- `updateMagneticSnap()` - Sticky snap behavior when idle
-
-#### Hero Transition (`src/systems/hero-transition.js`)
-- `updateHeroTransition()` - Fades out hero and blurs canvas when scrolling past content
-- `applyHeroFade()` - Controls opacity and pointer-events dynamically
-- `resetHeroTransition()` - Restores hero state when scrolling back up
-
-### UI Components
-
-#### Text Overlay (`src/ui/text-overlay.js`)
-- Creates HTML-based sculpture titles and subtitles
-- Positioned on the left side of the screen
-- Fades based on transition state
-- Uses Google Fonts: Cormorant Garamond + Inter
-
-#### Fluid Navigation (`src/ui/fluid-navigation.js`)
-- Canvas 2D overlay with spring-physics simulation
-- Vertical line with nodes for each sculpture
-- Active indicator blob follows scroll position
-- Particles spawn on node proximity
-- Adaptive title display
-
-#### Category Hub (`src/ui/category-hub.js`)
-- **3D Tilt Cards**: Interactive cards that rotate based on mouse position
-- **Shine Effect**: Dynamic lighting overlay based on cursor
-- **Scroll Reveal**: Cards cascade in when scrolled into view
-
-#### Navigation & Overlays
-- **Sticky Header** (`sticky-header.js`): Minimal header with progress bar, appears after hero
-- **Menu Overlay** (`menu-overlay.js`): Full-screen navigation menu
-- **Interaction Hint** (`interaction-hint.js`): Visual scroll cue ("Scroll to Explore")
-
-#### Debug Panels (dev only)
-- **Particle Panel** (`debug-panel.js`) - Tune particle radius, scale, count, lifetime
-- **Splat Panel** (`splat-debug-panel.js`) - Tune camera sway, splat positions
-- **Post-Effects Panel** - Tune bloom, vignette, color grading
-
-### Email Service (`cms/services/mailer.js`)
-- **Provider**: Resend API
-- **Dynamic Configuration**: Loads settings from `cms/data/settings.json`
-- **Features**:
-  - HTML body injection with variable replacement (`{{link}}`)
-  - Configurable Sender Name and Email
-  - Error handling and logging
+**Protected endpoints** (JWT required): All `POST`, `PUT`, `DELETE` operations, plus `splats`, `galleries`, `assets`, `users`, `archive-posts`, `settings`
 
 ---
 
-## The Transition System
+## The Hero Slider System
 
-### Overview
+### GSAP ScrollTrigger Carousel
 
-The transition between sculptures uses a **single-uniform system**:
+The homepage hero uses GSAP ScrollTrigger for cinematic slide transitions:
+
+- **Scroll-driven transitions** with compressed ~0.6s timing
+- **Intra-slide text parallax** — per-element depth shift within slides
+- **Desert storm** atmospheric particle system (800+ sandstorm particles, 14+ organic wisps, embers, floating dust)
+- Three slides featuring: Atlas, Forge, Network (images from `public/images/`)
+
+---
+
+## The 3D Gaussian Splat System
+
+### Splat Gallery (`gallery-app.js`)
+
+The PlayCanvas-powered gallery showcases photorealistic 3D sculptures:
+
+**Current Splats:**
+| Sculpture | File | Size |
+|-----------|------|------|
+| Maska | `gs_Maska_Vudrag.sog` | 7.1MB |
+| Kapljica | `gs_Vudrag_galerija_kapljica.sog` | 11.5MB |
+| Romislav | `gs_vudrag_romislav.sog` | 2.6MB |
+
+### Plasma Transition System
+
+Transitions between sculptures use a single-uniform GLSL shader:
 
 ```
 uTransition: 0 ═══════► 0.5 ═══════► 1
@@ -257,262 +274,79 @@ uTransition: 0 ═══════► 0.5 ═══════► 1
                       explosion
 ```
 
-### How It Works
+- **Outgoing splat**: `transitionValue` 0 → 1
+- **Incoming splat**: `transitionValue` 1 → 0
+- **At 0.5**: Peak plasma explosion, opacity crossfade
+- **Magnetic snap**: < 40% → snaps back, > 60% → commits to next
 
-1. **Outgoing splat** (current): `transitionValue` goes from 0 → 1 as you scroll
-2. **Incoming splat** (next): `transitionValue` goes from 1 → 0 as you scroll
-3. **At 0.5**: Both splats are at peak explosion, crossfading opacity
+### Camera System
 
-### Key Function: `updateSplatTransitions()`
+Front-facing orbital camera with:
+- Gentle auto-sway oscillation
+- Dynamic distance (pull back during transitions)
+- Subtle vertical breathing
+- Mouse-responsive rotation
 
-```javascript
-export function updateSplatTransitions(currentIndex, transitionT, dt) {
-    state.splatEntities.forEach((entity, index) => {
-        let targetTransition;
+### Post-Processing (CameraFrame HDR)
 
-        if (index < currentIndex) {
-            targetTransition = 1.0;  // Already passed
-        } else if (index === currentIndex) {
-            targetTransition = transitionT;  // Current: 0→1
-        } else if (index === currentIndex + 1) {
-            targetTransition = 1.0 - transitionT;  // Next: 1→0
-        } else {
-            targetTransition = 1.0;  // Future: invisible
-        }
+| Effect | Settings |
+|--------|----------|
+| Bloom | intensity: 0.06, mipLevel: 1 |
+| Vignette | inner: 0.4, outer: 1.1, curvature: 0.6 |
+| Color Grading | brightness: 1.0, contrast: 1.05, saturation: 1.1 |
 
-        // Smooth interpolation
-        entity.transitionValue += (targetTransition - entity.transitionValue) * Math.min(1, dt * 8.0);
-        
-        // Update shader BEFORE visibility check
-        material.setParameter('uTransition', entity.transitionValue);
-        
-        // Only visible when transition < 0.85
-        entity.enabled = entity.transitionValue < 0.85;
-    });
-}
-```
-
-### Magnetic Snap Behavior
-
-The scroll has a "sticky" feel - sculptures want to stay in their normal state:
-
-- **< 40% scrolled**: Snaps back to current
-- **> 60% scrolled**: Commits to next
-- **IDLE_TIMEOUT**: 150ms before snap kicks in
+Effects intensify during plasma transitions (increased bloom, tighter vignette).
 
 ---
 
-## The Shader System
+## State Management
 
-### GLSL Shader Injection
-
-PlayCanvas gaussian splats support custom vertex shader chunks via `gsplatModifyVS`:
+### Global State (`src/state.js`)
 
 ```javascript
-material.getShaderChunks('glsl').set('gsplatModifyVS', PLASMA_SHADER_GLSL);
-```
-
-### Shader Uniforms
-
-| Uniform | Type | Description |
-|---------|------|-------------|
-| `uTime` | float | Elapsed time for animation |
-| `uTransition` | float | 0=normal, 0.5=peak explosion, 1=invisible |
-
-### Shader Functions
-
-#### 1. `modifySplatCenter(inout vec3 center)`
-Displaces gaussian splat positions for explosion effect:
-```glsl
-float explosionAmount = 1.0 - abs(uTransition * 2.0 - 1.0);  // Peaks at 0.5
-center += direction * explosionForce * noise;
-center.y += explosionAmount * noiseVal * 0.6;  // Upward drift
-// Spiral motion
-center.x += sin(angle) * dist * explosionAmount * 0.4;
-center.z += cos(angle) * dist * explosionAmount * 0.4;
-```
-
-#### 2. `modifySplatRotationScale(...)`
-Shrinks splats during explosion:
-```glsl
-float shrink = 1.0 - explosionAmount * explosionAmount * 0.6;
-scale *= shrink;
-```
-
-#### 3. `modifySplatColor(vec3 center, inout vec4 color)`
-Adds plasma glow and controls opacity:
-```glsl
-// Hot plasma colors
-color.rgb = mix(color.rgb, hotColor, heatBlend * 0.7);
-color.rgb = mix(color.rgb, whiteHot, smoothstep(0.5, 1.0, explosionAmount) * 0.4);
-
-// Opacity fade
-float opacity = 1.0 - smoothstep(0.2, 0.6, uTransition);
-if (uTransition > 0.8) opacity = 0.0;  // Hard cutoff
-color.a *= opacity;
-```
-
----
-
-## Post-Processing System
-
-HDR post-processing via PlayCanvas `CameraFrame`:
-
-### Configuration
-
-```javascript
-const POST_EFFECTS = {
-    bloom: {
-        enabled: true,
-        intensity: 0.06,
-        lastMipLevel: 1
-    },
-    vignette: {
-        enabled: true,
-        inner: 0.4,
-        outer: 1.1,
-        curvature: 0.6,
-        intensity: 15
-    },
-    grading: {
-        enabled: true,
-        brightness: 1.0,
-        contrast: 1.05,
-        saturation: 1.1
-    }
+export const state = {
+    app: null,              // PlayCanvas Application instance
+    camera: null,           // Camera entity
+    splatEntities: [],      // Gaussian splat entities
+    splatAssets: [],        // Loaded splat assets
+    time: 0,                // Elapsed time for animations
+    scrollProgress: 0,      // Current scroll position (0-1)
+    targetScrollProgress: 0,// Target scroll (smooth interpolation)
+    currentSplatIndex: 0,   // Currently displayed sculpture
+    isLoaded: false,
+    lastScrollTime: 0,
+    isScrolling: false,
+    mouse: { x: 0, y: 0 }, // Normalized mouse position (-1 to 1)
+    particles: null,
+    textOverlay: null,
+    debugPanel: null
 };
 ```
 
-### Dynamic Transition Effects
-
-During plasma explosions, effects intensify:
-- Bloom intensity increases
-- Vignette tightens
-- Creates dramatic focus on the transition
-
 ---
 
-## Fluid Navigation System
+## Design System
 
-A minimal elegant navigation line with **spring-physics dynamics**.
+### Premium Aesthetic (Patek Philippe-inspired)
 
-### Features
+| Token | Value | Usage |
+|-------|-------|-------|
+| Background | `#050508` | Deep void canvas |
+| Accent | `#c9a77a` | Warm gold highlights |
+| Surface | `#383E42` | Elevated panels, cards |
+| Stone | `#6b6b7a` | Muted body text |
+| Light | `#F6F6F6` | Accents (restrained) |
+| Display Font | Cormorant Garamond | Elegant serif headings |
+| Body Font | Inter | Clean sans-serif UI |
+| Signature Font | Mrs Saint Delafield | Cursive signatures |
 
-- **Spring-mass simulation**: Control points flex and flow
-- **Node indicators**: Dots for each sculpture position
-- **Active indicator**: Fluid blob follows scroll position
-- **Particle effects**: Spawn on node proximity
-- **Adaptive titles**: Show current sculpture name
+### Component Styling Pattern
 
-### Configuration
-
+Each UI component has its own CSS file imported at the page level:
 ```javascript
-const NAV_CONFIG = {
-    SPRING_STIFFNESS: 0.015,
-    DAMPING: 0.85,
-    LINE_X: 50,
-    LINE_TOP_Y: 100,
-    LINE_BOTTOM_Y_OFFSET: 100,
-    NODE_RADIUS: 4,
-    BASE_LINE_WIDTH: 1,
-    ACTIVE_LINE_WIDTH: 2,
-    TITLE_OFFSET: 25
-};
-```
-
-### Physics Update Loop
-
-Each frame:
-1. Calculate target positions based on scroll progress
-2. Apply spring forces to control points
-3. Apply damping for smooth settling
-4. Render curved line through control points
-5. Render active indicator and particles
-
----
-
-## Particle System
-
-Ambient floating dust particles for atmosphere:
-
-```javascript
-particles.addComponent('particlesystem', {
-    numParticles: 250,
-    lifetime: 30,
-    emitterShape: 1,  // Sphere
-    emitterRadius: 8.0,
-    blend: BLEND_NORMAL,
-    colorMap: texture,  // Procedurally generated
-    // ...
-});
-```
-
-### Procedural Texture
-
-Particles need a soft gradient texture, created programmatically:
-
-```javascript
-const gradient = ctx.createRadialGradient(center, center, 0, center, center, radius);
-gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
-gradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.3)');
-gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-```
-
-### Mouse Interaction
-
-Particles gently rotate based on mouse position for a parallax effect.
-
----
-
-## Adding a New Sculpture
-
-1. **Add the .sog file** to the project root
-2. **Update `src/config.js`**:
-
-```javascript
-{
-    name: 'NewSculpture',
-    file: 'gs_new_sculpture.sog',
-    position: [0, 0, 0],
-    rotation: [0, 0, 180],  // Usually flipped
-    scale: 1.0,             // Adjust as needed
-    title: 'NEW SCULPTURE',
-    subtitle: 'Description here',
-    number: '04'
-}
-```
-
-That's it! The system automatically handles:
-- Asset loading
-- Entity creation
-- Shader application
-- Text overlay creation
-- Fluid navigation node
-- Transition logic (works with any number of splats)
-
----
-
-## Camera System
-
-The camera maintains a front-facing position with gentle movement:
-
-```javascript
-// Gentle sway oscillation
-const autoSway = Math.sin(state.time * swaySpeed) * swayAmplitude;
-
-// Dynamic distance - pull back during transitions
-const dynamicDistance = baseDistance + transitionIntensity * 0.4;
-
-// Position - mostly in front with X sway
-const x = Math.sin(totalSway) * dynamicDistance * 0.3;
-const z = Math.cos(totalSway) * dynamicDistance;
-
-// Subtle vertical breathing
-const breathe = Math.sin(state.time * 0.4) * 0.03;
-
-camera.setPosition(x, y, z);
-camera.lookAt(0, 0.25, 0);
+import './styles/hero-slider.css';
+import './styles/category-hub.css';
+// etc.
 ```
 
 ---
@@ -521,79 +355,59 @@ camera.lookAt(0, 0.25, 0);
 
 In development (`npm run dev`), debug panels are available:
 
-| Panel | Toggle Key | Purpose |
-|-------|------------|---------|
-| Particle Panel | `P` | Tune emitter radius, scale, count, lifetime |
-| Post-Effects Panel | `E` | Tune bloom, vignette, color grading |
-| Splat Panel | `S` | Tune camera sway, splat positions |
-
-All panels feature:
-- Real-time sliders
-- Live value display
-- "Log Current Values" button for copying to config
+| Key | Panel | Purpose |
+|-----|-------|---------|
+| `P` | Particles | Tune emitter radius, scale, count, lifetime |
+| `E` | Post-Effects | Tune bloom, vignette, color grading |
+| `S` | Splat | Tune camera sway, splat positions |
+| `G` | Color Grading | Per-sculpture color adjustment |
 
 ---
 
-## Common Modifications
+## Adding a New Collection Template
 
-### Change transition speed
-```javascript
-// In splats.js updateSplatTransitions()
-const speed = 8.0;  // Higher = snappier transitions
-```
+1. Create `src/templates/<name>/<name>-page.js`
+2. Export a `mount(rootElement, collectionData)` function
+3. Add CSS file to `src/styles/<name>-page.css`
+4. Add case to `collection-page.js` switch statement:
+   ```javascript
+   case 'your-type':
+       templateModule = await import('./templates/<name>/<name>-page.js');
+       break;
+   ```
+5. Set `pageType: 'your-type'` on the collection in CMS
 
-### Change explosion intensity
-```glsl
-// In plasma.glsl.js
-float explosionForce = explosionAmount * explosionAmount * 2.5;  // Higher = more spread
-```
+---
 
-### Change snap threshold
-```javascript
-// In config.js
-export const SCROLL = {
-    SNAP_THRESHOLD: 0.4,  // Higher = harder to commit to next
-    IDLE_TIMEOUT: 150     // ms before snap kicks in
-};
-```
+## Adding a New Sculpture to the 3D Gallery
 
-### Adjust particle density
-```javascript
-// In particles.js
-numParticles: 250,    // More particles
-lifetime: 30,         // Longer lifetime
-emitterRadius: 8.0,   // Larger spawn area
-```
-
-### Adjust post-effects
-```javascript
-// In post-effects.js POST_EFFECTS object
-bloom: { intensity: 0.06 },  // Higher = more glow
-vignette: { inner: 0.4, outer: 1.1 },  // Tighter = more focus
-```
+1. Add the `.sog` file to `public/` (root of public dir)
+2. Update `src/config.js`:
+   ```javascript
+   {
+       name: 'NewSculpture',
+       file: 'gs_new_sculpture.sog',
+       position: [0, 0, 0],
+       rotation: [0, 0, 180],
+       scale: 1.0,
+       title: 'NEW SCULPTURE',
+       subtitle: 'Description here',
+       number: '04'
+   }
+   ```
+3. The system auto-handles: loading, entity creation, shader application, text overlay, nav node, and transition logic.
 
 ---
 
 ## Known Quirks
 
-1. **Shader uniforms must be set BEFORE enabling entities** to prevent flash
+1. **Shader uniforms must be set BEFORE enabling entities** to prevent visual flash
 2. **Particles require a colorMap texture** or they won't render
-3. **PlayCanvas ES modules** - use named imports, not `pc.*` prefix
-4. **Gaussian splat .sog files** must be in project root (or update paths)
+3. **PlayCanvas ES modules** — use named imports, not `pc.*` prefix
+4. **Gaussian splat `.sog` files** — currently in `public/` root
 5. **CameraFrame requires camera component** to be present before setup
-
----
-
-## Performance Considerations
-
-- Gaussian splats are GPU-intensive
-- Particle count affects performance on mobile
-- Post-effects add GPU overhead
-- Consider reducing for mobile:
-  - `numParticles` and `emitterRadius`
-  - Bloom `intensity` and `lastMipLevel`
-  - Disable vignette if needed
-- The plasma shader uses noise functions - could be simplified if needed
+6. **`dist/` is committed to git** — frontend is built locally before pushing
+7. **Collection pages require CMS** — they fetch data from `/api/collections/:id`
 
 ---
 
@@ -603,4 +417,4 @@ vignette: { inner: 0.4, outer: 1.1 },  // Tighter = more focus
 - [Custom Shaders Reference](https://developer.playcanvas.com/user-manual/gaussian-splatting/building/custom-shaders/)
 - [CameraFrame API](https://api.playcanvas.com/engine/classes/CameraFrame.html)
 - [PlayCanvas Engine API](https://api.playcanvas.com/)
-- [PlayCanvas UI](https://developer.playcanvas.com/user-manual/user-interface/)
+- [GSAP ScrollTrigger Docs](https://gsap.com/docs/v3/Plugins/ScrollTrigger/)

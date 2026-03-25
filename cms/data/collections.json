@@ -312,84 +312,98 @@
         "year": "2022",
         "dimensions": "1c – 2€",
         "description": "An unprecedented two-layer design where each motif — Croatia's silhouette, Nikola Tesla, the marten, and the Glagolitic script — emerges from a foundational layer of the national checkerboard coat of arms. Everyday currency transformed into portable monuments of national identity.",
-        "image": "/images/works/euro-coins.webp"
+        "image": "/images/coins/cent.webp"
       },
       {
         "title": "Croatian Black Lizard",
         "year": "2024",
         "dimensions": "10, 4, 100 euro",
         "description": "The endemic lizard of volcanic Brusnik island, captured in deep sculptural relief with an intense black patina mirroring its primordial habitat. A symbolic portrait of resilience forged in gold — enduring life specific to the Croatian land.",
-        "image": "/images/works/black-lizard.webp"
+        "image": "/images/coins/gusterica-front-side.webp"
       },
       {
         "title": "King Tomislav — 1100th Anniversary",
         "year": "2025",
         "dimensions": "200, 100, 10, 8, 4 euro",
         "description": "Bi-metallic coin for the 1100th anniversary of Croatia's first king. Hyper-realistic profile with selective micro-gold plating on the obverse; an olive tree bursting from stone on the reverse. Gold fused to silver — royal authority wed to enduring statehood in a 30mm planchet.",
-        "image": "/images/works/king-tomislav-coin.webp"
+        "image": "/images/coins/kralj-tomislav-1100.webp"
       },
       {
         "title": "King Tomislav 2 Euro",
         "year": "2025",
         "dimensions": "2€ commemorative",
         "description": "The king's mounted stance rises above Croatia's checkerboard, linking modern sovereignty to the coronation of 925. A pocket-sized chronicle of 1,100 years of kingship.",
-        "image": "/images/works/king-tomislav-2euro.webp"
+        "image": "/images/coins/kralj-tomislav.webp"
       },
       {
         "title": "Dražen Petrović",
         "year": "2024",
         "dimensions": "200, 100, 10, 8, 4 euro",
         "description": "Honoring the 'Mozart of Basketball'. A figure who transcended sport to become a symbol of excellence. The coin captures the kinetic energy of a legend frozen in silver and gold.",
-        "image": "/images/works/drazen-petrovic.webp"
+        "image": "/images/coins/petrovic.webp"
       },
       {
         "title": "75th VE Day Anniversary",
         "year": "2020",
         "dimensions": "150 HRK silver",
         "description": "Silver commemorative coin marking the 75th Anniversary of Victory in Europe Day, 1945–2020.",
-        "image": "/images/works/ve-day.webp"
+        "image": "/images/coins/fasizam.webp"
       },
       {
         "title": "350th University of Zagreb",
         "year": "2019",
         "dimensions": "500, 150 HRK",
         "description": "Gold and silver coins celebrating 350 years of the University of Zagreb (1669–2019), the oldest continuously operating university in Southeast Europe.",
-        "image": "/images/works/uni-zagreb.webp"
+        "image": "/images/coins/350th-anniversary.webp"
       },
       {
         "title": "Dalmatian",
         "year": "2022",
         "dimensions": "10, 50, 1000 HRK",
         "description": "Hyper-realistic relief captures the Dalmatian's muscular form, with a hidden genius: each iconic spot is a silhouette of the Dalmatian islands. Geography woven into genetics — the dog's coat becomes a living map.",
-        "image": "/images/works/dalmatian-dog.webp"
+        "image": "/images/coins/dalmatiner.webp"
       },
       {
         "title": "Commemorative 2 Euro",
         "year": "2023",
         "dimensions": "2€",
         "description": "Croatian commemorative 2 Euro coin, issued through the Croatian National Bank and Monetary Institute.",
-        "image": "/images/works/commemorative-2euro.webp"
+        "image": "/images/coins/kuna-back-side-hrvatska.webp"
       },
       {
         "title": "Cravat",
         "year": "2023",
         "dimensions": "6, 100 HRK",
         "description": "Gold and silver coins celebrating the cravat — Croatia's gift to world fashion, the necktie born from the uniforms of 17th-century Croatian soldiers.",
-        "image": "/images/works/cravat.webp"
+        "image": "/images/coins/kravata.webp"
       },
       {
         "title": "Višnjan",
         "year": "2022",
         "dimensions": "1000 HRK",
         "description": "The Višnjan Observatory rendered stone-by-stone on the obverse; on the reverse, the Istrian Boškarin bull carries the cityscape on its back. Heaven and earth bound in a single medallic poem.",
-        "image": "/images/works/visnjan.webp"
+        "image": "/images/coins/visnjan-front-side.webp"
+      },
+      {
+        "title": "Nikola Tesla — Euro",
+        "year": "2023",
+        "dimensions": "10c, 20c, 50c",
+        "description": "Tesla's portrait engraved in hyper-realistic relief, framed by electromagnetic waves and the national checkerboard. The scalloped edge of the 20-cent planchet echoes the oscillations of alternating current — the invention that changed the world.",
+        "image": "/images/coins/tesla-gold.webp"
+      },
+      {
+        "title": "Croatian Marten — 1 Euro",
+        "year": "2023",
+        "dimensions": "1€",
+        "description": "The kuna (marten) — namesake of Croatia's former currency — now immortalized on the bi-metallic 1 Euro coin. Poised atop the national checkerboard, it bridges two monetary eras in a single design.",
+        "image": "/images/coins/kuna.webp"
       },
       {
         "title": "30 Years Croatian Mint",
         "year": "2023",
         "dimensions": "Medal",
         "description": "A commemorative medal marking three decades of the Croatian Monetary Institute — the institution that forged a nation's currency.",
-        "image": "/images/works/croatian-mint.webp"
+        "image": "/images/coins/30-obljetnica-hkn.webp"
       }
     ]
   },
@@ -397,13 +411,119 @@
     "id": "polygonal",
     "title": "Polygonal",
     "subtitle": "Geometric Forms",
-    "pageType": "gallery",
+    "pageType": "polygonal",
     "description": "Metal polygon plates converge into monumental animal forms and crystalline geometries — where mathematical precision meets mythological weight.",
     "image": "/images/93.webp",
     "segments": [
       "Open",
       "Closed Lighting"
     ],
+    "pageContent": {
+      "hero": {
+        "image": "/images/works/prometheus.webp",
+        "eyebrow": "The Forge of Olympus",
+        "title": "POLYGONAL",
+        "subtitle": "Mathematical Precision Meets Mythological Weight"
+      },
+      "introduction": {
+        "eyebrow": "Nikola Vudrag",
+        "title": "The Polygonal Form",
+        "text": "Flat metal plates — cut, folded, and welded along calculated seams — converge into monumental figures that oscillate between the archaic and the algorithmic. Each polygon is a decision: angle, tension, weight. Together they compose forms that carry the gravity of mythology in a language of modern geometry. The CorTen patina, earned through deliberate oxidation, lends each surface the warmth of aged earth — as if these sculptures had been unearthed rather than forged.",
+        "quote": "The polygon is the atom of form — indivisible, geometric, absolute."
+      },
+      "labours": [
+        {
+          "number": 1,
+          "title": "The Nemean Lion",
+          "sculpted": false,
+          "mythology": "The lion's impenetrable hide could not be pierced by any weapon. Hercules strangled the beast with bare hands and wore its skin as armor — the first lesson: some battles cannot be won with tools, only with the self."
+        },
+        {
+          "number": 2,
+          "title": "The Lernaean Hydra",
+          "sculpted": false,
+          "mythology": "For every head severed, two grew in its place. Hercules learned that brute force multiplies certain evils. Only by cauterizing each wound — sealing destruction with fire — could the cycle be broken. The second lesson: wisdom must accompany strength."
+        },
+        {
+          "number": 3,
+          "title": "The Ceryneian Hind",
+          "sculpted": false,
+          "mythology": "Sacred to Artemis, the golden-horned hind could not be harmed. Hercules pursued it for an entire year before capturing it alive — the third lesson: some sacred things demand patience, not conquest."
+        },
+        {
+          "number": 4,
+          "title": "The Erymanthian Boar",
+          "sculpted": false,
+          "mythology": "A creature of ungovernable rage, dwelling in the winter snows. Hercules drove it into deep drifts where its fury was rendered impotent — the fourth lesson: the wild force within us is subdued not by opposing it, but by changing the terrain."
+        },
+        {
+          "number": 5,
+          "title": "The Augean Stables",
+          "sculpted": true,
+          "work": "The Stables (Augeas)",
+          "credential": null
+        },
+        {
+          "number": 6,
+          "title": "The Stymphalian Birds",
+          "sculpted": true,
+          "work": "The Stymphalian Birds",
+          "credential": null
+        },
+        {
+          "number": 7,
+          "title": "The Cretan Bull",
+          "sculpted": true,
+          "work": "The Cretan Bull",
+          "credential": null
+        },
+        {
+          "number": 8,
+          "title": "The Mares of Diomedes",
+          "sculpted": false,
+          "mythology": "Man-eating horses fed on human flesh by their master. Hercules freed them by feeding Diomedes to his own beasts — the eighth lesson: tyrants are ultimately consumed by their own cruelty."
+        },
+        {
+          "number": 9,
+          "title": "The Belt of Hippolyta",
+          "sculpted": false,
+          "mythology": "The Amazon queen offered her belt freely, but Hera sowed distrust among her warriors. What could have been received in peace was taken in war — the ninth lesson: suspicion destroys what generosity would have given."
+        },
+        {
+          "number": 10,
+          "title": "The Cattle of Geryon",
+          "sculpted": false,
+          "mythology": "A journey to the edge of the known world to claim the red cattle of the three-bodied giant. Hercules erected the Pillars that bear his name — the tenth lesson: some quests redefine the boundaries of the possible."
+        },
+        {
+          "number": 11,
+          "title": "The Apples of the Hesperides",
+          "sculpted": true,
+          "work": "Gardens of the Hesperides",
+          "credential": "Malta Biennale 2024"
+        },
+        {
+          "number": 12,
+          "title": "Atlas & Prometheus",
+          "sculpted": true,
+          "isFeature": true,
+          "credential": "60th Venice Biennale"
+        }
+      ],
+      "venice": {
+        "eyebrow": "60th Venice Biennale",
+        "title": "Atlas & Prometheus",
+        "subtitle": "The Force of Pushing — The Force of Pulling",
+        "atlas": {
+          "label": "PUSH",
+          "description": "The force of pushing. A hand gripping a pillar, exerting upward force against tremendous pressure. It symbolizes the continuous effort required to uphold the ideals of civilization."
+        },
+        "prometheus": {
+          "label": "PULL",
+          "description": "The force of pulling. Bound by a chain, the hand struggles for liberation. A symbol of rebellion and the pursuit of knowledge against the constraints of authority."
+        }
+      }
+    },
     "works": [
       {
         "title": "Poseidon, The Olympian",

@@ -1,126 +1,90 @@
 # Vudrag | Sculptures in Light
 
-> An immersive 3D web experience showcasing photorealistic Gaussian Splat sculptures with cinematic transitions and luxury aesthetics.
+> An immersive web experience showcasing sculptural works through 3D Gaussian Splats, cinematic scroll-driven transitions, and premium luxury aesthetics.
 
-![PlayCanvas](https://img.shields.io/badge/PlayCanvas-2.1-orange)
+![PlayCanvas](https://img.shields.io/badge/PlayCanvas-≥2.5-orange)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF)
+![GSAP](https://img.shields.io/badge/GSAP-≥3.14-88CE02)
 ![License](https://img.shields.io/badge/license-Private-red)
+
+**Live Site:** [vudrag.varazdin.studio](https://vudrag.varazdin.studio)  
+**Admin Panel:** [vudrag.varazdin.studio/cms-admin](https://vudrag.varazdin.studio/cms-admin)
 
 ---
 
 ## ✨ Features
 
-### 🎨 Gaussian Splat Sculptures
-Photorealistic 3D sculptures rendered using cutting-edge Gaussian Splatting technology. Each sculpture is captured as a `.sog` file and rendered in real-time with full HDR lighting.
+### 🎬 Cinematic Hero Slider
+GSAP ScrollTrigger-driven carousel with atmospheric effects:
+- Scroll-driven slide transitions with compressed ~0.6s timing
+- Intra-slide text parallax — per-element depth shift while scrolling within each slide
+- Desert storm particle system — 800+ sandstorm particles, 14+ organic wisps, embers, and floating dust
+- Cinematic typography with animated progress indicator
 
-**Current Collection:**
-| Sculpture | Description |
-|-----------|-------------|
-| **Maska** | "The face beneath the surface" |
-| **Kapljica** | "Where stone meets water" |
-| **Romislav** | "Ancient whispers in marble" |
+### 🎨 3D Gaussian Splat Gallery
+Photorealistic sculptures rendered using Gaussian Splatting (`.sog` files) with:
+- Custom GLSL plasma explosion/implosion transitions
+- HDR post-processing (bloom, vignette, color grading)
+- Fluid spring-physics navigation with adaptive titles
+- Magnetic scroll snapping (40/60% threshold)
 
-### 🌪️ Hero Slider & Desert Storm
-GSAP ScrollTrigger-driven cinematic hero carousel with atmospheric effects:
-- **Scroll-driven slide transitions** with compressed ~0.6s timing for fluid, professional feel
-- **Intra-slide text parallax** — per-element depth shift while scrolling within each slide
-- **Desert storm particle system** — 800+ sandstorm particles, 14+ organic wisps, embers, and floating dust
-- **Cinematic typography** with animated progress indicator
-- Reduced scroll distance and scrub delay for responsive switching
+**Current Gallery:** Maska, Kapljica, Romislav
 
-### 🌟 Plasma Explosion Transitions
-Custom GLSL shaders create mesmerizing plasma explosion/implosion effects when transitioning between sculptures:
-- Particles burst outward in spiraling patterns
-- Hot plasma color gradients (orange → white-hot)
-- Smooth opacity crossfades at peak explosion
-- GPU-accelerated vertex manipulation
-
-### 🎬 Cinematic Post-Processing
-HDR rendering pipeline via PlayCanvas CameraFrame:
-- **Bloom** — Soft glow on bright elements
-- **Vignette** — Focus attention to center
-- **Color Grading** — Per-sculpture tone adjustment
-
-### ⚡ Fluid Navigation & Category Hub
-- **Category 3D Cards**: Interactive tilt-enabled cards for browsing collections.
-- **Sticky Header**: Minimal navigation that reveals after the hero section.
-- **Menu Overlay**: Full-screen luxury menu with navigation to all sections.
-- **Spring-Physics Line**: Fluid indicator that follows your journey.
-
-### 🎯 Magnetic Scroll Snapping
-Weighted scroll behavior that feels physical:
-- Sculptures "want" to stay in frame
-- 40/60% threshold for commit/revert
-- Smooth interpolation with idle detection
+### 🖼️ Collection Pages
+Dynamic template-routed collection pages (`/collection.html?id=...`):
+- **Network** — Welded-sculpture showcase with works gallery grid, draggable split-screen finish comparator, and cinematic detail panels
+- **Coins & Medals** — Responsive grid with slide-in side panel for detailed coin/medal information
+- **Polygonal** — (In design — Poseidon, Atlas, Labours of Hercules)
 
 ### 🖼️ Sculpture Detail Pages
-Rich cinematic detail pages for each sculpture featuring:
-- **Ken Burns Hero**: Scroll-based zoom effect on hero image
-- **Floating Info Cards**: Materials, dimensions, collection, concept
-- **Process & Technique Sections**: Behind-the-scenes narrative
-- **Vision & Story Sections**: Artist statement and context
-- **Technical Gallery**: Blueprint-style documentation with lightbox
-- **Inquire Section**: Elegant sculptural CTA linking to contact
-- **Related Works**: Dynamic grid of related pieces
-- **Marble Pedestal**: Compressed GLB model (651KB) with directional lighting and debug panel
+Rich cinematic pages for each piece featuring:
+- Ken Burns hero with scroll-based zoom
+- Floating info cards (materials, dimensions, collection, concept)
+- Process, technique, vision, and story sections
+- Technical gallery with lightbox
+- Related works grid and sculptural inquiry CTA
 
 ### 📬 Contact Page
-Sculptural presentation of contact information:
-- Ambient floating particles and glowing background
-- Elegant typography with signature styling
-- Interactive email link with hover glow effects
-- Decorative crown and base ornaments
+Sculptural presentation with ambient floating particles, glowing background, signature styling, and interactive email link.
 
-### 🔒 Authentication & Security
-- **Secure Password Recovery**: Automated email flow via Resend.
-- **JWT Protection**: Stateless authentication for all admin routes.
-- **Dynamic Email Settings**: Customize sender details and templates via CMS.
+### 🔒 Authentication & Archive
+- JWT-based admin authentication
+- Email password reset via Resend API
+- Password-protected archive for client-only content (block-based posts)
 
 ### 🎥 Video Integration
-Atmospheric video elements throughout the experience:
-- **Video Dividers**: Cinematic section transitions
-- **Video Showcase**: Dedicated section for film and video content with CMS-managed film data
-- **Artist Section Background**: YouTube embed with oversized cropping
-- Dynamic loading with graceful fallbacks
+- GSAP-powered video dividers for cinematic section transitions
+- Video showcase section with CMS-managed film data
+- Artist section with YouTube embed background
 
-### 🖼️ Splat Hero & Viewer
-Standalone pages for immersive Gaussian Splat experiences:
-- **Splat Hero** (`splat-hero.html`): Full-screen cinematic splat display with particle wave shaders and text overlays
-- **Splat Viewer** (`splat-viewer.html`): Interactive viewer with orbital camera, debug panels, and fluid navigation
-- Reusable template system under `src/templates/splat-hero/`
-
-### ✂️ CMS Image Cropper
-- Built-in image cropper component for upload workflows
-- Integrated into the admin panel for precise image framing before save
+### ⚡ Category Hub & Navigation
+- Interactive 3D tilt cards for browsing collections
+- Sticky minimal header with progress bar
+- Full-screen luxury menu overlay
+- Spring-physics fluid navigation line
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+
+- npm
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/timon2200/vudrag-site.git
 cd vudrag-site
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-The site will be available at `http://localhost:3000` (or 3001 if 3000 is occupied).
+The site is available at `http://localhost:3000`.
 
 ### Starting the CMS
 
 ```bash
-# In a separate terminal
 cd cms
 npm install
 node server.js
@@ -128,17 +92,18 @@ node server.js
 
 CMS Admin Panel: [http://localhost:3001/cms-admin](http://localhost:3001/cms-admin)
 
-### Build & Deploy to Production
+Vite automatically proxies `/api` requests to port 3001.
+
+### Build & Deploy
 
 ```bash
-npm run build          # Build frontend → dist/
+npm run build                    # Build frontend → dist/
 git add -A && git commit -m "Your changes"
-git push origin main   # Push to GitHub
+git push origin main
 ```
 
 Then in cPanel: **Git Version Control** → Update from Remote → Deploy HEAD Commit → Restart Node.js App.
 
-**Production site**: [https://vudrag.varazdin.studio](https://vudrag.varazdin.studio)  
 See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full deployment guide.
 
 ---
@@ -147,79 +112,44 @@ See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full deployment guide.
 
 ```
 vudrag-site/
-├── public/
-│   ├── gs_*.sog                      # Gaussian Splat files
-│   ├── models/pedestal.glb           # Compressed marble pedestal
-│   └── textures/                     # Title textures
 ├── src/
-│   ├── main.js                       # Entry point & orchestrator
-│   ├── config.js                     # Centralized configuration
-│   ├── state.js                      # Global application state
-│   ├── contact.js                    # Contact page logic
+│   ├── main.js                       # Homepage orchestrator
+│   ├── collection-page.js            # Dynamic collection template router
+│   ├── gallery-app.js                # PlayCanvas 3D gallery
 │   ├── sculpture-page.js             # Sculpture detail page
-│   ├── splat-hero.js                 # Standalone splat hero page
-│   ├── splat-viewer.js               # Interactive splat viewer
-│   ├── shaders/
-│   │   ├── plasma.glsl.js            # Custom GLSL transition shader
-│   │   └── particle-wave.glsl.js     # Particle wave shader
-│   ├── systems/
-│   │   ├── camera.js                 # Orbital camera with sway
-│   │   ├── hero-transition.js        # Hero fade-out transition
-│   │   ├── particles.js              # Ambient dust particles
-│   │   ├── post-effects.js           # HDR bloom, vignette, grading
-│   │   ├── scroll.js                 # Magnetic snap scroll
-│   │   └── splats.js                 # Splat loading & transitions
-│   ├── templates/splat-hero/         # Reusable splat hero template
-│   ├── ui/
-│   │   ├── artist-section.js         # Artist biography section
-│   │   ├── category-hub.js           # 3D interactive category cards
-│   │   ├── desert-storm.js           # Desert storm particle system
-│   │   ├── footer.js                 # Dynamic CMS-powered footer
-│   │   ├── hero-slider.js            # GSAP ScrollTrigger hero slider
-│   │   ├── menu-overlay.js           # Full-screen hamburger menu
-│   │   ├── sticky-header.js          # Minimal sticky header
-│   │   ├── video-divider.js          # Cinematic video transitions
-│   │   ├── video-showcase.js         # Film/video showcase section
-│   │   └── works-showcase.js         # Portfolio grid display
-│   └── styles/
-│       ├── artist-section.css        # Artist section styles
-│       ├── contact.css               # Contact page styles
-│       ├── footer.css                # Footer styles
-│       ├── hero-slider.css           # Hero slider styles
-│       ├── sculpture-page.css        # Detail page styles
-│       ├── video-showcase.css        # Video showcase styles
-│       └── video-divider.css         # Video component styles
-├── admin/
-│   ├── index.html                    # CMS admin panel
-│   ├── src/
-│   │   ├── app.js                    # Admin panel JavaScript
-│   │   └── image-cropper.js          # Image cropper component
-│   └── styles/
-│       ├── admin.css                 # Admin panel styles
-│       └── image-cropper.css         # Image cropper styles
+│   ├── contact.js, archive.js        # Content pages
+│   ├── login.js, reset-password.js   # Auth pages
+│   ├── splat-hero.js, splat-viewer.js # Standalone splat experiences
+│   ├── config.js, state.js           # Configuration & global state
+│   ├── shaders/                       # Custom GLSL (plasma, particle-wave)
+│   ├── systems/                       # PlayCanvas systems (camera, scroll, splats, particles, post-effects)
+│   ├── templates/                     # Collection page templates
+│   │   ├── network/network-page.js   # Network collection
+│   │   ├── coins/coins-page.js       # Coins collection
+│   │   └── splat-hero/               # Reusable splat hero template
+│   ├── ui/                            # 18 UI components (hero-slider, desert-storm, category-hub, ...)
+│   └── styles/                        # 23 CSS files (per-component)
+├── admin/                             # CMS admin panel (static HTML/JS/CSS)
 ├── cms/
-│   ├── server.js                     # Express API server
-│   └── data/
-│       ├── splats.json               # 3D splat configuration
-│       ├── galleries.json            # Gallery definitions
-│       ├── collections.json          # Category hub content
-│       ├── films.json                # Film/video showcase data
-│       ├── sculptures.json           # Detail page narratives
-│       ├── site-content.json         # Footer & contact content
-│       └── grid-order.json           # Splat display order
-├── index.html                        # Main page
-├── splat-hero.html                   # Standalone splat hero
-├── splat-viewer.html                 # Interactive splat viewer
-├── sculpture.html                    # Sculpture detail template
-├── contact.html                      # Contact page
-└── vite.config.js                    # Vite configuration
+│   ├── server.js                      # Express API server (~862 lines)
+│   ├── services/mailer.js             # Resend email service
+│   └── data/                          # JSON flat-file database (9 files)
+├── public/                            # Static assets
+│   ├── gs_*.sog                       # Gaussian Splat files (3)
+│   ├── images/                        # WebP images, coins, works
+│   ├── models/, textures/, environments/
+│   └── splats/                        # Additional splat files
+├── content/                           # Artist bio, collections data
+├── design/                            # Strategic design brief
+├── 9 HTML entry points               # index, gallery, collection, sculpture, contact, archive, login, splat-hero, splat-viewer
+└── vite.config.js                     # Multi-page Vite config
 ```
 
 ---
 
 ## 🎛️ Development Mode
 
-Debug panels are available in development (`npm run dev`):
+Debug panels available in development (`npm run dev`):
 
 | Key | Panel | Purpose |
 |-----|-------|---------|
@@ -228,82 +158,40 @@ Debug panels are available in development (`npm run dev`):
 | `S` | Splat | Tune camera sway, positions |
 | `G` | Color Grading | Per-sculpture color adjustment |
 
-All panels feature real-time sliders with a **"Log Current Values"** button to copy settings to config.
-
 ---
 
-## 🖥️ CMS (Content Management System)
+## 🖥️ CMS
 
-A lightweight headless CMS powers the portfolio's dynamic content.
-
-### Accessing the Admin Panel
-
-| Interface | Local URL | Production URL |
-|-----------|-----------|----------------|
-| **Admin Panel** | [http://localhost:3001/cms-admin](http://localhost:3001/cms-admin) | [https://vudrag.varazdin.studio/cms-admin](https://vudrag.varazdin.studio/cms-admin) |
-| **API** | [http://localhost:3001/api/*](http://localhost:3001/api/) | [https://vudrag.varazdin.studio/api](https://vudrag.varazdin.studio/api) |
-
-Login uses the password defined as `ADMIN_PASSWORD` (env variable in cPanel, or `cms/.env` locally).
+A lightweight headless CMS powers all dynamic content via flat-file JSON.
 
 ### What You Can Manage
 
 | Section | Description |
 |---------|-------------|
-| **Splats** | 3D splat transforms, positions, rotations, and color grading |
-| **Galleries** | Sculpture series metadata (artist, year, material) |
-| **Collections** | Category hub content and nested works |
+| **Collections** | Category hub content, nested works, page types |
 | **Sculptures** | Rich narrative content for detail pages |
-| **Assets** | Upload/manage `.sog` files, images, and environments |
-| **Users** | Manage admin access and role-based permissions |
-| **Settings** | Configure email templates and system preferences |
-| **Site Content** | Footer, contact page text, artist section, and social links |
+| **Splats** | 3D splat transforms, color grading |
+| **Films** | Video showcase data |
+| **Site Content** | Footer, contact, artist section, social links |
+| **Assets** | Upload/manage images, splats, environments |
+| **Users** | Admin accounts and permissions |
+| **Archive** | Block-based posts for client portal |
+| **Settings** | Email templates, system preferences |
 
-### Site Content Editor
+Login: `ADMIN_PASSWORD` env variable (cPanel) or `cms/.env` (local).
 
-The Site Content section allows editing of:
-
-**Artist Section:**
-- Portrait image
-- Name, born date, tagline
-- Quote and background video URL
-- Biography (intro, education, philosophy)
-- Technique highlight (title, description, effect)
-
-**Footer:**
-- Brand name and tagline
-- Description text
-- Email and location
-- Navigation and social links
-
-**Contact Page:**
-- Label and title lines
-- Invitation text
-- Email address and signature
-
-### Data Storage
-
-All content is stored as flat-file JSON in `cms/data/`:
-- `splats.json` — 3D splat configuration
-- `galleries.json` — Gallery definitions
-- `collections.json` — Category hub content
-- `sculptures.json` — Detail page narratives
-- `site-content.json` — Footer, contact, and artist section content
-- `grid-order.json` — Display ordering
-
-See **[cms/README.md](./cms/README.md)** for full API documentation.
+See **[cms/README.md](./cms/README.md)** for API reference.
 
 ---
 
 ## 🎨 Design System
-
-Following a **Patek Philippe-inspired** premium aesthetic:
 
 | Token | Value | Usage |
 |-------|-------|-------|
 | Background | `#050508` | Deep void canvas |
 | Accent | `#c9a77a` | Warm gold highlights |
 | Stone | `#6b6b7a` | Muted text |
-| Display Font | Cormorant Garamond | Elegant serifs |
+| Display Font | Cormorant Garamond | Elegant serif headings |
 | Body Font | Inter | Clean sans-serif |
 | Signature Font | Mrs Saint Delafield | Cursive signature |
 | Transition | `0.8s cubic-bezier` | Luxurious ease |
@@ -314,78 +202,57 @@ Following a **Patek Philippe-inspired** premium aesthetic:
 
 | Technology | Purpose |
 |------------|---------|
+| **[Vite](https://vitejs.dev/)** | Build tool & dev server (multi-page) |
 | **[PlayCanvas](https://playcanvas.com/)** | 3D WebGL/WebGPU engine |
-| **[Vite](https://vitejs.dev/)** | Build tool & dev server |
+| **[GSAP](https://gsap.com/)** | ScrollTrigger hero slider, animations |
+| **[Lenis](https://lenis.darkroom.engineering/)** | Smooth scroll behavior |
+| **[Swiper](https://swiperjs.com/)** | Touch-friendly carousels |
 | **Gaussian Splatting** | Photorealistic 3D capture rendering |
-| **Custom GLSL** | Plasma transition shaders |
+| **Custom GLSL** | Plasma transition & particle shaders |
 | **CameraFrame** | HDR post-processing pipeline |
 | **Express.js** | CMS API server |
-| **Canvas 2D** | Fluid navigation overlay |
+| **Resend** | Transactional email (password resets) |
 
 ---
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** — Deep technical documentation covering systems, shaders, and module architecture
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** — Deep technical docs: systems, shaders, module architecture
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** — Production hosting guide (cPanel, DNS, SSL, deploy workflow)
-- **[PROJECT_TRAJECTORY.md](./PROJECT_TRAJECTORY.md)** — Roadmap, vision, and future development phases
+- **[PROJECT_TRAJECTORY.md](./PROJECT_TRAJECTORY.md)** — Roadmap, vision, and development status
 - **[cms/README.md](./cms/README.md)** — CMS server documentation with full API reference
+- **[design/strategic_brief.md](./design/strategic_brief.md)** — Design philosophy & brand strategy
 
 ---
 
 ## 🎯 Roadmap
 
-### Phase 1: Hero & Navigation ✅
-- [x] Plasma explosion transitions
-- [x] HDR post-effects pipeline
-- [x] Sticky Header & Global Menu
-- [x] Interactive Category Hub
+### Phase 1–3: Core Experience ✅
+- [x] GSAP hero slider with desert storm particles
+- [x] PlayCanvas Gaussian Splat gallery with plasma transitions
+- [x] Sculpture detail pages, artist section, contact page
+- [x] Headless CMS with admin panel
+- [x] JWT auth, password reset, user management
 
-### Phase 2: Content & Polish ✅
-- [x] Sculpture Detail Pages (Ken Burns hero, info cards, technical gallery)
-- [x] Artist Biography Section with video background
-- [x] Contact/Inquiry Flow with sculptural design
-- [x] Dynamic Footer with CMS integration
-- [x] Inquire section on sculpture pages
-- [x] Video divider components
+### Phase 4: Collection Pages (In Progress)
+- [x] Collection template router system
+- [x] Network collection page (works grid, finish comparator)
+- [x] Coins collection page (grid + side panel)
+- [ ] Polygonal collection page (Poseidon, Atlas, Hercules)
+- [ ] Remaining collection templates
 
-### Phase 3: CMS & Admin ✅
-- [x] Headless CMS with Express.js
-- [x] Admin panel for content management
-- [x] Site Content editor (footer, contact, artist)
-- [x] Asset management with drag-and-drop ordering
-
-### Phase 4: Cinematic Experience ✅
-- [x] GSAP ScrollTrigger hero slider with scroll-driven parallax
-- [x] Desert storm atmospheric particle system (800+ particles, wisps, embers)
-- [x] Marble pedestal model with directional lighting
-- [x] Standalone splat-hero & splat-viewer pages
-- [x] CMS image cropper for upload workflows
-- [x] Video showcase section with film data management
-- [x] GLB compression workflow for web-optimized 3D assets
-
-### Phase 5: Production & Deployment ✅
-- [x] cPanel hosting with CloudLinux Passenger (Node.js 22)
-- [x] Git-based deployment via cPanel Git Version Control
-- [x] AutoSSL (Let's Encrypt) for HTTPS
-- [x] Image optimization (all images converted to WebP)
-- [x] Cloudflare DNS configuration
-- [x] Live at [vudrag.varazdin.studio](https://vudrag.varazdin.studio)
+### Phase 5: Production ✅
+- [x] cPanel hosting (CloudLinux Passenger, Node.js 22)
+- [x] Git-based deploy workflow
+- [x] AutoSSL, Cloudflare DNS
+- [x] WebP image optimization
+- [x] Lazy splat loading
 
 ### Phase 6: Polish
 - [ ] Mobile optimization
 - [ ] SEO & accessibility
 - [ ] Performance profiling
 - [ ] Analytics integration
-
----
-
-## 📖 Resources
-
-- [PlayCanvas Gaussian Splatting](https://developer.playcanvas.com/user-manual/gaussian-splatting/)
-- [Custom Shaders Reference](https://developer.playcanvas.com/user-manual/gaussian-splatting/building/custom-shaders/)
-- [CameraFrame API](https://api.playcanvas.com/engine/classes/CameraFrame.html)
-- [PlayCanvas Engine API](https://api.playcanvas.com/)
 
 ---
 
@@ -402,5 +269,5 @@ This project is private and proprietary. All rights reserved.
 ---
 
 <div align="center">
-  <sub>Built with ❤️ using PlayCanvas + Vite</sub>
+  <sub>Built with ❤️ using PlayCanvas + Vite + GSAP</sub>
 </div>
