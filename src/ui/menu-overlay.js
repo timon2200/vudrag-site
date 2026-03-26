@@ -24,7 +24,7 @@ const FALLBACK_MENU = {
         { label: 'Collectors Club', href: '/login.html' }
     ],
     brand: 'Nikola Vudrag',
-    tagline: 'Sculptures in Light'
+    tagline: 'From Atom to Atlas'
 };
 
 /**

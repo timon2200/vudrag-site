@@ -14,20 +14,10 @@
 
 const FALLBACK_SLIDES = [
     {
-        image: '/images/Forge.webp',
-        youtubeId: '-EINfzSwMeg',
-        youtubeIdMobile: 'XH2j7ZigZyE',
-        title: 'THE FORGE',
-        subtitle: 'Where Steel Becomes Spirit',
-        eyebrow: 'Nikola Vudrag',
-        objectPosition: 'center 35%',
-        link: '/gallery.html',
-    },
-    {
         image: '/images/Network.webp',
         youtubeId: 'BCEdZVVwBC4',
         youtubeIdMobile: 'AL1UjxlcHo0',
-        title: 'NETWORKING',
+        title: 'NET-WORK',
         subtitle: 'Latticework & Light',
         eyebrow: 'The Net-Work Series',
         objectPosition: 'center 50%',
@@ -38,10 +28,20 @@ const FALLBACK_SLIDES = [
         youtubeId: 'PkF5YGPu_YI',
         youtubeIdMobile: '8sbb6UZwZC4',
         startTime: 2,
-        title: 'ATLAS',
-        subtitle: 'The Weight of the World',
-        eyebrow: 'The Labours of Hercules',
+        title: 'MONUMENTAL',
+        subtitle: 'Where Geometry Bears the Weight of Myth',
+        eyebrow: 'Polygonal & Hercules',
         objectPosition: 'center 30%',
+        link: '/collection.html?id=monumental',
+    },
+    {
+        image: '/images/Forge.webp',
+        youtubeId: '-EINfzSwMeg',
+        youtubeIdMobile: 'XH2j7ZigZyE',
+        title: 'THE FORGE',
+        subtitle: 'Where Steel Becomes Spirit',
+        eyebrow: 'Nikola Vudrag',
+        objectPosition: 'center 35%',
         link: '/gallery.html',
     }
 ];

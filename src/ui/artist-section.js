@@ -15,7 +15,7 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 const FALLBACK_ARTIST_DATA = {
     name: 'Nikola Vudrag',
     born: '1989, Croatia',
-    tagline: 'Sculptor of Light & Steel',
+    tagline: 'From Atom to Atlas',
     quote: '"Each weld is a meditation—twenty thousand moments of attention fused into form."',
     portrait: '/images/vudrag author.webp',
     videoUrl: 'https://www.youtube.com/embed/FWGdlVFq39g',

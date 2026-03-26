@@ -210,11 +210,11 @@
     ]
   },
   {
-    "id": "nature",
-    "title": "Nature",
-    "subtitle": "Flora & Landscape",
+    "id": "paintings",
+    "title": "Paintings",
+    "subtitle": "Metal Paintings",
     "pageType": "gallery",
-    "description": "Organic forms reimagined through industrial precision. A dialogue between the fragile impermanence of nature and the heavy eternity of steel.",
+    "description": "Plasma-cut reliefs and torch-drawn compositions on raw steel — where the industrial act of cutting becomes an act of drawing, and the metal sheet becomes canvas.",
     "image": "/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp",
     "works": [
       {
@@ -408,9 +408,9 @@
     ]
   },
   {
-    "id": "polygonal",
-    "title": "Polygonal",
-    "subtitle": "Geometric Forms",
+    "id": "monumental",
+    "title": "Monumental",
+    "subtitle": "Polygonal & Hercules",
     "pageType": "polygonal",
     "description": "Metal polygon plates converge into monumental animal forms and crystalline geometries — where mathematical precision meets mythological weight.",
     "image": "/images/93.webp",
@@ -538,7 +538,7 @@
   },
   {
     "id": "public-works",
-    "title": "Public Works",
+    "title": "Public Work",
     "subtitle": "Monumental & Interventions",
     "pageType": "gallery",
     "description": "Large-scale commissions that transform public space — from 12-meter Tesla monuments to interactive water gates, each installation altering the dialogue between art, architecture, and the community that surrounds it.",

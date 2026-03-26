@@ -14,7 +14,7 @@ const FALLBACK_CONTENT = {
     titleLine1: 'Get in',
     titleLine2: 'Touch',
     text: 'For commissions, exhibitions, or simply to share your thoughts on the interplay of form and light—I welcome your message.',
-    email: 'studio@nikolavudrag.com',
+    email: 'office@vudrag.com',
     signatureName: 'Nikola Vudrag',
     signatureLocation: 'Varaždin, Croatia'
 };

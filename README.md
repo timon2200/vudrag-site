@@ -1,4 +1,4 @@
-# Vudrag | Sculptures in Light
+# Vudrag | From Atom to Atlas
 
 > An immersive web experience showcasing sculptural works through 3D Gaussian Splats, cinematic scroll-driven transitions, and premium luxury aesthetics.
 
@@ -32,9 +32,12 @@ Photorealistic sculptures rendered using Gaussian Splatting (`.sog` files) with:
 
 ### 🖼️ Collection Pages
 Dynamic template-routed collection pages (`/collection.html?id=...`):
-- **Network** — Welded-sculpture showcase with works gallery grid, draggable split-screen finish comparator, and cinematic detail panels
+- **Net-Work** — Welded-sculpture showcase with works gallery grid, draggable split-screen finish comparator, and cinematic detail panels
 - **Coins & Medals** — Responsive grid with slide-in side panel for detailed coin/medal information
-- **Polygonal** — (In design — Poseidon, Atlas, Labours of Hercules)
+- **Monumental** — Polygonal & Hercules (Poseidon, Atlas, Labours)
+- **Portraits** — Bronze busts gallery
+- **Paintings** — Metal paintings / plasma torch compositions
+- **Public Work** — Large-scale commissions & monuments
 
 ### 🖼️ Sculpture Detail Pages
 Rich cinematic pages for each piece featuring:
@@ -46,6 +49,9 @@ Rich cinematic pages for each piece featuring:
 
 ### 📬 Contact Page
 Sculptural presentation with ambient floating particles, glowing background, signature styling, and interactive email link.
+
+### 📰 Press Page
+Editorial layout showcasing 10 curated press articles with featured spotlight (Forbes), 2-column grid with breakout cards, scroll-reveal animations, and media inquiry CTA.
 
 ### 🔒 Authentication & Archive
 - JWT-based admin authentication
@@ -141,7 +147,7 @@ vudrag-site/
 │   └── splats/                        # Additional splat files
 ├── content/                           # Artist bio, collections data
 ├── design/                            # Strategic design brief
-├── 9 HTML entry points               # index, gallery, collection, sculpture, contact, archive, login, splat-hero, splat-viewer
+├── 10 HTML entry points              # index, gallery, collection, sculpture, contact, archive, login, press, splat-hero, splat-viewer
 └── vite.config.js                     # Multi-page Vite config
 ```
 
@@ -234,19 +240,17 @@ See **[cms/README.md](./cms/README.md)** for API reference.
 - [x] Headless CMS with admin panel
 - [x] JWT auth, password reset, user management
 
-### Phase 4: Collection Pages (In Progress)
+### Phase 4: Collection Pages & Content (In Progress)
 - [x] Collection template router system
 - [x] Network collection page (works grid, finish comparator)
 - [x] Coins collection page (grid + side panel)
-- [ ] Polygonal collection page (Poseidon, Atlas, Hercules)
+- [x] Hero slider reorder (Net-Work, Monumental, The Forge)
+- [x] Collection renames (Monumental, Paintings, Public Work)
+- [x] Selection restructure (9 bento cards to 3 cards)
+- [x] Press/Articles page (10 curated articles)
+- [x] CMS/fallback data sync across all components
+- [ ] Monumental collection page template
 - [ ] Remaining collection templates
-
-### Phase 5: Production ✅
-- [x] cPanel hosting (CloudLinux Passenger, Node.js 22)
-- [x] Git-based deploy workflow
-- [x] AutoSSL, Cloudflare DNS
-- [x] WebP image optimization
-- [x] Lazy splat loading
 
 ### Phase 6: Polish
 - [ ] Mobile optimization

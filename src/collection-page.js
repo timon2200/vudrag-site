@@ -80,6 +80,7 @@ async function init() {
                 templateModule = await import('./templates/coins/coins-page.js');
                 break;
             case 'polygonal':
+            case 'monumental':
                 templateModule = await import('./templates/polygonal/polygonal-page.js');
                 break;
             // Future templates:

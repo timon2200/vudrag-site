@@ -81,6 +81,15 @@ Avoid hollow praise. When the work is extraordinary, let the **specifics** carry
 > ✅ "A staggering assembly from 4,000 up to 20,000 individual elements, each piece meticulously crafted through a laborious process, welding one piece after another."
 > ❌ "An absolutely stunning masterpiece." ← empty superlative
 
+### 8. Scientific Resonance
+Vudrag's work spans from 1.2mm coin reliefs to 12-meter monuments. Use **accessible physics and science metaphors** — thermodynamics, quantum mechanics, scale invariance — to make this range tangible and poetic.
+
+> ✅ "At every scale, entropy yields to intent — chaos transformed into form."
+> ✅ "Like gravity: a single force that shapes every scale."
+> ✅ "The same fire that engraves a coin's relief forges a monument visible from a kilometer."
+> ✅ "Wave and particle. Presence and absence. The lattice exists in both states at once."
+> ❌ "He makes both big and small things." ← flattens the extraordinary into the mundane
+
 ---
 
 ## Vocabulary DNA

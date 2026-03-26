@@ -1,20 +1,10 @@
 {
   "heroSlides": [
     {
-      "image": "/images/Forge.webp",
-      "youtubeId": "-EINfzSwMeg",
-      "youtubeIdMobile": "XH2j7ZigZyE",
-      "title": "THE FORGE",
-      "subtitle": "Where Steel Becomes Spirit",
-      "eyebrow": "Nikola Vudrag",
-      "objectPosition": "center 35%",
-      "link": "/gallery.html"
-    },
-    {
       "image": "/images/Network.webp",
       "youtubeId": "BCEdZVVwBC4",
       "youtubeIdMobile": "AL1UjxlcHo0",
-      "title": "NETWORKING",
+      "title": "NET-WORK",
       "subtitle": "Latticework & Light",
       "eyebrow": "The Net-Work Series",
       "objectPosition": "center 50%",
@@ -25,17 +15,27 @@
       "youtubeId": "PkF5YGPu_YI",
       "youtubeIdMobile": "8sbb6UZwZC4",
       "startTime": 2,
-      "title": "ATLAS",
-      "subtitle": "The Weight of the World",
-      "eyebrow": "The Labours of Hercules",
+      "title": "MONUMENTAL",
+      "subtitle": "Where Geometry Bears the Weight of Myth",
+      "eyebrow": "Polygonal & Hercules",
       "objectPosition": "center 30%",
+      "link": "/collection.html?id=monumental"
+    },
+    {
+      "image": "/images/Forge.webp",
+      "youtubeId": "-EINfzSwMeg",
+      "youtubeIdMobile": "XH2j7ZigZyE",
+      "title": "THE FORGE",
+      "subtitle": "Where Steel Becomes Spirit",
+      "eyebrow": "Nikola Vudrag",
+      "objectPosition": "center 35%",
       "link": "/gallery.html"
     }
   ],
   "footer": {
     "brand": "VUDRAG",
-    "tagline": "Art in Bronze",
-    "description": "Creating photorealistic bronze sculptures that bridge classical mastery with contemporary vision.",
+    "tagline": "From Atom to Atlas",
+    "description": "The same fire that engraves a coin's 1.2mm relief forges a 12-meter monument. At every scale, entropy yields to intent — chaos transformed into form.",
     "email": "office@vudrag.com",
     "location": "Varaždin, Croatia",
     "navLinks": [
@@ -88,7 +88,7 @@
   "artistSection": {
     "name": "Nikola Vudrag",
     "born": "1989, Croatia",
-    "tagline": "Sculptor of Light & Steel",
+    "tagline": "From Atom to Atlas",
     "quote": "\"Each weld is a meditation—twenty thousand moments of attention fused into form.\"",
     "portrait": "/images/vudrag author.webp",
     "videoUrl": "https://www.youtube.com/embed/FWGdlVFq39g",

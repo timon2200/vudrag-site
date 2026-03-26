@@ -18,7 +18,8 @@ export default defineConfig({
                 archive: 'archive.html',
                 splatViewer: 'splat-viewer.html',
                 splatHero: 'splat-hero.html',
-                collection: 'collection.html'
+                collection: 'collection.html',
+                press: 'press.html'
             },
             output: {
                 manualChunks: {

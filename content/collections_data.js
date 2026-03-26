@@ -1,7 +1,7 @@
 export const COLLECTIONS = [
     {
         id: 'networking',
-        title: 'Network',
+        title: 'Net-Work',
         subtitle: 'The Net-Work Technique',
         description: 'Thousands of welded steel rods forge semi-transparent lattices — forms that simultaneously shield and reveal.',
         pageType: 'network',
@@ -35,9 +35,9 @@ export const COLLECTIONS = [
         ]
     },
     {
-        id: 'polygonal',
-        title: 'Polygonal',
-        subtitle: 'Geometric Forms',
+        id: 'monumental',
+        title: 'Monumental',
+        subtitle: 'Polygonal & Hercules',
         description: 'Mathematical precision meets mythological weight in polygon-plate sculpture.',
         pageType: 'polygonal',
         works: [
@@ -50,16 +50,16 @@ export const COLLECTIONS = [
         ]
     },
     {
-        id: 'nature',
-        title: 'Nature',
-        subtitle: 'Flora & Landscape',
-        description: 'Organic forms reimagined through industrial precision.',
+        id: 'paintings',
+        title: 'Paintings',
+        subtitle: 'Metal Paintings',
+        description: 'Plasma-cut reliefs and torch-drawn compositions on raw steel — where cutting becomes drawing.',
         works: [
             {
-                title: 'The Dandelion',
-                year: '2024',
-                dimensions: '220 x 80 x 80 cm',
-                description: 'Mirrored steel. A quiet philosopher of the ruins. Delicacy achieved through discipline.'
+                title: 'Plasma Torch Hand',
+                year: '2022',
+                dimensions: '280 × 117 × 3 cm',
+                description: 'The hand emerges from what is taken away. A paradox of creation through destruction.'
             }
         ]
     },
@@ -78,7 +78,7 @@ export const COLLECTIONS = [
     },
     {
         id: 'public-works',
-        title: 'Public Works',
+        title: 'Public Work',
         subtitle: 'Monumental & Interventions',
         description: 'Large-scale commissions that transform public space.',
         works: [

@@ -14,76 +14,31 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 // Order matters for bento grid layout! Cards are placed left-to-right, top-to-bottom.
 const FALLBACK_WORKS = [
     {
-        id: 'iron-maiden',
-        title: 'Iron Maiden',
-        series: 'Persona',
-        year: '2023',
+        id: 'network-featured',
+        title: 'The Net-Work',
+        series: 'Net-Work',
+        year: 'Collection',
         size: 'large',
-        image: 'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=800&q=80'
+        image: '/images/8.webp',
+        href: '/collection.html?id=networking'
     },
     {
-        id: 'vitreolum',
-        title: 'Vitreolum',
-        series: 'Net-work',
-        year: '2023',
-        size: 'medium',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'
-    },
-    {
-        id: 'sumerian-moon',
-        title: 'Sumerian Moon',
-        series: 'Elemental',
-        year: '2025',
-        size: 'medium',
-        image: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80'
-    },
-    {
-        id: 'relic',
-        title: 'The Relic',
-        series: 'Persona',
-        year: '2022',
-        size: 'medium',
-        image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&q=80'
-    },
-    {
-        id: 'tomislav',
-        title: 'Tomislavus Rex',
-        series: 'Monuments',
-        year: '2025',
-        size: 'medium',
-        image: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&q=80'
-    },
-    {
-        id: 'madonna',
-        title: 'Madonna & the Veil',
-        series: 'Net-work',
-        year: '2025',
+        id: 'exhibitions',
+        title: 'Exhibitions',
+        series: 'Gallery',
+        year: 'Worldwide',
         size: 'large',
-        image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80'
-    },
-    {
-        id: 'waterdrop',
-        title: 'Waterdrop',
-        series: 'Elemental',
-        year: '2025',
-        size: 'tall',
-        image: 'https://images.unsplash.com/photo-1605792657660-596af9009e82?w=600&q=80'
-    },
-    {
-        id: 'tolkien',
-        title: 'J.R.R. Tolkien',
-        series: 'Portraits',
-        year: '2024',
-        size: 'wide',
-        image: 'https://images.unsplash.com/photo-1560421683-6856ea585c78?w=800&q=80'
+        image: '/images/VUDRAG-BOOK-MMXXV_Page_07_Image_0001.webp',
+        href: '/gallery.html'
     },
     {
         id: 'press',
-        title: 'Selected Media',
+        title: 'Articles & Press',
         series: 'Press',
-        year: 'Various',
-        size: 'wide',
-        image: '/images/luminous-museum-interior-stockcake.webp'
+        year: 'Selected Media',
+        size: 'large',
+        image: '/images/luminous-museum-interior-stockcake.webp',
+        href: '/press.html'
     }
 ];
 
@@ -207,8 +162,9 @@ function createWorksShowcaseDOM() {
  * Create HTML for a single work card
  */
 function createWorkCardHTML(work) {
+    const linkHref = work.href || `/sculpture.html?id=${work.id}`;
     return `
-        <a href="/sculpture.html?id=${work.id}" class="works-card works-card--${work.size}" data-work="${work.id}">
+        <a href="${linkHref}" class="works-card works-card--${work.size}" data-work="${work.id}">
             <div class="works-card__image-wrap">
                 <img 
                     class="works-card__image" 

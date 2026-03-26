@@ -14,9 +14,9 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 // Fallback footer content (used if CMS unavailable)
 const FALLBACK_FOOTER = {
     brand: 'VUDRAG',
-    tagline: 'Sculpting in Light & Shadow',
-    description: 'Exploring the intersection of classical craftsmanship and modern industrial art. Each piece tells a story of transformation, resilience, and raw power.',
-    email: 'studio@vudrag.com',
+    tagline: 'From Atom to Atlas',
+    description: 'The same fire that engraves a coin\'s 1.2mm relief forges a 12-meter monument. At every scale, entropy yields to intent — chaos transformed into form.',
+    email: 'office@vudrag.com',
     location: 'Varaždin • Zagreb • Dubai',
     navLinks: [
         { label: 'Collections', href: '#category-hub' },

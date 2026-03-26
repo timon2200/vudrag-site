@@ -14,12 +14,21 @@ const CMS_API = import.meta.env.VITE_API_BASE || '/api';
 const FALLBACK_CATEGORIES = [
     {
         id: 'networking',
-        title: 'Network',
+        title: 'Net-Work',
         subtitle: 'The Net-Work Technique',
         description: 'Semi-transparent lattices where light and shadow become the true medium',
         count: 17,
         image: '/images/8.webp',
         pageType: 'network'
+    },
+    {
+        id: 'monumental',
+        title: 'Monumental',
+        subtitle: 'Polygonal & Hercules',
+        description: 'Mathematical precision meets mythological weight in polygon-plate sculpture',
+        count: 6,
+        image: '/images/93.webp',
+        pageType: 'polygonal'
     },
     {
         id: 'coins',
@@ -31,22 +40,6 @@ const FALLBACK_CATEGORIES = [
         pageType: 'coins'
     },
     {
-        id: 'polygonal',
-        title: 'Polygonal',
-        subtitle: 'Geometric Forms',
-        description: 'Mathematical precision meets mythological weight in polygon-plate sculpture',
-        count: 6,
-        image: '/images/93.webp'
-    },
-    {
-        id: 'nature',
-        title: 'Nature',
-        subtitle: 'Flora & Landscape',
-        description: 'Organic forms reimagined through industrial precision.',
-        count: 7,
-        image: '/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp'
-    },
-    {
         id: 'portraits',
         title: 'Portraits',
         subtitle: 'Bronze Busts',
@@ -55,8 +48,16 @@ const FALLBACK_CATEGORIES = [
         image: '/images/56.webp'
     },
     {
+        id: 'paintings',
+        title: 'Paintings',
+        subtitle: 'Metal Paintings',
+        description: 'Plasma-cut reliefs and torch-drawn compositions — where the metal sheet becomes canvas',
+        count: 7,
+        image: '/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp'
+    },
+    {
         id: 'public-works',
-        title: 'Public Works',
+        title: 'Public Work',
         subtitle: 'Monumental & Interventions',
         description: 'Large-scale commissions transforming the dialogue between art and community',
         count: 19,
