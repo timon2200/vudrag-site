@@ -49,7 +49,7 @@
           "subtitle": "Flowing Metallic Growth",
           "description": "This series captures the dynamic energy and flow from a single focal point, branching outward in organic patterns as if shaped by unseen currents. The artist leaves gravity to guide the material into flowing, almost botanical forms, where each weld becomes a joint in an evolving metallic organism. The rust version, treated with oxidizing chemicals, mimics the weathered beauty of driftwood or coral. The silver variants evoke the sleek tension of molten rivers frozen in time. Both can be rendered in matte or high-gloss finishes, amplifying either the piece's earthy tactility or its sculptural fluidity.",
           "images": ["/images/weld-process-05.webp", "/images/weld-process-06.webp"],
-          "finishLabels": ["Silver", "Rust"]
+          "finishLabels": ["Rust", "Silver"]
         },
         {
           "id": "sumerian",
@@ -57,7 +57,7 @@
           "subtitle": "Ancient Cuneiform Reborn",
           "description": "This series reinterprets the ancient elegance of Sumerian cuneiform through contemporary fabrication. By fusing slender steel rods into intricate mesh patterns, the artist transforms industrial material into a lyrical exploration of form and texture. A richly textured rust version, achieved through controlled chemical oxidation, evokes archaeological fragments steeped in time. The silver variants, treated with precise torch work, present a sleek modern duality — the high-gloss catches light like liquid metal, while the matte absorbs it, deepening the geometric shadows.",
           "images": ["/images/weld-process-07.webp", "/images/weld-process-08.webp"],
-          "finishLabels": ["Silver", "Rust"]
+          "finishLabels": ["Rust", "Silver"]
         }
       ],
       "technique": {
@@ -685,7 +685,7 @@
         "year": "2022",
         "dimensions": "—",
         "description": "Love rendered in steel—permanent yet tender. A public sculpture in Koprivnica that serves as a gathering point, anchoring the community in a shared symbol of connection.",
-        "image": "",
+        "image": "/images/works/spice-of-love.webp",
         "segment": "Monumental"
       },
       {

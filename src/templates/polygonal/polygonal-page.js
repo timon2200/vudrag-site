@@ -103,6 +103,7 @@ function buildIntroduction(intro) {
 
     return `
         <section class="pg-intro" id="pg-intro">
+            <div class="pg-intro__bg"></div>
             <div class="pg-intro__watermark" aria-hidden="true">POLYGONAL</div>
             <div class="pg-intro__content" data-reveal>
                 <span class="pg-intro__eyebrow">${intro.eyebrow || ''}</span>

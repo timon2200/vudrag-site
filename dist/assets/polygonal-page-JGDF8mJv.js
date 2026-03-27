@@ -1,4 +1,4 @@
-const v="/api";async function I(e,s){const{pageContent:t,works:i=[]}=s,{hero:l={},introduction:a={},labours:n=[],venice:c={}}=t||{};let o=[];try{const r=await fetch(`${v}/collections/public-works`);r.ok&&(o=((await r.json()).works||[]).filter(d=>d.segment==="Hercules Labors"))}catch{console.warn("Could not fetch Hercules Labors data")}const p=i.filter(r=>r.segment==="Closed Lighting");e.innerHTML=h(l,a,i,n,c,p,o),requestAnimationFrame(()=>{x(e),C(e)})}function h(e,s,t,i,l,a,n){return`
+const u="/api";async function I(e,s){const{pageContent:t,works:i=[]}=s,{hero:l={},introduction:a={},labours:n=[],venice:c={}}=t||{};let o=[];try{const r=await fetch(`${u}/collections/public-works`);r.ok&&(o=((await r.json()).works||[]).filter(d=>d.segment==="Hercules Labors"))}catch{console.warn("Could not fetch Hercules Labors data")}const p=i.filter(r=>r.segment==="Closed Lighting");e.innerHTML=h(l,a,i,n,c,p,o),requestAnimationFrame(()=>{x(e),C(e)})}function h(e,s,t,i,l,a,n){return`
         ${m(e)}
         ${b(s)}
         ${$(t)}
@@ -36,6 +36,7 @@ const v="/api";async function I(e,s){const{pageContent:t,works:i=[]}=s,{hero:l={
         </section>
     `}function b(e){return e.title?`
         <section class="pg-intro" id="pg-intro">
+            <div class="pg-intro__bg"></div>
             <div class="pg-intro__watermark" aria-hidden="true">POLYGONAL</div>
             <div class="pg-intro__content" data-reveal>
                 <span class="pg-intro__eyebrow">${e.eyebrow||""}</span>
@@ -101,7 +102,7 @@ const v="/api";async function I(e,s){const{pageContent:t,works:i=[]}=s,{hero:l={
                 <p class="pg-labour__description">${c}</p>
             </div>
         </article>
-    `}function w(e,s){var n,c,o,p,r,_,d,u;if(!e.title)return"";const t=s.find(g=>g.title==="Atlas"),i=s.find(g=>g.title==="Prometheus"),l=((n=e.atlas)==null?void 0:n.image)||(t==null?void 0:t.image)||"",a=((c=e.prometheus)==null?void 0:c.image)||(i==null?void 0:i.image)||"";return`
+    `}function w(e,s){var n,c,o,p,r,_,d,v;if(!e.title)return"";const t=s.find(g=>g.title==="Atlas"),i=s.find(g=>g.title==="Prometheus"),l=((n=e.atlas)==null?void 0:n.image)||(t==null?void 0:t.image)||"",a=((c=e.prometheus)==null?void 0:c.image)||(i==null?void 0:i.image)||"";return`
         <section class="pg-venice" id="pg-venice">
             <div class="pg-venice__watermark" aria-hidden="true">FORGE</div>
             <header class="pg-venice__header" data-reveal>
@@ -132,7 +133,7 @@ const v="/api";async function I(e,s){const{pageContent:t,works:i=[]}=s,{hero:l={
                     <div class="pg-venice__panel-content">
                         <span class="pg-venice__panel-label">${((_=e.prometheus)==null?void 0:_.label)||"FORGING"}</span>
                         <h3 class="pg-venice__panel-title">${((d=e.prometheus)==null?void 0:d.title)||"Fire as Language"}</h3>
-                        <p class="pg-venice__panel-text">${((u=e.prometheus)==null?void 0:u.description)||""}</p>
+                        <p class="pg-venice__panel-text">${((v=e.prometheus)==null?void 0:v.description)||""}</p>
                     </div>
                 </div>
             </div>
