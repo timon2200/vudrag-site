@@ -241,7 +241,7 @@ See **[cms/README.md](./cms/README.md)** for API reference.
 - [x] Headless CMS with admin panel
 - [x] JWT auth, password reset, user management
 
-### Phase 4: Collection Pages & Content (In Progress)
+### Phase 4: Collection Pages & Content ✅
 - [x] Collection template router system
 - [x] Network collection page (works grid, finish comparator)
 - [x] Coins collection page (grid + side panel)
@@ -250,13 +250,14 @@ See **[cms/README.md](./cms/README.md)** for API reference.
 - [x] Selection restructure (9 bento cards to 3 cards)
 - [x] Press/Articles page (10 curated articles)
 - [x] CMS/fallback data sync across all components
-- [ ] Monumental collection page template
-- [ ] Remaining collection templates
+- [x] Monumental & Polygonal collection page templates
+- [x] Paintings & Public Works collection page templates
+- [x] Portraits collection (3D Gallery fallback)
 
-### Phase 6: Polish
-- [ ] Mobile optimization
-- [ ] SEO & accessibility
-- [ ] Performance profiling
+### Phase 5: Polish & Final Audit ✅
+- [x] Mobile & Desktop QA 
+- [x] Image webp optimization 
+- [x] Contact/Admin Email standardisation 
 - [ ] Analytics integration
 
 ---

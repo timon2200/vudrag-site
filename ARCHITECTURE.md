@@ -63,6 +63,12 @@ vudrag-site/
 │   │   │   └── network-page.js        # Network collection template (~25KB)
 │   │   ├── coins/
 │   │   │   └── coins-page.js          # Coins collection template (~22KB)
+│   │   ├── polygonal/
+│   │   │   └── polygonal-page.js      # Handles Monumental & Polygonal (~35KB)
+│   │   ├── paintings/
+│   │   │   └── paintings-page.js      # Interactive Plasma Canvas (~21KB)
+│   │   ├── public-works/
+│   │   │   └── public-works-page.js   # Digital Monograph template (~25KB)
 │   │   └── splat-hero/                # Reusable splat hero template
 │   │       ├── config.js, state.js
 │   │       ├── shaders/, systems/, ui/

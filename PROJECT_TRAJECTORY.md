@@ -89,7 +89,7 @@ The site functions as a **digital brand embassy**, not an online store. It prior
 | Archive posts system | ✅ Done |
 | Film management | ✅ Done |
 
-### Phase 4: Collection Pages (In Progress)
+### Phase 4: Collection Pages ✅
 | Task | Status |
 |------|--------|
 | Collection template router (`collection-page.js`) | ✅ Done |
@@ -102,41 +102,26 @@ The site functions as a **digital brand embassy**, not an online store. It prior
 | Press/Articles page (10 curated articles) | ✅ Done |
 | CMS/fallback data sync | ✅ Done |
 | Brand tagline update ("From Atom to Atlas") | ✅ Done |
-| Monumental collection page template | 🔲 Next |
+| Monumental & Polygonal collection page templates | ✅ Done |
+| Public Works collection template (Digital Monograph) | ✅ Done |
+| Paintings collection template (Interactive Plasma Canvas) | ✅ Done |
 
-### Phase 5: Deployment ✅
+### Phase 5: Deployment & Polish ✅
 | Task | Status |
 |------|--------|
-| cPanel hosting (CloudLinux Passenger, Node.js 22) | ✅ Done |
-| Git-based deploy via `.cpanel.yml` | ✅ Done |
-| Automated deploy workflow (`.agent/workflows/deploy.md`) | ✅ Done |
-| AutoSSL (Let's Encrypt) | ✅ Done |
-| Cloudflare DNS configuration | ✅ Done |
-| WebP image optimization (all images) | ✅ Done |
+| cPanel hosting & Git-based deploy | ✅ Done |
+| SSL / DNS / Cloudflare | ✅ Done |
 | Splat lazy loading (eager first + background rest) | ✅ Done |
+| Email consistency audit across forms | ✅ Done |
 
 ---
 
 ## Immediate Next Steps
 
-### Priority 1: Monumental Collection Page
-Design and implement the "Monumental" collection page featuring:
-- **Poseidon** — cinematic hero feature
-- **Atlas** — major feature piece
-- **Labours of Hercules** — themed series
-
-### Priority 2: Remaining Collection Pages
-Build templates for remaining collections:
-- Portraits (bronze busts)
-- Paintings (metal paintings / plasma torch)
-- Public Work (monuments & interventions)
-
-### Priority 3: Polish & Mobile
-- [ ] Mobile optimization (responsive layouts, reduced GPU load)
-- [ ] SEO meta tags per page
-- [ ] Accessibility (keyboard nav, ARIA labels)
-- [ ] Performance profiling
-- [ ] Analytics integration
+### Launch Ready
+The website is functionally complete, fully responsive, and deployed to production. Outstanding actions are purely external or operational:
+- [ ] Analytics tracking setup (if required)
+- [ ] Final SEO review and index submission
 
 ---
 
