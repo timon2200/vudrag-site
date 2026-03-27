@@ -169,30 +169,6 @@
     50% { transform: translateY(6px); }
 }
 
-.coins-hero__back {
-    position: fixed;
-    top: 28px;
-    left: 1.5rem;
-    z-index: 1001;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: rgba(246, 246, 246, 0.6);
-    text-decoration: none;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.7rem;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: color 0.3s ease, gap 0.3s ease;
-    padding: 0 0.5rem;
-}
-
-.coins-hero__back:hover {
-    color: var(--color-gold, #c9a77a);
-    gap: 0.75rem;
-}
-
 
 /* ─── Vault Reveal ─────────────────────────────────── */
 
@@ -215,7 +191,7 @@
             rgba(5, 5, 8, 0.6) 0%,
             rgba(5, 5, 8, 0.4) 40%,
             rgba(5, 5, 8, 0.6) 100%),
-        url('/images/coins/coins on a table.jpeg') center / cover no-repeat;
+        url('/images/coins/coins on a table.webp') center / cover no-repeat;
     opacity: 0.35;
     pointer-events: none;
     z-index: 0;
@@ -925,11 +901,6 @@
 }
 
 @media (max-width: 768px) {
-    .coins-hero__back {
-        top: 1rem;
-        left: 1.25rem;
-    }
-
     .coins-hero__unmute {
         bottom: 4.5rem;
         padding: 0.6rem 1.2rem;

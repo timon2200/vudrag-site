@@ -16,6 +16,7 @@
 
 ### 🎬 Cinematic Hero Slider
 GSAP ScrollTrigger-driven carousel with atmospheric effects:
+- **Progressive loading** — hero appears instantly, below-fold sections load in the background
 - Scroll-driven slide transitions with compressed ~0.6s timing
 - Intra-slide text parallax — per-element depth shift while scrolling within each slide
 - Desert storm particle system — 800+ sandstorm particles, 14+ organic wisps, embers, and floating dust

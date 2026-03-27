@@ -271,6 +271,8 @@ function setupPagination(heroSection) {
  * When the hero slider reaches its last slide and the user keeps scrolling
  * down, we break free and scroll the outer page to the content below.
  * 
+ * Handles both wheel (desktop) and touch (mobile) events.
+ * 
  * While "escaped", the hero's internal overflow is DISABLED so that
  * scrolling back up moves the outer page rather than snapping between
  * slides. Internal scrolling is only re-enabled once the outer page
@@ -278,12 +280,18 @@ function setupPagination(heroSection) {
  */
 function setupScrollEscape(heroSection) {
     let escapeAccumulator = 0;
-    const ESCAPE_THRESHOLD = 120;
+    const ESCAPE_THRESHOLD = 80;       // wheel (px of deltaY)
+    const TOUCH_ESCAPE_THRESHOLD = 60; // touch (px of upward swipe)
     let escaped = false;
 
     const pagination = heroSection.querySelector('.hero-pagination');
 
-    /** Lock the hero's internal scroll so it can't intercept wheel events */
+    /** Check if the hero's internal scroll is at the very bottom */
+    function isAtBottom() {
+        return heroSection.scrollTop + heroSection.clientHeight >= heroSection.scrollHeight - 5;
+    }
+
+    /** Lock the hero's internal scroll so it can't intercept events */
     function lockHeroScroll() {
         heroSection.style.overflowY = 'hidden';
         heroSection.style.scrollSnapType = 'none';
@@ -297,27 +305,26 @@ function setupScrollEscape(heroSection) {
         if (pagination) pagination.style.opacity = '';
     }
 
+    /** Perform the escape to content below */
+    function doEscape() {
+        escaped = true;
+        escapeAccumulator = 0;
+        lockHeroScroll();
+
+        const contentArea = document.getElementById('content-area');
+        if (contentArea) {
+            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // ── Wheel (desktop / trackpad) ──────────────────────────────
     heroSection.addEventListener('wheel', (e) => {
-        // While escaped, don't let the hero consume scroll at all
         if (escaped) return;
 
-        const atBottom = heroSection.scrollTop + heroSection.clientHeight >= heroSection.scrollHeight - 2;
-
-        // Scrolling DOWN while at the last slide → accumulate escape intent
-        if (atBottom && e.deltaY > 0) {
+        if (isAtBottom() && e.deltaY > 0) {
             escapeAccumulator += e.deltaY;
-
             if (escapeAccumulator >= ESCAPE_THRESHOLD) {
-                escaped = true;
-                escapeAccumulator = 0;
-
-                // Lock internal scroll, then push outer page down
-                lockHeroScroll();
-
-                const contentArea = document.getElementById('content-area');
-                if (contentArea) {
-                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                doEscape();
             }
             return;
         }
@@ -326,7 +333,45 @@ function setupScrollEscape(heroSection) {
         escapeAccumulator = 0;
     }, { passive: true });
 
-    // When the outer page scrolls back to the very top, re-enable the slider
+    // ── Touch (mobile) ──────────────────────────────────────────
+    let touchStartY = 0;
+    let touchActive = false;
+
+    heroSection.addEventListener('touchstart', (e) => {
+        if (escaped) return;
+        touchStartY = e.touches[0].clientY;
+        touchActive = true;
+        escapeAccumulator = 0;
+    }, { passive: true });
+
+    heroSection.addEventListener('touchmove', (e) => {
+        if (escaped || !touchActive) return;
+
+        const currentY = e.touches[0].clientY;
+        const delta = touchStartY - currentY; // positive = swiping up (scroll down intent)
+
+        if (isAtBottom() && delta > 0) {
+            escapeAccumulator += delta;
+            touchStartY = currentY; // track incrementally
+
+            if (escapeAccumulator >= TOUCH_ESCAPE_THRESHOLD) {
+                doEscape();
+                touchActive = false;
+            }
+            return;
+        }
+
+        // Not at bottom or swiping down — reset
+        escapeAccumulator = 0;
+        touchStartY = currentY;
+    }, { passive: true });
+
+    heroSection.addEventListener('touchend', () => {
+        touchActive = false;
+        escapeAccumulator = 0;
+    }, { passive: true });
+
+    // ── Re-entry: when page scrolls back to top, re-enable slider ──
     window.addEventListener('scroll', () => {
         if (escaped && window.scrollY <= 5) {
             escaped = false;

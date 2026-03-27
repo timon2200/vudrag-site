@@ -27,7 +27,7 @@ const FALLBACK_CATEGORIES = [
         subtitle: 'Polygonal & Hercules',
         description: 'Mathematical precision meets mythological weight in polygon-plate sculpture',
         count: 6,
-        image: '/images/93.webp',
+        image: '/images/works/atlas-gardens.webp',
         pageType: 'polygonal'
     },
     {
@@ -52,8 +52,9 @@ const FALLBACK_CATEGORIES = [
         title: 'Paintings',
         subtitle: 'Metal Paintings',
         description: 'Plasma-cut reliefs and torch-drawn compositions — where the metal sheet becomes canvas',
-        count: 7,
-        image: '/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp'
+        count: 3,
+        image: '/images/works/painting-hand.webp',
+        pageType: 'paintings'
     },
     {
         id: 'public-works',

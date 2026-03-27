@@ -54,6 +54,7 @@ export const COLLECTIONS = [
         title: 'Paintings',
         subtitle: 'Metal Paintings',
         description: 'Plasma-cut reliefs and torch-drawn compositions on raw steel — where cutting becomes drawing.',
+        pageType: 'paintings',
         works: [
             {
                 title: 'Plasma Torch Hand',

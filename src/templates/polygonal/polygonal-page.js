@@ -43,7 +43,6 @@ export async function mount(container, collection) {
     requestAnimationFrame(() => {
         setupCloudParallax(container);
         setupScrollReveal(container);
-        setupBackButton(container);
     });
 }
 
@@ -93,12 +92,6 @@ function buildCloudHero(hero) {
                     <path d="M12 5v14M5 12l7 7 7-7"/>
                 </svg>
             </div>
-            <a href="/" class="pg-hero__back">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                <span>Back</span>
-            </a>
         </section>
     `;
 }
@@ -226,6 +219,10 @@ function buildVeniceFeature(venice, herculesWorks) {
     const atlasWork = herculesWorks.find(w => w.title === 'Atlas');
     const prometheusWork = herculesWorks.find(w => w.title === 'Prometheus');
 
+    // Prefer BTS images from venice data, fall back to sculpture work images
+    const atlasImage = venice.atlas?.image || atlasWork?.image || '';
+    const prometheusImage = venice.prometheus?.image || prometheusWork?.image || '';
+
     return `
         <section class="pg-venice" id="pg-venice">
             <div class="pg-venice__watermark" aria-hidden="true">FORGE</div>
@@ -242,7 +239,7 @@ function buildVeniceFeature(venice, herculesWorks) {
             ` : ''}
             <div class="pg-venice__split" data-reveal>
                 <div class="pg-venice__panel pg-venice__panel--atlas">
-                    ${atlasWork?.image ? `<img class="pg-venice__image" src="${atlasWork.image}" alt="Bearing Atlas" loading="lazy" draggable="false" />` : ''}
+                    ${atlasImage ? `<img class="pg-venice__image" src="${atlasImage}" alt="Bearing Atlas" loading="lazy" draggable="false" />` : ''}
                     <div class="pg-venice__panel-content">
                         <span class="pg-venice__panel-label">${venice.atlas?.label || 'BEARING'}</span>
                         <h3 class="pg-venice__panel-title">${venice.atlas?.title || 'The Weight of Form'}</h3>
@@ -253,7 +250,7 @@ function buildVeniceFeature(venice, herculesWorks) {
                     <div class="pg-venice__divider-glow"></div>
                 </div>
                 <div class="pg-venice__panel pg-venice__panel--prometheus">
-                    ${prometheusWork?.image ? `<img class="pg-venice__image" src="${prometheusWork.image}" alt="Forging Prometheus" loading="lazy" draggable="false" />` : ''}
+                    ${prometheusImage ? `<img class="pg-venice__image" src="${prometheusImage}" alt="Forging Prometheus" loading="lazy" draggable="false" />` : ''}
                     <div class="pg-venice__panel-content">
                         <span class="pg-venice__panel-label">${venice.prometheus?.label || 'FORGING'}</span>
                         <h3 class="pg-venice__panel-title">${venice.prometheus?.title || 'Fire as Language'}</h3>
@@ -395,18 +392,4 @@ function setupScrollReveal(container) {
     });
 
     elements.forEach(el => observer.observe(el));
-}
-
-
-
-// ─── Back Button ─────────────────────────────────
-
-function setupBackButton(container) {
-    const backBtn = container.querySelector('.pg-hero__back');
-    if (backBtn) {
-        backBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = '/';
-        });
-    }
 }

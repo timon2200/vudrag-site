@@ -193,12 +193,18 @@ The site is built as a **multi-page application** with 9 HTML entry points compi
 | Splat Hero | `splat-hero.html` | `src/splat-hero.js` | Standalone splat experience |
 | Splat Viewer | `splat-viewer.html` | `src/splat-viewer.js` | Interactive splat viewer |
 
-### Homepage Flow (`main.js`)
+### Homepage Flow (`main.js`) — Progressive Loading
 
-The homepage orchestrator initializes components in sequence:
+The homepage uses a **two-phase progressive loading** strategy so the hero slider appears instantly while below-fold sections load in the background:
 
+**Phase 1 — Hero (blocks loading screen):**
 ```
-setupHeroSlider()        → GSAP ScrollTrigger hero carousel
+await setupHeroSlider()   → CMS fetch + DOM build (~200ms)
+hideLoadingScreen()       → Dismiss loading screen immediately
+```
+
+**Phase 2 — Below-fold (deferred via `requestIdleCallback`):**
+```
 createStickyHeader()     → Minimal header (appears after hero)
 setupScrollReveal()      → Intersection Observer for reveals
 setupCategoryHub()       → 3D tilt cards (fetches from CMS)
@@ -207,7 +213,6 @@ setupVideoShowcase()     → Film section (fetches from CMS)
 setupWorksShowcase()     → Portfolio grid (fetches from CMS)
 setupFooter()            → Dynamic footer (fetches from CMS)
 createMenuOverlay()      → Full-screen navigation menu
-hideLoadingScreen()      → Fade out loading screen
 ```
 
 ### Collection Template System (`collection-page.js`)

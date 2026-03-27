@@ -34,15 +34,31 @@ import { setupVideoShowcase } from './ui/video-showcase.js';
 import { setupFooter } from './ui/footer.js';
 
 /**
- * Initialize the experience
+ * Initialize the experience — two-phase progressive loading.
+ * Phase 1: Hero slider (fast) → dismiss loading screen immediately.
+ * Phase 2: Below-fold sections loaded in the background.
  */
 async function init() {
     console.log('🎨 Initializing Vudrag Gallery Experience...');
 
-    // Setup hero scroll carousel
-    setupHeroSlider();
+    // ── Phase 1: Hero (blocks loading screen) ──
+    await setupHeroSlider();
+    hideLoadingScreen();
+    console.log('✅ Hero ready — loading screen dismissed');
 
-    // UI enhancements
+    // ── Phase 2: Below-fold sections (deferred, non-blocking) ──
+    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+    idleCallback(() => {
+        loadBelowFoldSections().then(() => {
+            console.log('✅ All sections loaded');
+        });
+    }, { timeout: 1000 });
+}
+
+/**
+ * Load all below-fold sections sequentially (runs in background)
+ */
+async function loadBelowFoldSections() {
     createStickyHeader();
     setupScrollReveal();
     await setupCategoryHub();
@@ -51,11 +67,6 @@ async function init() {
     await setupWorksShowcase();
     await setupFooter();
     createMenuOverlay();
-
-    // Hide loading screen
-    hideLoadingScreen();
-
-    console.log('✅ Experience initialized successfully!');
 }
 
 /**

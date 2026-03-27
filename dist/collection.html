@@ -132,6 +132,37 @@
             transform: translateX(3px);
         }
 
+        .static-header .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #8a8a96;
+            text-decoration: none;
+            transition: color 0.3s ease, gap 0.3s ease;
+            pointer-events: auto;
+            min-width: 30px;
+        }
+
+        .static-header .back-link:hover {
+            color: #c9a77a;
+            gap: 0.75rem;
+        }
+
+        .static-header .back-link svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .static-header .back-link:hover svg {
+            transform: translateX(-3px);
+        }
+
         @media (max-width: 768px) {
             .static-header {
                 padding: 0 1.5rem;
@@ -185,12 +216,12 @@
             color: #6b6b7a;
         }
     </style>
-  <script type="module" crossorigin src="/assets/collection-AMDsUrah.js"></script>
+  <script type="module" crossorigin src="/assets/collection-DJzq2krd.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
-  <link rel="modulepreload" crossorigin href="/assets/playcanvas-SM2qEX5e.js">
+  <link rel="modulepreload" crossorigin href="/assets/playcanvas-D5Kv4vzz.js">
   <link rel="modulepreload" crossorigin href="/assets/state-DFY6wBk_.js">
-  <link rel="modulepreload" crossorigin href="/assets/config-CNh1hCsG.js">
-  <link rel="modulepreload" crossorigin href="/assets/footer-Bz-CGK-k.js">
+  <link rel="modulepreload" crossorigin href="/assets/config-DYBXrzFk.js">
+  <link rel="modulepreload" crossorigin href="/assets/footer-VPaacqP9.js">
   <link rel="stylesheet" crossorigin href="/assets/footer-ffrJi6Zk.css">
   <link rel="stylesheet" crossorigin href="/assets/variables-D7HQp0aC.css">
 </head>
@@ -198,9 +229,18 @@
 <body>
     <!-- Top Static Header -->
     <header class="static-header">
-        <div class="header-spacer"></div>
+        <a href="/" class="back-link" id="back-to-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </a>
         <a href="/" class="logo">VUDRAG</a>
-        <div class="header-spacer"></div>
+        <button class="menu-toggle" id="menu-toggle-btn" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <!-- Content Area — footer appends here -->

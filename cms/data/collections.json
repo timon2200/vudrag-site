@@ -213,16 +213,61 @@
     "id": "paintings",
     "title": "Paintings",
     "subtitle": "Metal Paintings",
-    "pageType": "gallery",
+    "pageType": "paintings",
     "description": "Plasma-cut reliefs and torch-drawn compositions on raw steel — where the industrial act of cutting becomes an act of drawing, and the metal sheet becomes canvas.",
-    "image": "/images/VUDRAG BOOK 2025_Page_042_Image_0001.webp",
+    "image": "/images/works/painting-hand.webp",
+    "segments": [
+      "Plasma Torch",
+      "Mirror Steel"
+    ],
+    "pageContent": {
+      "hero": {
+        "image": "/images/works/painting-hand.webp",
+        "eyebrow": "Metal as Canvas",
+        "title": "PAINTINGS",
+        "subtitle": "Plasma-Cut Reliefs & Torch-Drawn Compositions"
+      },
+      "introduction": {
+        "eyebrow": "Nikola Vudrag",
+        "title": "Drawing with Fire",
+        "text": "The plasma torch cuts at 20,000°C — a controlled lightning bolt that separates steel along lines drawn in chalk. Here, the artist does not sculpt; he reveals. The hand emerges from what is taken away, a paradox of creation through destruction. The rough, burnt edges bear witness to human intervention, yet the void they frame is timeless — an echo of the first grasp, the first act of making. In this raw, elemental practice, industry and humanity collide: the 2mm CorTen steel plate, cold and unyielding, gives way to an absence that speaks louder than presence.",
+        "quote": "The torch reveals what the metal conceals."
+      },
+      "technique": {
+        "title": "The Process",
+        "image": "/images/works/painting-technique-detail.webp",
+        "text": "Plasma hand-cutting is the process of cutting raw metal sheets using a handheld plasma torch to create detailed and complex designs. Wall metal art with light installation is an innovative and modern way to display art. These installations feature LED lights which enhance the artwork by adding a warm and exotic glow — turning each composition into a dialogue between industrial force and luminous poetry.",
+        "stats": [
+          { "value": "20,000°C", "label": "Plasma Temperature" },
+          { "value": "2mm", "label": "Steel Thickness" },
+          { "value": "3", "label": "Works in Collection" }
+        ]
+      }
+    },
     "works": [
+      {
+        "title": "Plasma Torch Hand",
+        "year": "2022",
+        "dimensions": "280 × 117 × 3 cm",
+        "description": "The hand emerges from what is taken away. 2mm CorTen steel marked by the searing passage of the plasma torch. A paradox of creation through destruction — neither invented nor made, but revealed. Here, we find only one tool, neither created nor invented, but perfect: the hand of man.",
+        "image": "/images/works/plasma-hand.webp",
+        "segment": "Plasma Torch"
+      },
+      {
+        "title": "Drawing with Plasma Torch",
+        "year": "Various",
+        "dimensions": "150×90 to 300×150 cm",
+        "description": "Plasma hand-cutting on raw metal sheets, enhanced with LED light installations. Wall metal art where industry and humanity collide — the torch reveals what the metal conceals. Each composition transforms functional steel into a canvas of flickering illumination.",
+        "image": "/images/works/plasma-torch-series.webp",
+        "segment": "Plasma Torch"
+      },
       {
         "title": "The Dandelion",
         "year": "2024",
-        "dimensions": "220 × 80 × 80 cm",
-        "description": "Mirrored stainless steel. A quiet philosopher of the ruins. Delicacy achieved through absolute discipline.",
-        "image": "/images/works/dandelion.webp"
+        "dimensions": "190 × 110 × 110 cm",
+        "description": "A quiet philosopher of the ruins, a golden whisper born from cracks in the pavement. Mirrored stainless steel captures the sun like liquid silver, each curve a calculated surrender to form. The dandelion is not fragile; it is the defiance of fragility — a paradox of softness and indomitability. To pluck it is futile; its seeds scatter on the wind, ensuring that even its destruction becomes genesis.",
+        "image": "/images/works/dandelion.webp",
+        "segment": "Mirror Steel"
       }
     ]
   },
@@ -413,7 +458,7 @@
     "subtitle": "Polygonal & Hercules",
     "pageType": "polygonal",
     "description": "Metal polygon plates converge into monumental animal forms and crystalline geometries — where mathematical precision meets mythological weight.",
-    "image": "/images/93.webp",
+    "image": "/images/works/atlas-gardens.webp",
     "segments": [
       "Open",
       "Closed Lighting"
@@ -476,11 +521,13 @@
         "atlas": {
           "label": "BEARING",
           "title": "The Weight of Form",
+          "image": "/images/works/atlas.webp",
           "description": "The sculptor becomes the sculpture. Each plate must be lifted, held, aligned by hand before it is welded into permanence. The body is a jig — arms as clamps, shoulders as supports. In this image, the artist bears Atlas before Atlas can bear the world."
         },
         "prometheus": {
           "label": "FORGING",
           "title": "Fire as Language",
+          "image": "/images/works/prometheus.webp",
           "description": "The plasma torch cuts at 20,000°C — a controlled lightning bolt that separates steel along lines drawn in chalk. The sparks are not waste; they are the material's resistance made visible. Each cut is irrevocable. There is no undo in metal."
         }
       }
@@ -538,23 +585,48 @@
   },
   {
     "id": "public-works",
-    "title": "Public Work",
+    "title": "Public Works",
     "subtitle": "Monumental & Interventions",
-    "pageType": "gallery",
+    "pageType": "public-works",
     "description": "Large-scale commissions that transform public space — from 12-meter Tesla monuments to interactive water gates, each installation altering the dialogue between art, architecture, and the community that surrounds it.",
     "image": "/images/95.webp",
     "segments": [
       "Monumental",
-      "Metal Paintings",
       "Hercules Labors"
     ],
+    "pageContent": {
+      "splatHero": {
+        "splatFile": "gs_vudrag_romislav.sog",
+        "fallbackImage": "/images/works/tomislavus-rex.webp",
+        "eyebrow": "The Opus Magnum",
+        "title": "PUBLIC WORKS",
+        "subtitle": "Where Art Alters the Landscape"
+      },
+      "introduction": {
+        "eyebrow": "Nikola Vudrag",
+        "title": "Altering the Landscape",
+        "text": "From a 12-meter Tesla monument that electrifies the horizon to a 6-meter King's head rising like a modern ruin — each public commission is a permanent intervention. The same hand that engraves a coin's 1.2mm relief here commands cranes, hydraulic presses, and tonnes of CorTen steel. These works do not decorate space; they redefine it — transforming plazas, parks, and civic thresholds into sites of collective contemplation.",
+        "quote": "A monument succeeds when the landscape cannot remember existing without it."
+      },
+      "scale": {
+        "title": "The Scale of Ambition",
+        "works": [
+          { "label": "Tesla Power Line", "height": 12, "unit": "m" },
+          { "label": "Stymphalian Birds", "height": 12, "unit": "m" },
+          { "label": "Augean Stables", "height": 11.5, "unit": "m" },
+          { "label": "Tomislavus Rex", "height": 6, "unit": "m" },
+          { "label": "Ceryneian Hind", "height": 4.4, "unit": "m" },
+          { "label": "Geryon Cattle", "height": 3.65, "unit": "m" }
+        ]
+      }
+    },
     "works": [
       {
         "title": "Tomislavus Rex Croatorum",
         "year": "2025",
         "dimensions": "600 × 550 × 210 cm",
         "description": "The head of King Tomislav, presented as a fragmented ruin. Effectively a modern archaeological find, it speaks to the cyclical nature of history and the resilience of cultural memory.",
-        "image": "/images/works/tomislavus.webp",
+        "image": "/images/works/tomislavus-rex.webp",
         "segment": "Monumental"
       },
       {
@@ -562,7 +634,8 @@
         "year": "2020",
         "dimensions": "400 × 200 × 180 cm",
         "description": "Engineering meets sound. Steel and bolts evoke the Eiffel Tower, while four playable strings invite participation. A sculpture that is not just seen, but heard—a monument to the universal language of music.",
-        "image": "/images/works/violin.webp",
+        "image": "/images/works/violina2.webp",
+        "galleryImages": ["/images/works/violina.webp", "/images/works/violina2.webp", "/images/works/violina-closeup.webp", "/images/works/violina-kids.webp"],
         "segment": "Monumental"
       },
       {
@@ -570,7 +643,8 @@
         "year": "2020",
         "dimensions": "12m × 5m × 4.5m",
         "description": "A 12-meter monument to Nikola Tesla in the form of a power line. converting functional industrial infrastructure into aesthetic form—a tribute to the man who electrified the world.",
-        "image": "/images/works/tesla-powerline.webp",
+        "image": "/images/works/nikola-tesla.webp",
+        "galleryImages": ["/images/works/nikola-tesla.webp", "/images/works/tesla-with-light-in-hand.webp"],
         "segment": "Monumental"
       },
       {
@@ -578,7 +652,7 @@
         "year": "2020",
         "dimensions": "3m × 1.2m × 10cm",
         "description": "A water curtain integrated into a rigid iron gate. Every passerby walks through a threshold of living water—a harmonic intervention where the industrial yields to the elemental.",
-        "image": "/images/works/gates-purgatory.webp",
+        "image": "/images/works/gates-purgatory-photo.webp",
         "segment": "Monumental"
       },
       {
@@ -586,7 +660,7 @@
         "year": "2019",
         "dimensions": "310 × 190 × 365 cm",
         "description": "Magnificent beasts with coats red as sunset. Standing in Varaždin, they recall the Tenth Labor and the mythic origins of Italy—the 'land of bulls'.",
-        "image": "/images/works/geryon-cattle.webp",
+        "image": "/images/works/geryon-goat.webp",
         "segment": "Monumental"
       },
       {
@@ -594,7 +668,8 @@
         "year": "2022",
         "dimensions": "440 × 110 × 280 cm",
         "description": "Sacred to Artemis, this enormous hind symbolizes the purification of the higher intellect. Capturing it required devotion rather than force—a labor of patience rendered in steel.",
-        "image": "/images/works/ceryneian-hind.webp",
+        "image": "/images/works/bambi-good-image.webp",
+        "galleryImages": ["/images/works/bambi-good-image.webp", "/images/works/bambi-jagicev-park.webp", "/images/works/ceryneian-hind-park.webp"],
         "segment": "Monumental"
       },
       {
@@ -610,7 +685,7 @@
         "year": "2022",
         "dimensions": "—",
         "description": "Love rendered in steel—permanent yet tender. A public sculpture in Koprivnica that serves as a gathering point, anchoring the community in a shared symbol of connection.",
-        "image": "/images/works/love-spice.webp",
+        "image": "",
         "segment": "Monumental"
       },
       {
@@ -618,7 +693,7 @@
         "year": "2016",
         "dimensions": "—",
         "description": "Preserved not in pages but in forged metal. A sculpture at the Croatian State Archives that stands as a monument to the act of remembering—heavy, enduring, and open.",
-        "image": "/images/works/book-knowledge.webp",
+        "image": "",
         "segment": "Monumental"
       },
       {
@@ -626,31 +701,17 @@
         "year": "2016",
         "dimensions": "—",
         "description": "The blade that unified a people. A public monument in Lovinac honoring the first King, blending authority with the raw permanence of the land.",
-        "image": "/images/works/sword-tomislav.webp",
+        "image": "",
         "segment": "Monumental"
       },
-      {
-        "title": "Plasma Torch Hand",
-        "year": "2022",
-        "dimensions": "280 × 117 × 3 cm",
-        "description": "The hand emerges from what is taken away. 2mm CorTen steel marked by the searing passage of the plasma torch. A paradox of creation through destruction—neither invented nor made, but revealed.",
-        "image": "/images/works/plasma-hand.webp",
-        "segment": "Metal Paintings"
-      },
-      {
-        "title": "Drawing with Plasma Torch",
-        "year": "Various",
-        "dimensions": "150×90 to 300×150 cm",
-        "description": "Plasma hand-cutting on raw metal sheets, enhanced with LED light installations. Wall metal art where industry and humanity collide — the torch reveals what the metal conceals.",
-        "image": "/images/works/plasma-torch-series.webp",
-        "segment": "Metal Paintings"
-      },
+
       {
         "title": "The Cretan Bull",
         "year": "2020",
         "dimensions": "440 × 130 × 190 cm",
         "description": "Symbol of the fertilizing power of the spirit. The bull represents the ability to contain the realizing power of the luminous mind without artifice.",
         "image": "/images/works/cretan-bull.webp",
+        "galleryImages": ["/images/works/cretan-bull.webp", "/images/works/cretan-bull-moody.webp"],
         "segment": "Hercules Labors"
       },
       {
@@ -659,6 +720,7 @@
         "dimensions": "1200 × 500 × 300 cm (full installation)",
         "description": "Extracting the root of duality. The birds represent the swarm of sensory thoughts; the sculpture captures the moment of their dismissal, freeing the mind from the noise of the vital nature.",
         "image": "/images/works/stymphalian-birds.webp",
+        "galleryImages": ["/images/works/stymphalian-birds.webp", "/images/works/stymphalian-birds-alt.webp"],
         "segment": "Hercules Labors"
       },
       {
@@ -666,7 +728,8 @@
         "year": "2022",
         "dimensions": "600 × 900 × 1150 cm (full installation)",
         "description": "A great portal of rusted steel, half-sunken in the earth. Neither monument nor tomb, but a threshold where myth and relic intertwine—a reminder that no labor ever fully disappears.",
-        "image": "/images/works/stables-augeas.webp",
+        "image": "/images/works/stables-augeas-wide.webp",
+        "galleryImages": ["/images/works/stables-augeas-wide.webp", "/images/works/stables-augeas-closeup.webp"],
         "segment": "Hercules Labors"
       },
       {
@@ -690,7 +753,8 @@
         "year": "2024",
         "dimensions": "100 × 100 × 350 cm",
         "description": "The force of pushing. A hand gripping a pillar, exerting upward force against tremendous pressure. It symbolizes the continuous effort required to uphold the ideals of civilization.",
-        "image": "/images/works/atlas.webp",
+        "image": "/images/works/atlas-gallery.webp",
+        "galleryImages": ["/images/works/atlas-gallery.webp", "/images/works/atlas-gardens.webp"],
         "segment": "Hercules Labors"
       },
       {
@@ -698,7 +762,7 @@
         "year": "2024",
         "dimensions": "100 × 100 × 350 cm",
         "description": "The force of pulling. Bound by a chain, the hand struggles for liberation. A symbol of rebellion and the pursuit of knowledge against the constraints of authority.",
-        "image": "/images/works/prometheus.webp",
+        "image": "/images/works/prometheus-outdoor.webp",
         "segment": "Hercules Labors"
       }
     ]

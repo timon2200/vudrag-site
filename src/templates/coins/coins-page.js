@@ -26,7 +26,6 @@ export async function mount(container, collection) {
         setupVaultReveal(container);
         setupScrollReveal(container);
         setupVitrineInteraction(container);
-        setupBackButton(container);
     });
 }
 
@@ -108,12 +107,6 @@ function buildVideoHero(video) {
                 </svg>
             </div>
 
-            <a href="/" class="coins-hero__back">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                <span>Back</span>
-            </a>
         </section>
     `;
 }
@@ -582,14 +575,3 @@ function setupSidePanel(container, cards) {
     });
 }
 
-// ─── Back Button ─────────────────────────────────
-
-function setupBackButton(container) {
-    const backBtn = container.querySelector('.coins-hero__back');
-    if (backBtn) {
-        backBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = '/';
-        });
-    }
-}

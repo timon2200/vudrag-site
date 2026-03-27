@@ -82,7 +82,7 @@ Avoid hollow praise. When the work is extraordinary, let the **specifics** carry
 > ❌ "An absolutely stunning masterpiece." ← empty superlative
 
 ### 8. Scientific Resonance
-Vudrag's work spans from 1.2mm coin reliefs to 12-meter monuments. Use **accessible physics and science metaphors** — thermodynamics, quantum mechanics, scale invariance — to make this range tangible and poetic.
+Vudrag's work spans from 1.2mm coin reliefs to 12-meter monuments. Use **accessible physics and science metaphors** — thermodynamics, quantum mechanics, scale invariance — to make this range tangible and poetic. The brand tagline **"From Atom to Atlas"** embodies this pillar.
 
 > ✅ "At every scale, entropy yields to intent — chaos transformed into form."
 > ✅ "Like gravity: a single force that shapes every scale."
@@ -146,8 +146,14 @@ Vudrag's work spans from 1.2mm coin reliefs to 12-meter monuments. Use **accessi
 ```
 [Paradox or image, compressed to its core]
 ```
-**Examples:**
-> "Sculptor of Light & Steel"
+**Examples (currently in use on the site):**
+> "Sculptures in Light" *(page title / subtitle)*
+> "From Atom to Atlas" *(brand tagline, footer & artist section)*
+> "Latticework & Light" *(Net-Work hero subtitle)*
+> "Where Geometry Bears the Weight of Myth" *(Monumental hero subtitle)*
+> "Where Steel Becomes Spirit" *(The Forge hero subtitle)*
+>
+> **Other strong options:**
 > "Where absence speaks as loudly as the forged"
 > "The mask in a play where no one knows the actor"
 
@@ -158,10 +164,13 @@ Vudrag's work spans from 1.2mm coin reliefs to 12-meter monuments. Use **accessi
 | Context | Register | Example |
 |---------|----------|---------|
 | Category card subtitle | Elemental, compressed | "The Mask Series" |
+| Hero slide eyebrow | Collection identity | "The Net-Work Series", "Polygonal & Hercules" |
+| Hero slide subtitle | Paradox or image | "Latticework & Light", "Where Steel Becomes Spirit" |
 | Sculpture hero text | Full philosophical | See Amphora, The Relic |
 | Artist bio | Warm authority, 3rd person | "Born into a family with a metalworking legacy..." |
 | Contact page | Quietly inviting | "For commissions, exhibitions, or simply to share your thoughts on the interplay of form and light..." |
-| Footer tagline | Poetic brevity | "Art in Bronze & Steel" |
+| Footer tagline | Brand essence, scientific brevity | "From Atom to Atlas" |
+| Footer description | Scale-spanning, poetic | "The same fire that engraves a coin's 1.2mm relief forges a 12-meter monument." |
 | Technical process | Precise but metaphor-laden | See Shield/Brut pattern descriptions |
 
 ---

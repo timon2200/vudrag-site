@@ -11,7 +11,7 @@ import './styles/menu-overlay.css';
 import './styles/footer.css';
 
 // Shared UI components
-import { createMenuOverlay } from './ui/menu-overlay.js';
+import { createMenuOverlay, toggleMenu } from './ui/menu-overlay.js';
 import { setupFooter } from './ui/footer.js';
 
 // CMS API Base
@@ -83,6 +83,12 @@ async function init() {
             case 'monumental':
                 templateModule = await import('./templates/polygonal/polygonal-page.js');
                 break;
+            case 'paintings':
+                templateModule = await import('./templates/paintings/paintings-page.js');
+                break;
+            case 'public-works':
+                templateModule = await import('./templates/public-works/public-works-page.js');
+                break;
             // Future templates:
             // case 'slider': templateModule = await import('./templates/slider/slider-page.js'); break;
             // case 'film': templateModule = await import('./templates/film/film-page.js'); break;
@@ -109,6 +115,9 @@ async function init() {
     createMenuOverlay();
     await setupFooter();
 
+    // Wire up static header
+    setupStaticHeader();
+
     // Force-reveal footer elements (scroll-reveal observer may not trigger on this layout)
     const footer = document.getElementById('main-footer');
     if (footer) {
@@ -124,6 +133,26 @@ async function init() {
     }, 300);
 
     console.log(`✅ Collection page loaded: ${collection.title} (${pageType})`);
+}
+
+/**
+ * Wire up static header interactivity (back button + hamburger)
+ */
+function setupStaticHeader() {
+    const backBtn = document.getElementById('back-to-home');
+    if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = '/';
+        });
+    }
+
+    const menuBtn = document.getElementById('menu-toggle-btn');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            toggleMenu();
+        });
+    }
 }
 
 // Start
