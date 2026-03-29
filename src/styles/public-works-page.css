@@ -451,6 +451,30 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pw-pano-card:hover {
+    transform: scale(1.01) translateY(-4px);
+}
+
+/* Torch light mouse-follow overlay */
+.pw-pano-card__torch {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 400px at var(--torch-x, 50%) var(--torch-y, 50%),
+        rgba(201, 167, 122, 0.08) 0%,
+        transparent 70%
+    );
+}
+
+.pw-pano-card:hover .pw-pano-card__torch {
+    opacity: 1;
 }
 
 /* Full-bleed image container */
@@ -557,6 +581,7 @@
     z-index: 3;
     padding: 0 var(--page-margin, 8vw) 6vh;
     max-width: 800px;
+    pointer-events: none;
 }
 
 .pw-pano-card__meta {
@@ -603,6 +628,21 @@
     color: rgba(246, 246, 246, 0.65);
     max-width: 600px;
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Photo credit caption inside image area */
+.pw-pano-card__photo-credit {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    z-index: 4;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.55rem;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: rgba(246, 246, 246, 0.35);
+    pointer-events: none;
 }
 
 
@@ -780,98 +820,6 @@
 }
 
 
-/* ─── Inquire CTA ──────────────────────────────────── */
-
-.pw-inquire {
-    padding: 12vh var(--page-margin, 8vw);
-    background: linear-gradient(180deg, #050508 0%, #080810 100%);
-    text-align: center;
-}
-
-.pw-inquire__container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.pw-inquire__crown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.pw-inquire__line {
-    display: block;
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201, 167, 122, 0.4), transparent);
-}
-
-.pw-inquire__diamond {
-    color: var(--color-gold, #c9a77a);
-    font-size: 1rem;
-    opacity: 0.5;
-}
-
-.pw-inquire__label {
-    display: block;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--color-gold, #c9a77a);
-    margin-bottom: 1.5rem;
-}
-
-.pw-inquire__title {
-    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 300;
-    color: var(--color-light, #F6F6F6);
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.pw-inquire__title-accent {
-    color: var(--color-gold, #c9a77a);
-    font-style: italic;
-}
-
-.pw-inquire__text {
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--color-body-text, #a0a0a8);
-    margin-bottom: 2.5rem;
-}
-
-.pw-inquire__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.5rem;
-    border: 1px solid var(--color-gold, #c9a77a);
-    background: transparent;
-    color: var(--color-gold, #c9a77a);
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.4s ease;
-}
-
-.pw-inquire__cta:hover {
-    background: rgba(201, 167, 122, 0.1);
-    box-shadow: 0 0 30px rgba(201, 167, 122, 0.1);
-    gap: 1rem;
-}
-
 
 /* ─── Lightbox ─────────────────────────────────────── */
 
@@ -1032,7 +980,7 @@
     }
 
     .pw-scale__skyline {
-        height: 260px;
+        height: 380px;
     }
 
     .pw-scale__monolith-label {
@@ -1063,7 +1011,7 @@
     }
 
     .pw-scale__skyline {
-        height: 200px;
+        height: 300px;
         gap: 0.5rem;
     }
 

@@ -23,13 +23,13 @@ const FALLBACK_WORKS = [
         href: '/collection.html?id=networking'
     },
     {
-        id: 'exhibitions',
-        title: 'Exhibitions',
-        series: 'Gallery',
-        year: 'Worldwide',
+        id: 'the-forge',
+        title: 'The Forge',
+        series: 'Studio & Rezervart',
+        year: 'Varaždin',
         size: 'large',
-        image: '/images/VUDRAG-BOOK-MMXXV_Page_07_Image_0001.webp',
-        href: '/gallery.html'
+        image: '/images/Forge.webp',
+        href: '/forge.html'
     },
     {
         id: 'press',
@@ -37,7 +37,7 @@ const FALLBACK_WORKS = [
         series: 'Press',
         year: 'Selected Media',
         size: 'large',
-        image: '/images/luminous-museum-interior-stockcake.webp',
+        image: '/images/the press.jpeg',
         href: '/press.html'
     }
 ];
@@ -79,7 +79,9 @@ async function fetchWorksFromCMS() {
                 title: sculpture.title || fallbackWork.title || item.id,
                 series: sculpture.series || fallbackWork.series || 'Unknown',
                 year: sculpture.year || fallbackWork.year || '',
-                image: sculpture.heroImage || fallbackWork.image || 'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=800&q=80'
+                image: sculpture.heroImage || fallbackWork.image || 'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=800&q=80',
+                // Preserve explicit href from fallback (e.g. press card → /press.html)
+                ...(fallbackWork.href ? { href: fallbackWork.href } : {})
             };
         });
     } catch (err) {

@@ -4,11 +4,15 @@
     "size": "large"
   },
   {
-    "id": "vitreolum",
-    "size": "wide"
+    "id": "the-forge",
+    "size": "large"
   },
   {
     "id": "madonna",
+    "size": "large"
+  },
+  {
+    "id": "press",
     "size": "large"
   }
 ]

@@ -36,13 +36,13 @@ const FALLBACK_SLIDES = [
     },
     {
         image: '/images/Forge.webp',
-        youtubeId: '-EINfzSwMeg',
-        youtubeIdMobile: 'XH2j7ZigZyE',
+        youtubeId: 'QDHLG4YIkno',
+        youtubeIdMobile: 'QDHLG4YIkno',
         title: 'THE FORGE',
         subtitle: 'Where Steel Becomes Spirit',
-        eyebrow: 'Nikola Vudrag',
+        eyebrow: 'Studio & Rezervart',
         objectPosition: 'center 35%',
-        link: '/gallery.html',
+        link: '/forge.html',
     }
 ];
 

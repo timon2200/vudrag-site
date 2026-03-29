@@ -40,7 +40,8 @@ function createParticleTexture(device) {
         format: PIXELFORMAT_RGBA8,
         mipmaps: true,
         addressU: ADDRESS_CLAMP_TO_EDGE,
-        addressV: ADDRESS_CLAMP_TO_EDGE
+        addressV: ADDRESS_CLAMP_TO_EDGE,
+        srgb: true
     });
     texture.setSource(canvas);
 

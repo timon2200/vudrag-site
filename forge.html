@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Forge | Nikola Vudrag — Studio & Rezervart</title>
+    <meta name="description" content="Enter The Forge — where steel becomes spirit. The studio and creative universe of sculptor Nikola Vudrag and Rezervart, Croatia's largest art centre.">
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Critical CSS */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; background: #050508; font-family: 'Inter', -apple-system, sans-serif; }
+
+        .static-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 4rem; z-index: 1000;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: rgba(5, 5, 8, 0.4);
+        }
+
+        @keyframes menu-glow-pulse {
+            0% { opacity: 0.3; box-shadow: 0 0 5px rgba(201, 167, 122, 0.1); }
+            100% { opacity: 0.8; box-shadow: 0 0 15px rgba(201, 167, 122, 0.4), 0 0 30px rgba(201, 167, 122, 0.2); }
+        }
+
+        .static-header::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, rgba(201,167,122,0) 0%, rgba(201,167,122,0.5) 50%, rgba(201,167,122,0) 100%);
+            animation: menu-glow-pulse 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .static-header .logo {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.1rem; font-weight: 400; letter-spacing: 0.5em;
+            color: #c9a77a; text-decoration: none; text-transform: uppercase;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+
+        .static-header .menu-toggle {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; gap: 5px; width: 30px; height: 30px;
+            background: none; border: none; cursor: pointer; padding: 0;
+        }
+
+        .static-header .menu-toggle span {
+            display: block; width: 22px; height: 1px;
+            background: #c9a77a; transition: all 0.3s ease;
+        }
+
+        .static-header .menu-toggle:hover span { background: #e5d4b8; }
+        .static-header .menu-toggle:hover span:first-child { transform: translateX(-3px); }
+        .static-header .menu-toggle:hover span:last-child { transform: translateX(3px); }
+
+        @media (max-width: 768px) {
+            .static-header { padding: 0 1.5rem; height: 60px; }
+        }
+
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050508; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 10000;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        #loading-screen.loaded { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .loader-ring {
+            width: 60px; height: 60px;
+            border: 1px solid #3a3a4a; border-top-color: #c9a77a;
+            border-radius: 50%; animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loader-text {
+            margin-top: 2rem; font-size: 0.875rem; font-weight: 300;
+            letter-spacing: 0.2em; text-transform: uppercase; color: #6b6b7a;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="static-header">
+        <button class="menu-toggle" aria-label="Open menu"
+            onclick="window.dispatchEvent(new CustomEvent('toggle-menu'))">
+            <span></span>
+            <span></span>
+        </button>
+        <a href="/" class="logo">VUDRAG</a>
+        <div class="header-spacer"></div>
+    </header>
+
+    <main id="forge-container">
+        <!-- Page content rendered dynamically -->
+    </main>
+
+    <div id="loading-screen">
+        <div class="loader-ring"></div>
+        <span class="loader-text">Forging experience...</span>
+    </div>
+
+    <script type="module" src="/src/forge-page.js"></script>
+</body>
+
+</html>

@@ -14,15 +14,20 @@
 
 import '../../styles/public-works-page.css';
 
-// PlayCanvas imports for Gaussian Splat
 import {
     Application,
     Asset,
     Entity,
     Color,
     Vec3,
+    Curve,
+    CurveSet,
+    Texture,
     FILLMODE_FILL_WINDOW,
-    RESOLUTION_AUTO
+    RESOLUTION_AUTO,
+    BLEND_ADDITIVEALPHA,
+    PIXELFORMAT_SRGBA8,
+    ADDRESS_CLAMP_TO_EDGE
 } from 'playcanvas';
 
 /**
@@ -36,11 +41,10 @@ export async function mount(container, collection) {
         scale = {}
     } = pageContent || {};
 
-    // Separate works by segment (no Metal Paintings)
+    // Separate works by segment
     const monumental = works.filter(w => w.segment === 'Monumental');
-    const herculesLabors = works.filter(w => w.segment === 'Hercules Labors');
 
-    container.innerHTML = buildHTML(splatHero, introduction, monumental, herculesLabors, scale);
+    container.innerHTML = buildHTML(splatHero, introduction, monumental, scale);
 
     requestAnimationFrame(() => {
         setupSplatViewer(container, splatHero);
@@ -48,6 +52,7 @@ export async function mount(container, collection) {
         setupParallax(container);
         setupScaleAnimation(container);
         setupGalleryLightbox(container);
+        setupTorchLight(container);
     });
 }
 
@@ -56,16 +61,13 @@ export async function mount(container, collection) {
 // HTML Builders
 // ═══════════════════════════════════════════
 
-function buildHTML(splatHero, intro, monumental, herculesLabors, scale) {
+function buildHTML(splatHero, intro, monumental, scale) {
     return `
         ${buildSplatHero(splatHero)}
         ${buildIntroduction(intro)}
         ${buildChapterDivider('I', 'Monumental', `${monumental.length} Works`)}
         ${buildPanoramicSection(monumental, 'monumental')}
         ${buildScaleSection(scale)}
-        ${buildChapterDivider('II', 'The Labors of Hercules', `${herculesLabors.length} Works`)}
-        ${buildPanoramicSection(herculesLabors, 'hercules')}
-        ${buildInquire()}
     `;
 }
 
@@ -87,13 +89,7 @@ function buildSplatHero(hero) {
                 <span class="pw-splat-hero__eyebrow">${hero.eyebrow || ''}</span>
                 <h1 class="pw-splat-hero__title">${hero.title || 'PUBLIC WORKS'}</h1>
                 <p class="pw-splat-hero__subtitle">${hero.subtitle || ''}</p>
-                <div class="pw-splat-hero__interact-hint" id="pw-interact-hint">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" opacity="0.4"/>
-                    </svg>
-                    <span>Interact with the sculpture</span>
-                </div>
+
             </div>
             <div class="pw-splat-hero__scroll-hint">
                 <span>Scroll to explore</span>
@@ -170,6 +166,7 @@ function buildPanoramicSection(works, sectionId) {
                                 : `<div class="pw-pano-card__placeholder"><span>${work.title.charAt(0)}</span></div>`
                             }
                             <div class="pw-pano-card__gradient"></div>
+                            ${work.photoCredit ? `<span class="pw-pano-card__photo-credit">${work.photoCredit}</span>` : ''}
                             ${hasGallery ? `
                                 <button class="pw-pano-card__gallery-btn" data-gallery='${JSON.stringify(work.galleryImages)}' aria-label="View gallery">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -180,6 +177,7 @@ function buildPanoramicSection(works, sectionId) {
                                 </button>
                             ` : ''}
                         </div>
+                        <div class="pw-pano-card__torch"></div>
                         <div class="pw-pano-card__info">
                             <div class="pw-pano-card__meta">
                                 <span class="pw-pano-card__index">${String(i + 1).padStart(2, '0')}</span>
@@ -245,35 +243,7 @@ function buildScaleSection(scale) {
 }
 
 
-// ─── Inquire CTA ──────────────────────────────────
 
-function buildInquire() {
-    return `
-        <section class="pw-inquire" id="pw-inquire">
-            <div class="pw-inquire__container" data-reveal>
-                <div class="pw-inquire__crown">
-                    <span class="pw-inquire__line"></span>
-                    <span class="pw-inquire__diamond">◈</span>
-                    <span class="pw-inquire__line"></span>
-                </div>
-                <span class="pw-inquire__label">Commissions & Inquiries</span>
-                <h3 class="pw-inquire__title">
-                    <span>Let's </span>
-                    <span class="pw-inquire__title-accent">Connect</span>
-                </h3>
-                <p class="pw-inquire__text">
-                    For monumental sculpture commissions, public art proposals, or site-specific installation inquiries — I welcome your message.
-                </p>
-                <a href="/contact.html" class="pw-inquire__cta">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 
 // ═══════════════════════════════════════════
@@ -410,6 +380,9 @@ async function setupSplatViewer(container, heroConfig) {
                 setTimeout(() => hint.classList.add('is-visible'), 2000);
             }
 
+            // ── 3D PlayCanvas Particles ──────────────────────
+            const particlesEntity = setup3DParticles(app);
+
             // ── Camera orbit with smooth sway ──
             let time = 0;
             let mouseInfluenceX = 0, mouseInfluenceY = 0;
@@ -419,28 +392,37 @@ async function setupSplatViewer(container, heroConfig) {
             const swaySpeed = 0.25;
             const swayAmplitude = 0.15;
 
+            // Particle mouse-reactive rotation state
+            let particleTargetPitch = 0;
+            let particleTargetYaw = 0;
+            let particleCurrentPitch = 0;
+            let particleCurrentYaw = 0;
+
             // Pre-allocate vectors to avoid GC churn (no allocations in the update loop)
             const _targetPos = new Vec3();
             const _newPos = new Vec3();
 
-            wrap.addEventListener('mousemove', (e) => {
-                const rect = wrap.getBoundingClientRect();
+            // Use the hero section for mouse events so hover works over text overlays too
+            const heroSection = container.querySelector('#pw-splat-hero') || wrap;
+
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = heroSection.getBoundingClientRect();
                 targetMouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
                 targetMouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
             });
 
-            wrap.addEventListener('mouseleave', () => {
+            heroSection.addEventListener('mouseleave', () => {
                 targetMouseX = 0;
                 targetMouseY = 0;
             });
 
-            wrap.addEventListener('touchmove', (e) => {
-                const rect = wrap.getBoundingClientRect();
+            heroSection.addEventListener('touchmove', (e) => {
+                const rect = heroSection.getBoundingClientRect();
                 targetMouseX = ((e.touches[0].clientX - rect.left) / rect.width - 0.5) * 2;
                 targetMouseY = ((e.touches[0].clientY - rect.top) / rect.height - 0.5) * 2;
             }, { passive: true });
 
-            wrap.addEventListener('touchend', () => {
+            heroSection.addEventListener('touchend', () => {
                 targetMouseX = 0;
                 targetMouseY = 0;
             });
@@ -448,21 +430,21 @@ async function setupSplatViewer(container, heroConfig) {
             app.on('update', (dt) => {
                 time += dt;
 
-                // Smooth mouse influence (lerp toward target)
-                mouseInfluenceX += (targetMouseX - mouseInfluenceX) * Math.min(1, dt * 4);
-                mouseInfluenceY += (targetMouseY - mouseInfluenceY) * Math.min(1, dt * 4);
+                // Smooth mouse influence (lerp toward target — snappy response)
+                mouseInfluenceX += (targetMouseX - mouseInfluenceX) * Math.min(1, dt * 6);
+                mouseInfluenceY += (targetMouseY - mouseInfluenceY) * Math.min(1, dt * 6);
 
-                // Gentle front-facing oscillation
+                // Front-facing oscillation + strong mouse orbit
                 const autoSway = Math.sin(time * swaySpeed) * swayAmplitude;
-                const totalSway = autoSway + (mouseInfluenceX * 0.3);
+                const totalSway = autoSway + (mouseInfluenceX * 0.8);
 
-                // Camera position — mostly in front with gentle X sway
+                // Camera position — pronounced horizontal arc on hover
                 const x = Math.sin(totalSway) * baseDistance * 0.3;
                 const z = Math.cos(totalSway) * baseDistance;
 
-                // Subtle vertical breathing + mouse Y influence
+                // Vertical breathing + mouse Y influence
                 const breathe = Math.sin(time * 0.4) * 0.03;
-                const y = verticalOffset + breathe + (mouseInfluenceY * 0.15);
+                const y = verticalOffset + breathe + (mouseInfluenceY * 0.4);
 
                 // Smooth camera movement via lerp (reuse pre-allocated Vec3s)
                 const currentPos = camera.getPosition();
@@ -472,6 +454,27 @@ async function setupSplatViewer(container, heroConfig) {
 
                 camera.setPosition(_newPos);
                 camera.lookAt(0, 0.35, 0);
+
+                // ── Particle rotation: exaggerated mouse reaction + looping 45° sway ──
+                if (particlesEntity) {
+                    const mouseIntensity = 25; // Exaggerated rotation from mouse
+                    particleTargetPitch = -(mouseInfluenceY * mouseIntensity);
+                    particleTargetYaw = (mouseInfluenceX * mouseIntensity);
+
+                    // Looping 45° autonomous rotation with varied frequency
+                    const autoRotPitch = Math.sin(time * 0.35) * 45;
+                    const autoRotYaw = Math.sin(time * 0.22) * 45;
+
+                    const finalPitch = particleTargetPitch + autoRotPitch;
+                    const finalYaw = particleTargetYaw + autoRotYaw;
+
+                    // Smooth lerp for the whole particle entity
+                    const pLerp = Math.min(1, dt * 1.8);
+                    particleCurrentPitch += (finalPitch - particleCurrentPitch) * pLerp;
+                    particleCurrentYaw += (finalYaw - particleCurrentYaw) * pLerp;
+
+                    particlesEntity.setEulerAngles(particleCurrentPitch, particleCurrentYaw, 0);
+                }
 
                 // Update post-effects each frame
                 if (cameraFrame && cameraFrame.enabled) {
@@ -585,6 +588,120 @@ function setupGalleryLightbox(container) {
             openLightbox(images);
         });
     });
+}
+
+
+// ─── Torch Light (mouse-follow glow on panoramic cards) ──
+
+function setupTorchLight(container) {
+    const cards = container.querySelectorAll('.pw-pano-card');
+    cards.forEach(card => {
+        const torch = card.querySelector('.pw-pano-card__torch');
+        if (!torch) return;
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+            const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+            torch.style.setProperty('--torch-x', `${x}%`);
+            torch.style.setProperty('--torch-y', `${y}%`);
+        });
+    });
+}
+
+
+// ─── 3D PlayCanvas Particle System ──────────────────────
+
+function setup3DParticles(app) {
+    // Procedural soft glow texture
+    const size = 64;
+    const texCanvas = document.createElement('canvas');
+    texCanvas.width = size;
+    texCanvas.height = size;
+    const ctx = texCanvas.getContext('2d');
+
+    const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.9)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.4)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, size, size);
+
+    const texture = new Texture(app.graphicsDevice, {
+        width: size,
+        height: size,
+        format: PIXELFORMAT_SRGBA8,
+        mipmaps: true,
+        addressU: ADDRESS_CLAMP_TO_EDGE,
+        addressV: ADDRESS_CLAMP_TO_EDGE
+    });
+    texture.setSource(texCanvas);
+
+    // Particle entity
+    const particles = new Entity('HeroParticles');
+    particles.setPosition(0, 0.5, 0);
+
+    // Alpha: fade in, sustain, fade out — subtle but visible
+    const alphaCurve = new Curve([0, 0, 0.15, 0.45, 0.7, 0.4, 1, 0]);
+
+    // Scale: small dust motes
+    const scaleCurve = new Curve([0, 0.005, 0.3, 0.018, 0.7, 0.012, 1, 0.003]);
+
+    // Color: light neutral gray
+    const colorCurve = new CurveSet([
+        [0, 0.75, 0.5, 0.8, 1, 0.7],    // R — light gray
+        [0, 0.75, 0.5, 0.8, 1, 0.7],    // G — light gray
+        [0, 0.78, 0.5, 0.83, 1, 0.73]   // B — very slightly cool
+    ]);
+
+    particles.addComponent('particlesystem', {
+        numParticles: 200,
+        lifetime: 18,
+        rate: 0.06,
+        rate2: 0.14,
+
+        // Wide spherical emission
+        emitterShape: 1,
+        emitterRadius: 5.0,
+
+        // Slow upward drift with slight horizontal wander
+        velocityGraph: new CurveSet([
+            [0, -0.04, 1, 0.04],   // X drift
+            [0, 0.03,  1, 0.08],   // Y upward
+            [0, -0.04, 1, 0.04]    // Z drift
+        ]),
+
+        scaleGraph: scaleCurve,
+        alphaGraph: alphaCurve,
+        colorGraph: colorCurve,
+        colorMap: texture,
+
+        // Normal blend for subtle dust (not glowing)
+        blend: BLEND_ADDITIVEALPHA,
+        depthWrite: false,
+        lighting: false,
+        halfLambert: false,
+
+        // Per-particle rotation: looping ±45° with random frequency
+        // rotationSpeedGraph is min, rotationSpeedGraph2 is max (random between)
+        rotationSpeedGraph: new Curve([0, -45]),
+        rotationSpeedGraph2: new Curve([0, 45]),
+
+        intensity: 1.0,
+
+        loop: true,
+        autoPlay: true,
+        preWarm: true,
+        sort: 1
+    });
+
+    app.root.addChild(particles);
+    particles.particlesystem.reset();
+    particles.particlesystem.play();
+
+    console.log('✨ 3D PlayCanvas ember particles active');
+    return particles;
 }
 
 function openLightbox(images) {

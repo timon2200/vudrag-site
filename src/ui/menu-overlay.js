@@ -19,7 +19,7 @@ const FALLBACK_MENU = {
     links: [
         { label: 'Gallery', target: 'hero' },
         { label: 'Collections', target: 'category-hub' },
-        { label: 'Artist', target: 'artist' },
+        { label: 'The Forge', href: '/forge.html' },
         { label: 'Inquire', target: 'contact' },
         { label: 'Collectors Club', href: '/login.html' }
     ],

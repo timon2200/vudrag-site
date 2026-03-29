@@ -7,7 +7,6 @@
  *   (hover-draw on desktop, touch-draw + ambient on mobile)
  * - Horizontal scroll works gallery
  * - Technique & stats section
- * - Inquire CTA
  */
 
 import '../../styles/paintings-page.css';
@@ -43,7 +42,6 @@ function buildHTML(collection, hero, intro, works, technique) {
         ${buildIntroduction(intro)}
         ${buildWorksGallery(works)}
         ${buildTechnique(technique)}
-        ${buildInquire()}
     `;
 }
 
@@ -215,35 +213,7 @@ function buildTechnique(technique) {
     `;
 }
 
-// ─── Inquire CTA ─────────────────────────
 
-function buildInquire() {
-    return `
-        <section class="pt-inquire" id="pt-inquire">
-            <div class="pt-inquire__container" data-reveal>
-                <div class="pt-inquire__crown">
-                    <span class="pt-inquire__line"></span>
-                    <span class="pt-inquire__diamond">◈</span>
-                    <span class="pt-inquire__line"></span>
-                </div>
-                <span class="pt-inquire__label">Commissions & Inquiries</span>
-                <h3 class="pt-inquire__title">
-                    <span>Let's </span>
-                    <span class="pt-inquire__title-accent">Connect</span>
-                </h3>
-                <p class="pt-inquire__text">
-                    For custom plasma-cut wall art, metal painting commissions, or to discuss a collaborative project — I welcome your message.
-                </p>
-                <a href="/contact.html" class="pt-inquire__cta">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 // ═══════════════════════════════════════════
 // Interactive Systems

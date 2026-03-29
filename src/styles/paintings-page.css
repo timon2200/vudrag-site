@@ -734,134 +734,6 @@
     opacity: 1;
 }
 
-/* ========================================
-   Inquire CTA
-   ======================================== */
-
-.pt-inquire {
-    position: relative;
-    padding: 15vh var(--page-margin, 8vw);
-    background: #050508;
-    text-align: center;
-}
-
-.pt-inquire__container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.pt-inquire__crown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.pt-inquire__line {
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-gold-dim));
-}
-
-.pt-inquire__line:last-child {
-    background: linear-gradient(90deg, var(--color-gold-dim), transparent);
-}
-
-.pt-inquire__diamond {
-    color: var(--color-gold);
-    font-size: 0.8rem;
-    opacity: 0.7;
-    animation: pt-diamond-pulse 4s ease-in-out infinite alternate;
-}
-
-@keyframes pt-diamond-pulse {
-    0% { opacity: 0.4; text-shadow: none; }
-    100% { opacity: 1; text-shadow: 0 0 10px rgba(201, 167, 122, 0.4); }
-}
-
-.pt-inquire__label {
-    display: block;
-    font-family: var(--font-secondary);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--color-gold);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-bottom: 1.25rem;
-}
-
-.pt-inquire__title {
-    font-family: var(--font-primary);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 300;
-    color: var(--color-light);
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.pt-inquire__title-accent {
-    color: var(--color-gold);
-    font-style: italic;
-}
-
-.pt-inquire__text {
-    font-family: var(--font-secondary);
-    font-size: 0.9rem;
-    font-weight: 300;
-    color: var(--color-body-text);
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
-}
-
-.pt-inquire__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.5rem;
-    background: transparent;
-    border: 1px solid var(--color-gold-dim);
-    border-radius: 2px;
-    font-family: var(--font-secondary);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-gold);
-    text-decoration: none;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.pt-inquire__cta::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201, 167, 122, 0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.pt-inquire__cta:hover {
-    border-color: var(--color-gold);
-    color: var(--color-light);
-    box-shadow: 0 0 30px rgba(201, 167, 122, 0.15);
-    transform: translateY(-2px);
-}
-
-.pt-inquire__cta:hover::before {
-    opacity: 1;
-}
-
-.pt-inquire__cta svg {
-    transition: transform 0.3s ease;
-}
-
-.pt-inquire__cta:hover svg {
-    transform: translateX(3px);
-}
 
 /* ========================================
    Scroll Reveal Animation
@@ -936,12 +808,9 @@
         opacity: 1;
     }
 
+
     .pt-work-card__description {
         opacity: 1;
-    }
-
-    .pt-inquire {
-        padding: 10vh 6vw;
     }
 }
 

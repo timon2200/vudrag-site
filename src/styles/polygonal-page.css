@@ -578,17 +578,35 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    filter: brightness(1.15) contrast(1.05);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                filter 0.5s ease;
 }
 
 .pg-labour:hover .pg-labour__image {
-    transform: scale(1.04);
+    filter: brightness(1.25) contrast(1.1);
 }
+
+
 
 .pg-labour__placeholder {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, #0a0a0e, #141416);
+}
+
+/* Photo credit caption */
+.pg-labour__photo-credit {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 1rem;
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.55rem;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: rgba(246, 246, 246, 0.35);
+    pointer-events: none;
 }
 
 /* Outline / ghost — unsculpted */
@@ -796,22 +814,32 @@
     letter-spacing: 0.02em;
 }
 
-/* Split layout */
-.pg-venice__split {
+/* Atlas Feature (single, centered) */
+.pg-venice__atlas-feature {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 0;
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
-    align-items: start;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
 }
 
-.pg-venice__panel {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.pg-venice__atlas-image-wrap {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.pg-venice__atlas-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right,
+        transparent 0%,
+        transparent 60%,
+        rgba(5, 5, 8, 0.3) 100%);
+    pointer-events: none;
 }
 
 .pg-venice__image {
@@ -819,16 +847,17 @@
     aspect-ratio: 3 / 4;
     object-fit: cover;
     border-radius: 3px;
-    filter: brightness(0.9) contrast(1.05);
-    transition: filter 0.5s ease;
+    filter: brightness(1.1) contrast(1.05);
+    transition: filter 0.5s ease, transform 0.6s ease;
 }
 
-.pg-venice__panel:hover .pg-venice__image {
-    filter: brightness(1) contrast(1);
+.pg-venice__atlas-feature:hover .pg-venice__image {
+    filter: brightness(1.2) contrast(1);
+    transform: scale(1.02);
 }
 
-.pg-venice__panel-content {
-    padding: 0 1rem;
+.pg-venice__atlas-content {
+    padding: 1rem 0;
 }
 
 .pg-venice__panel-label {
@@ -839,59 +868,162 @@
     letter-spacing: 0.4em;
     text-transform: uppercase;
     color: var(--color-gold, #c9a77a);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .pg-venice__panel-title {
     font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
     font-weight: 300;
     color: var(--color-light, #F6F6F6);
     letter-spacing: 0.04em;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
 }
 
 .pg-venice__panel-text {
     font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 300;
-    line-height: 1.7;
+    line-height: 1.8;
     color: var(--color-body-text, #a0a0a8);
-    margin-bottom: 1rem;
 }
 
-.pg-venice__panel-meta {
-    display: flex;
-    gap: 1rem;
+/* ─── Unfinished Labours ───────────────────────────── */
+
+.pg-unfinished {
+    position: relative;
+    padding: 12vh var(--page-margin, 8vw);
+    background: linear-gradient(180deg,
+        #050508 0%,
+        #08080c 30%,
+        #0a0a0e 100%);
+    overflow: hidden;
+}
+
+.pg-unfinished__watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: 30vw;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.015);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.pg-unfinished__header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.pg-unfinished__label {
+    display: block;
     font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.6rem;
-    font-weight: 400;
-    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--color-muted, #8a8a96);
+    color: var(--color-gold, #c9a77a);
+    margin-bottom: 1rem;
+    opacity: 0.7;
 }
 
-/* Center divider line */
-.pg-venice__divider-line {
+.pg-unfinished__title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--color-light, #F6F6F6);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+.pg-unfinished__divider {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold, #c9a77a), transparent);
+    margin: 0 auto 2rem;
+    opacity: 0.4;
+}
+
+.pg-unfinished__intro {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--color-body-text, #a0a0a8);
+    line-height: 1.8;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.pg-unfinished__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.pg-unfinished__card {
+    position: relative;
+    padding: 2rem 1.5rem;
+    background: rgba(10, 10, 14, 0.6);
+    border: 1px solid rgba(201, 167, 122, 0.08);
+    border-radius: 3px;
+    text-align: center;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.pg-unfinished__card:hover {
+    border-color: rgba(201, 167, 122, 0.2);
+    box-shadow: 0 0 30px rgba(201, 167, 122, 0.05);
+}
+
+.pg-unfinished__card-lock {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 2rem;
-    position: relative;
+    margin-bottom: 1.25rem;
+    color: rgba(201, 167, 122, 0.25);
 }
 
-.pg-venice__divider-glow {
-    width: 1.5px;
-    height: 100%;
-    min-height: 400px;
-    background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(201, 167, 122, 0.2) 15%,
-        rgba(201, 167, 122, 0.6) 50%,
-        rgba(201, 167, 122, 0.2) 85%,
-        transparent 100%
-    );
-    box-shadow: 0 0 12px rgba(201, 167, 122, 0.2);
+.pg-unfinished__card-number {
+    display: block;
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--color-gold, #c9a77a);
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+}
+
+.pg-unfinished__card-title {
+    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--color-light, #F6F6F6);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+}
+
+.pg-unfinished__card-myth {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--color-muted, #8a8a96);
+    opacity: 0.5;
 }
 
 
@@ -1324,107 +1456,6 @@
 }
 
 
-/* ─── Inquire CTA ──────────────────────────────────── */
-
-.pg-inquire {
-    padding: clamp(6rem, 12vh, 10rem) var(--page-margin, 8vw);
-    background: #050508;
-    text-align: center;
-}
-
-.pg-inquire__container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.pg-inquire__crown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-}
-
-.pg-inquire__line {
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201, 167, 122, 0.4));
-}
-
-.pg-inquire__line:last-child {
-    background: linear-gradient(90deg, rgba(201, 167, 122, 0.4), transparent);
-}
-
-.pg-inquire__diamond {
-    font-size: 1rem;
-    color: var(--color-gold, #c9a77a);
-    opacity: 0.6;
-}
-
-.pg-inquire__label {
-    display: block;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--color-gold, #c9a77a);
-    margin-bottom: 1rem;
-}
-
-.pg-inquire__title {
-    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 300;
-    color: var(--color-light, #F6F6F6);
-    letter-spacing: 0.04em;
-    margin-bottom: 1.5rem;
-}
-
-.pg-inquire__title-accent {
-    color: var(--color-gold, #c9a77a);
-    font-style: italic;
-}
-
-.pg-inquire__text {
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.9rem;
-    font-weight: 300;
-    line-height: 1.7;
-    color: var(--color-body-text, #a0a0a8);
-    margin-bottom: 2.5rem;
-}
-
-.pg-inquire__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.5rem;
-    border: 1px solid rgba(201, 167, 122, 0.3);
-    color: var(--color-gold, #c9a77a);
-    text-decoration: none;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    transition: all 0.4s ease;
-}
-
-.pg-inquire__cta:hover {
-    background: rgba(201, 167, 122, 0.08);
-    border-color: rgba(201, 167, 122, 0.6);
-    gap: 1rem;
-}
-
-.pg-inquire__cta svg {
-    transition: transform 0.3s ease;
-}
-
-.pg-inquire__cta:hover svg {
-    transform: translateX(4px);
-}
-
 
 /* ═══════════════════════════════════════════
    Responsive
@@ -1451,13 +1482,13 @@
         direction: ltr;
     }
 
-    .pg-venice__split {
+    .pg-venice__atlas-feature {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2rem;
     }
 
-    .pg-venice__divider-line {
-        display: none;
+    .pg-unfinished__grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .pg-vault__grid {

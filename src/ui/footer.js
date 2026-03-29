@@ -74,7 +74,9 @@ async function fetchFooterContent() {
  * Setup and render the global footer
  */
 export async function setupFooter() {
-    const contentArea = document.getElementById('content-area');
+    const contentArea = document.getElementById('content-area') || 
+                        document.querySelector('main') || 
+                        document.body;
     if (!contentArea) return;
 
     // Check if footer already exists

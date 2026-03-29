@@ -44,7 +44,6 @@ function buildHTML(collection, heroSlides, intro, patterns, works, technique) {
         ${buildIntroduction(intro)}
         ${buildWorksGallery(works)}
         ${buildPatternShowcase(patterns)}
-        ${buildInquire()}
     `;
 }
 
@@ -188,31 +187,43 @@ function buildPatternShowcase(patterns) {
     `;
 }
 
-// ─── Horizontal Works Gallery ────────────────
-
 function buildWorksGallery(works) {
     if (!works.length) return '';
 
     // Split by segment
-    const selfStanding = works.filter(w => w.segment === 'Self Standing');
     const wall = works.filter(w => w.segment === 'Wall');
-    const unsegmented = works.filter(w => !w.segment);
+    const pedestal = works.filter(w => w.segment === 'Self Standing' || !w.segment);
 
-    // Build ordered list with segment dividers
-    let allCards = [];
-
-    if (selfStanding.length) {
-        allCards.push({ type: 'divider', label: 'Self Standing', count: selfStanding.length });
-        selfStanding.forEach(w => allCards.push({ type: 'work', data: w }));
+    function buildWorkCard(w, i) {
+        return `
+            <article class="nw-work-card" data-index="${i}">
+                <div class="nw-work-card__image-wrap">
+                    <img class="nw-work-card__image" src="${w.image}" alt="${w.title}" loading="lazy" />
+                </div>
+                <div class="nw-work-card__overlay"></div>
+                <div class="nw-work-card__content">
+                    <div class="nw-work-card__meta">
+                        <span class="nw-work-card__year">${w.year}</span>
+                        ${w.dimensions ? `<span class="nw-work-card__dimensions">${w.dimensions}</span>` : ''}
+                    </div>
+                    <h3 class="nw-work-card__title">${w.title}</h3>
+                    <p class="nw-work-card__description">${w.description}</p>
+                </div>
+                <div class="nw-work-card__glow"></div>
+            </article>
+        `;
     }
 
-    if (wall.length) {
-        allCards.push({ type: 'divider', label: 'Wall', count: wall.length });
-        wall.forEach(w => allCards.push({ type: 'work', data: w }));
-    }
-
-    if (unsegmented.length) {
-        unsegmented.forEach(w => allCards.push({ type: 'work', data: w }));
+    function buildRow(label, items, rowId) {
+        if (!items.length) return '';
+        return `
+            <div class="nw-gallery__row" id="${rowId}">
+                <span class="nw-gallery__row-label">${label}</span>
+                <div class="nw-gallery__row-track" data-loop-track>
+                    ${items.map((w, i) => buildWorkCard(w, i)).join('')}
+                </div>
+            </div>
+        `;
     }
 
     return `
@@ -228,42 +239,12 @@ function buildWorksGallery(works) {
                     Scroll horizontally to explore
                 </p>
             </header>
-            <div class="nw-gallery__track-wrapper">
-                <div class="nw-gallery__track" id="nw-gallery-track">
-                    ${allCards.map((card, i) => {
-                        if (card.type === 'divider') {
-                            return `
-                                <div class="nw-gallery__segment-divider">
-                                    <span class="nw-gallery__segment-watermark">${card.label.toUpperCase()}</span>
-                                    <div class="nw-gallery__segment-info">
-                                        <span class="nw-gallery__segment-count">${card.count} Works</span>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                        const w = card.data;
-                        return `
-                            <article class="nw-work-card" data-index="${i}">
-                                <div class="nw-work-card__image-wrap">
-                                    <img class="nw-work-card__image" src="${w.image}" alt="${w.title}" loading="lazy" />
-                                </div>
-                                <div class="nw-work-card__overlay"></div>
-                                <div class="nw-work-card__content">
-                                    <div class="nw-work-card__meta">
-                                        <span class="nw-work-card__year">${w.year}</span>
-                                        ${w.dimensions ? `<span class="nw-work-card__dimensions">${w.dimensions}</span>` : ''}
-                                    </div>
-                                    <h3 class="nw-work-card__title">${w.title}</h3>
-                                    <p class="nw-work-card__description">${w.description}</p>
-                                </div>
-                                <div class="nw-work-card__glow"></div>
-                            </article>
-                        `;
-                    }).join('')}
-                </div>
-                <div class="nw-gallery__progress">
-                    <div class="nw-gallery__progress-bar" id="nw-gallery-progress"></div>
-                </div>
+            <div class="nw-gallery__rows">
+                ${buildRow('WALL', wall, 'nw-row-wall')}
+                ${buildRow('SELF STANDING', pedestal, 'nw-row-pedestal')}
+            </div>
+            <div class="nw-gallery__progress">
+                <div class="nw-gallery__progress-bar" id="nw-gallery-progress"></div>
             </div>
         </section>
     `;
@@ -322,35 +303,7 @@ function buildTechnique(technique) {
     `;
 }
 
-// ─── Inquire CTA ─────────────────────────────────
 
-function buildInquire() {
-    return `
-        <section class="nw-inquire" id="nw-inquire">
-            <div class="nw-inquire__container" data-reveal>
-                <div class="nw-inquire__crown">
-                    <span class="nw-inquire__line"></span>
-                    <span class="nw-inquire__diamond">◈</span>
-                    <span class="nw-inquire__line"></span>
-                </div>
-                <span class="nw-inquire__label">Commissions & Inquiries</span>
-                <h3 class="nw-inquire__title">
-                    <span>Let's </span>
-                    <span class="nw-inquire__title-accent">Connect</span>
-                </h3>
-                <p class="nw-inquire__text">
-                    For custom welded sculpture commissions, exhibition inquiries, or to discuss a collaborative project — I welcome your message.
-                </p>
-                <a href="/contact.html" class="nw-inquire__cta">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 // ═══════════════════════════════════════════
 // Interactive Systems
@@ -549,51 +502,79 @@ function setupPatternCards(container) {
     });
 }
 
-// ─── Horizontal Gallery ────────────────────────
+// ─── Horizontal Gallery (Dual Row + Loop) ────────────
 
 function setupHorizontalGallery(container) {
-    const track = container.querySelector('#nw-gallery-track');
+    const tracks = container.querySelectorAll('[data-loop-track]');
     const progressBar = container.querySelector('#nw-gallery-progress');
-    if (!track) return;
+    if (!tracks.length) return;
 
-    // Update progress bar on scroll
-    track.addEventListener('scroll', () => {
-        const scrollLeft = track.scrollLeft;
-        const maxScroll = track.scrollWidth - track.clientWidth;
-        const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-        if (progressBar) {
-            progressBar.style.width = `${progress}%`;
+    tracks.forEach((track, trackIndex) => {
+        // Clone cards for seamless looping
+        const cards = [...track.children];
+        if (cards.length > 1) {
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                track.appendChild(clone);
+            });
         }
-    }, { passive: true });
 
-    // Mouse drag scrolling for desktop
-    let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
+        // Update progress bar on first track scroll
+        if (trackIndex === 0 && progressBar) {
+            track.addEventListener('scroll', () => {
+                const scrollLeft = track.scrollLeft;
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+                progressBar.style.width = `${progress}%`;
+            }, { passive: true });
+        }
 
-    track.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        track.classList.add('is-dragging');
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-    });
+        // Infinite loop reset
+        track.addEventListener('scroll', () => {
+            const scrollLeft = track.scrollLeft;
+            const halfScroll = track.scrollWidth / 2;
 
-    track.addEventListener('mouseleave', () => {
-        isDragging = false;
-        track.classList.remove('is-dragging');
-    });
+            if (scrollLeft >= halfScroll) {
+                track.style.scrollBehavior = 'auto';
+                track.scrollLeft = scrollLeft - halfScroll;
+                track.style.scrollBehavior = '';
+            } else if (scrollLeft <= 0) {
+                track.style.scrollBehavior = 'auto';
+                track.scrollLeft = scrollLeft + halfScroll;
+                track.style.scrollBehavior = '';
+            }
+        }, { passive: true });
 
-    track.addEventListener('mouseup', () => {
-        isDragging = false;
-        track.classList.remove('is-dragging');
-    });
+        // Mouse drag scrolling for desktop
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
 
-    track.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        track.scrollLeft = scrollLeft - walk;
+        track.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            track.classList.add('is-dragging');
+            startX = e.pageX - track.offsetLeft;
+            scrollLeft = track.scrollLeft;
+        });
+
+        track.addEventListener('mouseleave', () => {
+            isDragging = false;
+            track.classList.remove('is-dragging');
+        });
+
+        track.addEventListener('mouseup', () => {
+            isDragging = false;
+            track.classList.remove('is-dragging');
+        });
+
+        track.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - track.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            track.scrollLeft = scrollLeft - walk;
+        });
     });
 }
 

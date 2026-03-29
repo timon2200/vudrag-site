@@ -23,13 +23,13 @@
     },
     {
       "image": "/images/Forge.webp",
-      "youtubeId": "-EINfzSwMeg",
-      "youtubeIdMobile": "XH2j7ZigZyE",
+      "youtubeId": "QDHLG4YIkno",
+      "youtubeIdMobile": "QDHLG4YIkno",
       "title": "THE FORGE",
       "subtitle": "Where Steel Becomes Spirit",
-      "eyebrow": "Nikola Vudrag",
+      "eyebrow": "Studio & Rezervart",
       "objectPosition": "center 35%",
-      "link": "/gallery.html"
+      "link": "/forge.html"
     }
   ],
   "footer": {
@@ -44,8 +44,8 @@
         "href": "#category-hub"
       },
       {
-        "label": "Artist",
-        "href": "#artist-section"
+        "label": "The Forge",
+        "href": "/forge.html"
       },
       {
         "label": "Inquire",

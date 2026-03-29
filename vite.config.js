@@ -19,7 +19,9 @@ export default defineConfig({
                 splatViewer: 'splat-viewer.html',
                 splatHero: 'splat-hero.html',
                 collection: 'collection.html',
-                press: 'press.html'
+                press: 'press.html',
+                forge: 'forge.html',
+                coinsLab: 'coins-lab.html'
             },
             output: {
                 manualChunks: {

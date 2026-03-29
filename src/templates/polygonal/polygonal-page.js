@@ -1,9 +1,9 @@
 /**
- * Polygonal Collection Page — "The Forge of Olympus"
+ * Polygonal Collection Page — "Labours of Hercules"
  * 
- * Cloud-draped Prometheus hero → collection intro → Poseidon exhibition wall
- * → Labours of Hercules journey → Venice Biennale Atlas/Prometheus feature
- * → Open menagerie gallery → Diamond vault → Inquire CTA
+ * Cloud-draped hero → collection intro → Poseidon exhibition wall
+ * → Labours of Hercules journey → Unfinished Labours (locked cards)
+ * → Venice Biennale Atlas feature → Diamond vault
  */
 
 import '../../styles/polygonal-page.css';
@@ -23,17 +23,8 @@ export async function mount(container, collection) {
         venice = {}
     } = pageContent || {};
 
-    // Fetch Hercules Labors works from public-works collection for image matching
-    let herculesWorks = [];
-    try {
-        const res = await fetch(`${CMS_API}/collections/public-works`);
-        if (res.ok) {
-            const pw = await res.json();
-            herculesWorks = (pw.works || []).filter(w => w.segment === 'Hercules Labors');
-        }
-    } catch (e) {
-        console.warn('Could not fetch Hercules Labors data');
-    }
+    // Hercules works are stored in this collection's own pageContent
+    const herculesWorks = pageContent?.herculesWorks || [];
 
     // Separate polygonal works by segment
     const closedWorks = works.filter(w => w.segment === 'Closed Lighting');
@@ -56,9 +47,9 @@ function buildHTML(hero, intro, works, labours, venice, closedWorks, herculesWor
         ${buildIntroduction(intro)}
         ${buildPoseidonWall(works)}
         ${buildLaboursJourney(labours, herculesWorks)}
+        ${buildUnfinishedLabours(labours)}
         ${buildVeniceFeature(venice, herculesWorks)}
         ${buildDiamondVault(closedWorks)}
-        ${buildInquire()}
     `;
 }
 
@@ -189,6 +180,7 @@ function buildLabourBand(labour, index, herculesWorks) {
     const desc = matchedWork?.description || '';
     const dims = matchedWork?.dimensions || '';
     const year = matchedWork?.year || '';
+    const photoCredit = matchedWork?.photoCredit || '';
 
     return `
         <article class="pg-labour ${isEven ? 'pg-labour--reversed' : ''}" data-reveal data-reveal-delay="${Math.min(index, 3)}">
@@ -197,6 +189,7 @@ function buildLabourBand(labour, index, herculesWorks) {
                     ? `<img class="pg-labour__image" src="${image}" alt="${labour.title}" loading="lazy" draggable="false" />`
                     : `<div class="pg-labour__placeholder"></div>`
                 }
+                ${photoCredit ? `<span class="pg-labour__photo-credit">${photoCredit}</span>` : ''}
             </div>
             <div class="pg-labour__content">
                 <span class="pg-labour__number">${num}</span>
@@ -212,21 +205,70 @@ function buildLabourBand(labour, index, herculesWorks) {
     `;
 }
 
-// ─── Venice Biennale — Atlas & Prometheus ────────
+// ─── Unfinished Labours ──────────────────────────
+
+function buildUnfinishedLabours(labours) {
+    // Vudrag's 12 Labours of Hercules (numbering per artist's reference)
+    const canonical = [
+        { number: 1, title: 'The Cretan Bull', myth: 'Father of the Minotaur, subdued by bare hands alone.' },
+        { number: 2, title: 'The Erymanthian Boar', myth: 'A beast of the wild mountains, brought back alive through snow and silence.' },
+        { number: 3, title: 'The Ceryneian Hind', myth: 'Sacred to Artemis, captured through patience — not force.' },
+        { number: 4, title: 'The Augean Stables', myth: 'Thirty years of filth, cleansed by rerouting two rivers in a single day.' },
+        { number: 5, title: 'The Stymphalian Birds', myth: 'Man-eating birds with bronze beaks, driven from the marshes by sound.' },
+        { number: 6, title: 'The Lernaean Hydra', myth: 'The serpent of many heads — cut one, two more arise from the wound.' },
+        { number: 7, title: 'The Mares of Diomedes', myth: 'Flesh-eating horses, tamed by turning predator into prey.' },
+        { number: 8, title: 'The Gardens of the Hesperides', myth: 'Golden fruit guarded at the edge of the world, beyond the sunset.' },
+        { number: 9, title: 'The Nemean Lion', myth: 'The invulnerable beast whose hide no weapon could pierce.' },
+        { number: 10, title: 'The Cattle of Geryon', myth: 'A thousand-mile journey to claim the red cattle of the three-bodied giant.' },
+        { number: 11, title: 'The Girdle of Hippolyta', myth: 'The Amazon queen\'s belt — a prize requiring diplomacy before force.' },
+        { number: 12, title: 'Cerberus', myth: 'The three-headed guardian of the underworld, dragged into daylight.' }
+    ];
+
+    // Match by labour number — completed labours have matching numbers
+    const completedNumbers = new Set(labours.map(l => l.number));
+    const unfinished = canonical.filter(c => !completedNumbers.has(c.number));
+
+    if (!unfinished.length) return '';
+
+    return `
+        <section class="pg-unfinished" id="pg-unfinished">
+            <div class="pg-unfinished__watermark" aria-hidden="true">XII</div>
+            <header class="pg-unfinished__header" data-reveal>
+                <span class="pg-unfinished__label">The Labours Yet to Come</span>
+                <h2 class="pg-unfinished__title">In the Studio</h2>
+                <div class="pg-unfinished__divider"></div>
+                <p class="pg-unfinished__intro">The cycle continues. Each remaining labour awaits its translation from myth into steel — from the architect's table to the plasma torch.</p>
+            </header>
+            <div class="pg-unfinished__grid">
+                ${unfinished.map((u, i) => `
+                    <div class="pg-unfinished__card" data-reveal data-reveal-delay="${Math.min(i, 4)}">
+                        <div class="pg-unfinished__card-lock">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                        <span class="pg-unfinished__card-number">${String(u.number).padStart(2, '0')}</span>
+                        <h3 class="pg-unfinished__card-title">${u.title}</h3>
+                        <p class="pg-unfinished__card-myth">${u.myth}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </section>
+    `;
+}
+
+// ─── Venice Biennale — Atlas Feature ─────────────
 
 function buildVeniceFeature(venice, herculesWorks) {
     if (!venice.title) return '';
 
     const atlasWork = herculesWorks.find(w => w.title === 'Atlas');
-    const prometheusWork = herculesWorks.find(w => w.title === 'Prometheus');
-
-    // Prefer BTS images from venice data, fall back to sculpture work images
     const atlasImage = venice.atlas?.image || atlasWork?.image || '';
-    const prometheusImage = venice.prometheus?.image || prometheusWork?.image || '';
 
     return `
         <section class="pg-venice" id="pg-venice">
-            <div class="pg-venice__watermark" aria-hidden="true">FORGE</div>
+            <div class="pg-venice__watermark" aria-hidden="true">ATLAS</div>
             <header class="pg-venice__header" data-reveal>
                 <span class="pg-venice__eyebrow">${venice.eyebrow}</span>
                 <h2 class="pg-venice__title">${venice.title}</h2>
@@ -238,25 +280,15 @@ function buildVeniceFeature(venice, herculesWorks) {
                     <p class="pg-venice__philosophy-text">${venice.text}</p>
                 </div>
             ` : ''}
-            <div class="pg-venice__split" data-reveal>
-                <div class="pg-venice__panel pg-venice__panel--atlas">
-                    ${atlasImage ? `<img class="pg-venice__image" src="${atlasImage}" alt="Bearing Atlas" loading="lazy" draggable="false" />` : ''}
-                    <div class="pg-venice__panel-content">
-                        <span class="pg-venice__panel-label">${venice.atlas?.label || 'BEARING'}</span>
-                        <h3 class="pg-venice__panel-title">${venice.atlas?.title || 'The Weight of Form'}</h3>
-                        <p class="pg-venice__panel-text">${venice.atlas?.description || ''}</p>
-                    </div>
+            <div class="pg-venice__atlas-feature" data-reveal>
+                <div class="pg-venice__atlas-image-wrap">
+                    ${atlasImage ? `<img class="pg-venice__image" src="${atlasImage}" alt="Atlas — The Weight of Form" loading="lazy" draggable="false" />` : ''}
+                    <div class="pg-venice__atlas-overlay"></div>
                 </div>
-                <div class="pg-venice__divider-line">
-                    <div class="pg-venice__divider-glow"></div>
-                </div>
-                <div class="pg-venice__panel pg-venice__panel--prometheus">
-                    ${prometheusImage ? `<img class="pg-venice__image" src="${prometheusImage}" alt="Forging Prometheus" loading="lazy" draggable="false" />` : ''}
-                    <div class="pg-venice__panel-content">
-                        <span class="pg-venice__panel-label">${venice.prometheus?.label || 'FORGING'}</span>
-                        <h3 class="pg-venice__panel-title">${venice.prometheus?.title || 'Fire as Language'}</h3>
-                        <p class="pg-venice__panel-text">${venice.prometheus?.description || ''}</p>
-                    </div>
+                <div class="pg-venice__atlas-content">
+                    <span class="pg-venice__panel-label">${venice.atlas?.label || 'BEARING'}</span>
+                    <h3 class="pg-venice__panel-title">${venice.atlas?.title || 'The Weight of Form'}</h3>
+                    <p class="pg-venice__panel-text">${venice.atlas?.description || ''}</p>
                 </div>
             </div>
         </section>
@@ -303,35 +335,7 @@ function buildDiamondVault(closedWorks) {
     `;
 }
 
-// ─── Inquire CTA ─────────────────────────────────
 
-function buildInquire() {
-    return `
-        <section class="pg-inquire" id="pg-inquire">
-            <div class="pg-inquire__container" data-reveal>
-                <div class="pg-inquire__crown">
-                    <span class="pg-inquire__line"></span>
-                    <span class="pg-inquire__diamond">◈</span>
-                    <span class="pg-inquire__line"></span>
-                </div>
-                <span class="pg-inquire__label">Commissions & Inquiries</span>
-                <h3 class="pg-inquire__title">
-                    <span>Let's </span>
-                    <span class="pg-inquire__title-accent">Connect</span>
-                </h3>
-                <p class="pg-inquire__text">
-                    For monumental sculpture commissions, exhibition inquiries, or to discuss a collaborative project — I welcome your message.
-                </p>
-                <a href="/contact.html" class="pg-inquire__cta">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 
 // ═══════════════════════════════════════════

@@ -462,6 +462,39 @@
     margin: 0 auto;
 }
 
+.coins-vitrine__segment {
+    margin-bottom: clamp(4rem, 8vh, 6rem);
+}
+
+.coins-vitrine__segment:last-child {
+    margin-bottom: 0;
+}
+
+.coins-vitrine__segment-label {
+    font-family: var(--font-secondary, 'Inter', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--color-gold, #c9a77a);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    display: block;
+}
+
+.coins-vitrine__segment-label::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 1px;
+    background: var(--color-gold, #c9a77a);
+    opacity: 0.5;
+}
+
 /* ─── Vitrine Card ─── */
 
 .coins-card {
@@ -513,7 +546,13 @@
     position: relative;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #080810;
+    background: 
+        radial-gradient(circle at center, rgba(30, 30, 35, 0.4) 0%, rgba(10, 10, 15, 0.8) 100%),
+        url('/images/coins/transparent/felt-background.jpeg') center / cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
 }
 
 /* Velvet noise texture overlay */
@@ -543,39 +582,54 @@
 .coins-card__spotlight {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    background:
-        radial-gradient(circle at 50% 40%,
-            rgba(255, 255, 255, 0.03) 0%,
-            transparent 60%
-        );
+    z-index: 4;
+    background: radial-gradient(
+        circle 300px at var(--shine-x, 50%) var(--shine-y, 50%),
+        rgba(255, 255, 240, 0.2) 0%,
+        rgba(255, 255, 240, 0.05) 25%,
+        transparent 55%
+    );
+    mix-blend-mode: soft-light;
     pointer-events: none;
-    transition: opacity 0.5s ease;
-    opacity: 0.5;
+    opacity: 0;
+    transition: opacity 0.35s ease;
 }
 
 .coins-card:hover .coins-card__spotlight {
     opacity: 1;
-    background:
-        radial-gradient(circle at 50% 40%,
-            rgba(255, 255, 255, 0.06) 0%,
-            transparent 50%
-        );
+}
+
+.coins-card__specular {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 150px 250px at var(--shine-x, 50%) var(--shine-y, 50%),
+        rgba(201, 167, 122, 0.08) 0%,
+        transparent 50%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 4;
+}
+
+.coins-card:hover .coins-card__specular {
+    opacity: 1;
 }
 
 .coins-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
+    position: relative;
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
     z-index: 3;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.1s linear, filter 0.5s ease;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
     min-height: 40px;
 }
 
 .coins-card:hover .coins-card__image {
-    transform: scale(1.05);
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.7));
 }
 
 /* No-image placeholder */
@@ -711,15 +765,67 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #080810;
+    background: 
+        radial-gradient(circle at center, rgba(30, 30, 35, 0.4) 0%, rgba(10, 10, 15, 0.8) 100%),
+        url('/images/coins/transparent/felt-background.jpeg') center / cover;
     flex-shrink: 0;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+.coins-panel__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: radial-gradient(
+        circle 300px at var(--shine-x, 50%) var(--shine-y, 50%),
+        rgba(255, 255, 240, 0.2) 0%,
+        rgba(255, 255, 240, 0.05) 25%,
+        transparent 55%
+    );
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.coins-panel__sheet:hover .coins-panel__spotlight {
+    opacity: 1;
+}
+
+.coins-panel__specular {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 200px 300px at var(--shine-x, 50%) var(--shine-y, 50%),
+        rgba(201, 167, 122, 0.08) 0%,
+        transparent 50%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 4;
+}
+
+.coins-panel__sheet:hover .coins-panel__specular {
+    opacity: 1;
 }
 
 .coins-panel__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: relative;
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+    z-index: 3;
+    transition: transform 0.1s linear, filter 0.5s ease;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+}
+
+.coins-panel__sheet:hover .coins-panel__image {
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.7));
 }
 
 .coins-panel__body {
@@ -773,107 +879,6 @@
 }
 
 
-/* ─── Inquire CTA ──────────────────────────────────── */
-
-.coins-inquire {
-    padding: clamp(6rem, 12vh, 10rem) var(--page-margin, 8vw);
-    background: #050508;
-    text-align: center;
-}
-
-.coins-inquire__container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.coins-inquire__crown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-}
-
-.coins-inquire__line {
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(201, 167, 122, 0.4)
-    );
-}
-
-.coins-inquire__diamond {
-    color: var(--color-gold, #c9a77a);
-    font-size: 0.7rem;
-    opacity: 0.6;
-}
-
-.coins-inquire__label {
-    display: block;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--color-muted, #8a8a9a);
-    margin-bottom: 1rem;
-}
-
-.coins-inquire__title {
-    font-family: var(--font-primary, 'Cormorant Garamond', Georgia, serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300;
-    color: var(--color-light, #F6F6F6);
-    line-height: 1.2;
-    margin-bottom: 1rem;
-}
-
-.coins-inquire__title-accent {
-    color: var(--color-gold, #c9a77a);
-    font-style: italic;
-}
-
-.coins-inquire__text {
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.85rem;
-    font-weight: 300;
-    line-height: 1.7;
-    color: var(--color-body-text, #a0a0a8);
-    margin-bottom: 2.5rem;
-}
-
-.coins-inquire__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.5rem;
-    border: 1px solid rgba(201, 167, 122, 0.3);
-    background: transparent;
-    color: var(--color-gold, #c9a77a);
-    text-decoration: none;
-    font-family: var(--font-secondary, 'Inter', sans-serif);
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    transition: all 0.4s ease;
-}
-
-.coins-inquire__cta:hover {
-    background: rgba(201, 167, 122, 0.08);
-    border-color: rgba(201, 167, 122, 0.5);
-    transform: translateX(4px);
-}
-
-.coins-inquire__cta svg {
-    transition: transform 0.3s ease;
-}
-
-.coins-inquire__cta:hover svg {
-    transform: translateX(4px);
-}
-
 
 /* ─── Scroll Reveal ────────────────────────────────── */
 
@@ -912,13 +917,28 @@
     }
 
     .coins-vitrine__grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        padding: 0;
+    }
+
+    .coins-card {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .coins-card__image-wrap {
+        aspect-ratio: auto;
     }
 
     .coins-card__image {
-        width: 85%;
-        height: 85%;
+        position: relative;
+        inset: auto;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
     }
 
     .coins-card__content {
@@ -932,25 +952,16 @@
 
 @media (max-width: 480px) {
     .coins-vitrine__grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-    }
-
-    .coins-card__image-wrap {
-        aspect-ratio: 1 / 1;
-    }
-
-    .coins-card__image {
-        object-fit: contain;
-        padding: 8%;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .coins-card__content {
-        padding: 0.6rem 0.75rem 0.75rem;
+        padding: 0.75rem 1rem 1rem;
     }
 
     .coins-card__title {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
     }
 
     .coins-card__year,

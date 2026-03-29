@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numismatic Atelier | Nikola Vudrag</title>
+    <meta name="description"
+        content="Interactive coin and medal showcase — masterful hand-engraving by sculptor Nikola Vudrag for the Croatian National Bank and ECB.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        *,
+        *::before,
+        *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        html, body {
+            width: 100%;
+            background: #050508;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: #F6F6F6;
+            overflow-x: hidden;
+        }
+
+        /* Static Header */
+        .static-header {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 80px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 4rem;
+            z-index: 1000;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: rgba(5, 5, 8, 0.4);
+        }
+
+        @keyframes menu-glow-pulse {
+            0% { opacity: 0.3; box-shadow: 0 0 5px rgba(201,167,122,0.1); }
+            100% { opacity: 0.8; box-shadow: 0 0 15px rgba(201,167,122,0.4), 0 0 30px rgba(201,167,122,0.2); }
+        }
+
+        .static-header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg,
+                rgba(201,167,122,0) 0%, rgba(201,167,122,0.5) 50%, rgba(201,167,122,0) 100%);
+            animation: menu-glow-pulse 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .static-header .logo {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.1rem; font-weight: 400;
+            letter-spacing: 0.5em; color: #c9a77a;
+            text-decoration: none; text-transform: uppercase;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+
+        .static-header .back-link {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-family: 'Inter', sans-serif; font-size: 0.7rem;
+            font-weight: 400; letter-spacing: 0.15em;
+            text-transform: uppercase; color: #8a8a96;
+            text-decoration: none;
+            transition: color 0.3s ease, gap 0.3s ease;
+        }
+
+        .static-header .back-link:hover { color: #c9a77a; gap: 0.75rem; }
+        .static-header .back-link svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+        .static-header .back-link:hover svg { transform: translateX(-3px); }
+
+        .static-header .menu-toggle {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; gap: 5px; width: 30px; height: 30px;
+            background: none; border: none; cursor: pointer; padding: 0;
+        }
+
+        .static-header .menu-toggle span {
+            display: block; width: 22px; height: 1px;
+            background: #c9a77a; transition: all 0.3s ease;
+        }
+
+        .static-header .menu-toggle:hover span { background: #e5d4b8; }
+        .static-header .menu-toggle:hover span:first-child { transform: translateX(-3px); }
+        .static-header .menu-toggle:hover span:last-child { transform: translateX(3px); }
+
+        @media (max-width: 768px) {
+            .static-header { padding: 0 1.5rem; height: 60px; }
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/coinsLab-BYuOxzJM.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/coinsLab-Cf2Kq0Yj.css">
+</head>
+
+<body>
+    <header class="static-header">
+        <a href="/" class="back-link" id="back-to-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>Back</span>
+        </a>
+        <a href="/" class="logo">VUDRAG</a>
+        <button class="menu-toggle" id="menu-toggle-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <div id="coins-lab-root"></div>
+
+</body>
+
+</html>

@@ -33,10 +33,17 @@ const ARTICLES = [
         featured: true
     },
     {
-        publication: 'Symbol Quorum',
-        title: 'Nikola Vudrag: World-Class Sculptures',
-        description: 'After the Iron Maiden sculpture was sold at a charity auction in Warsaw for a whopping €712,000, everyone wants a piece of Varaždin sculptor Nikola Vudrag\'s genius mind.',
-        url: 'https://symbol-quorum.com/en/nikola-vudrag-world-class-sculptures/',
+        publication: 'Contemporary Art Issue',
+        title: 'Personal Structures — Beyond Boundaries',
+        description: 'Coverage of Vudrag\'s participation in Personal Structures at Palazzo Mora, Venice — where steel Atlas and Prometheus sculptures confront the viewer with mythological weight.',
+        url: 'https://www.contemporaryartissue.com/nikola-vudrag-at-personal-structures-beyond-boundaries/',
+        year: '2024'
+    },
+    {
+        publication: 'ITSLIQUID',
+        title: 'Featured Artist: Nikola Vudrag',
+        description: 'In the timeless dance of humanity\'s narrative, Vudrag\'s inspiration arises from the depths of philosophical, esoteric, and theological wisdom.',
+        url: 'https://www.itsliquid.com/featuredartist-nikolavudrag.html',
         year: '2024'
     },
     {
@@ -46,6 +53,35 @@ const ARTICLES = [
         url: 'https://www.croatiaweek.com/sculpture-iron-maiden-by-croatian-artist-nikola-vudrag-sells-for-an-incredible-e-712000/',
         year: '2023',
         breakout: true
+    },
+    {
+        publication: 'Symbol Quorum',
+        title: 'Nikola Vudrag: World-Class Sculptures',
+        description: 'After the Iron Maiden sculpture was sold at a charity auction in Warsaw for a whopping €712,000, everyone wants a piece of Varaždin sculptor Nikola Vudrag\'s genius mind.',
+        url: 'https://symbol-quorum.com/en/nikola-vudrag-world-class-sculptures/',
+        year: '2024'
+    },
+    {
+        publication: 'Plotkopedia',
+        title: 'TOP CHARITY 2023 Grand Charity Auction',
+        description: 'Historic result of the grand charity auction where Vudrag\'s Iron Maiden sculpture broke records, raising over €1.3 million for children in Ghana, Ukraine, and Poland.',
+        url: 'https://plotkopedia.com/en/exclusive/rafal-brzoska-and-omenaa-mensah-break-more-records-historic-result-of-the-top-charity-2023-grand-charity-auction/',
+        year: '2023'
+    },
+    {
+        publication: 'Croatia Week',
+        title: 'Nikola Vudrag Debuts in Dubai\'s Jetex Space',
+        description: 'Croatian sculptor Nikola Vudrag debuts The Seven Realms at Dubai\'s prestigious Jetex FBO Terminal, bridging Croatian craftsmanship with Middle Eastern audiences.',
+        url: 'https://www.croatiaweek.com/croatian-sculptor-nikola-vudrag-debuts-in-dubais-jetex-space-with-the-seven-realms/',
+        year: '2023',
+        breakout: true
+    },
+    {
+        publication: 'Croatia Week',
+        title: 'Nikola Vudrag at Malta Biennale',
+        description: 'Croatian sculptor pays tribute to ancient myths and philanthropy at the first Malta Biennale with his luminous Corten steel Apples of the Hesperides.',
+        url: 'https://www.croatiaweek.com/nikola-vudrag-at-malta-biennale/',
+        year: '2024'
     },
     {
         publication: 'Contemporary Art Issue',
@@ -59,43 +95,8 @@ const ARTICLES = [
         title: 'Forging the Myth in Steel',
         description: 'Critical analysis of Croatian sculptor Nikola Vudrag, who forges ancient myths and light in Corten steel to question our contemporary relationship with form, light, and tradition.',
         url: 'https://www.artcritic.com/en/nikola-vudrag-forging-the-myth-in-steel/',
-        year: '2025'
-    },
-    {
-        publication: 'Croatia Week',
-        title: 'Nikola Vudrag Debuts in Dubai\'s Jetex Space',
-        description: 'Croatian sculptor Nikola Vudrag debuts The Seven Realms at Dubai\'s prestigious Jetex FBO Terminal, bridging Croatian craftsmanship with Middle Eastern audiences.',
-        url: 'https://www.croatiaweek.com/croatian-sculptor-nikola-vudrag-debuts-in-dubais-jetex-space-with-the-seven-realms/',
-        year: '2023'
-    },
-    {
-        publication: 'ITSLIQUID',
-        title: 'Featured Artist: Nikola Vudrag',
-        description: 'In the timeless dance of humanity\'s narrative, Vudrag\'s inspiration arises from the depths of philosophical, esoteric, and theological wisdom.',
-        url: 'https://www.itsliquid.com/featuredartist-nikolavudrag.html',
-        year: '2024'
-    },
-    {
-        publication: 'Croatia Week',
-        title: 'Nikola Vudrag at Malta Biennale',
-        description: 'Croatian sculptor pays tribute to ancient myths and philanthropy at the first Malta Biennale with his luminous Corten steel Apples of the Hesperides.',
-        url: 'https://www.croatiaweek.com/nikola-vudrag-at-malta-biennale/',
-        year: '2024'
-    },
-    {
-        publication: 'Contemporary Art Issue',
-        title: 'Personal Structures — Beyond Boundaries',
-        description: 'Coverage of Vudrag\'s participation in Personal Structures at Palazzo Mora, Venice — where steel Atlas and Prometheus sculptures confront the viewer with mythological weight.',
-        url: 'https://www.contemporaryartissue.com/nikola-vudrag-at-personal-structures-beyond-boundaries/',
-        year: '2024',
+        year: '2025',
         breakout: true
-    },
-    {
-        publication: 'Plotkopedia',
-        title: 'TOP CHARITY 2023 Grand Charity Auction',
-        description: 'Historic result of the grand charity auction where Vudrag\'s Iron Maiden sculpture broke records, raising over €1.3 million for children in Ghana, Ukraine, and Poland.',
-        url: 'https://plotkopedia.com/en/exclusive/rafal-brzoska-and-omenaa-mensah-break-more-records-historic-result-of-the-top-charity-2023-grand-charity-auction/',
-        year: '2023'
     }
 ];
 
@@ -108,6 +109,10 @@ const ARTICLES = [
 function buildHero() {
     return `
         <section class="press-hero">
+            <div class="press-hero__bg">
+                <img src="/images/the press.jpeg" alt="Nikola Vudrag Press" />
+                <div class="press-hero__overlay"></div>
+            </div>
             <div class="press-hero__watermark" aria-hidden="true">PRESS</div>
             <div class="press-hero__content">
                 <span class="press-hero__eyebrow">Selected Press & Critical Writing</span>
@@ -183,28 +188,7 @@ function buildEditorialGrid() {
     `;
 }
 
-function buildInquire() {
-    return `
-        <section class="press-inquire" data-reveal>
-            <div class="press-inquire__crown">
-                <span class="press-inquire__line"></span>
-                <span class="press-inquire__diamond">◈</span>
-                <span class="press-inquire__line"></span>
-            </div>
-            <span class="press-inquire__label">Press & Media</span>
-            <h3 class="press-inquire__title">Media Inquiries</h3>
-            <p class="press-inquire__text">
-                For press coverage, interview requests, or exhibition catalogs — reach out directly.
-            </p>
-            <a href="/contact.html" class="press-inquire__cta">
-                <span>Get in Touch</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-        </section>
-    `;
-}
+
 
 // ═══════════════════════════════════════════
 // Scroll Reveal System
@@ -272,7 +256,6 @@ async function init() {
             ${buildHero()}
             ${buildFeaturedArticle()}
             ${buildEditorialGrid()}
-            ${buildInquire()}
         </div>
     `;
 

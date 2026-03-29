@@ -38,8 +38,7 @@ function buildHTML(collection, video, intro, vaultTitle, works) {
         ${buildVideoHero(video)}
         ${buildVaultReveal(vaultTitle, intro)}
         ${buildIntroduction(intro)}
-        ${buildVitrine(works)}
-        ${buildInquire()}
+        ${buildVitrine(works, collection)}
         ${buildSidePanel()}
     `;
 }
@@ -152,8 +151,36 @@ function buildIntroduction(intro) {
 
 // ─── Vitrine Grid ────────────────────────────────
 
-function buildVitrine(works) {
+function buildVitrine(works, collection) {
     if (!works.length) return '';
+
+    const segments = collection.segments || [];
+    let segmentsHTML = '';
+
+    if (segments.length > 0) {
+        segmentsHTML = segments.map(segmentName => {
+            const segmentedWorks = works.filter(w => w.segment === segmentName);
+            if (!segmentedWorks.length) return '';
+            
+            return `
+                <div class="coins-vitrine__segment" data-reveal>
+                    <h3 class="coins-vitrine__segment-label">${segmentName}</h3>
+                    <div class="coins-vitrine__grid">
+                        ${segmentedWorks.map((work) => {
+                            const originalIndex = works.indexOf(work);
+                            return buildCoinCard(work, originalIndex);
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } else {
+        segmentsHTML = `
+            <div class="coins-vitrine__grid">
+                ${works.map((work, i) => buildCoinCard(work, i)).join('')}
+            </div>
+        `;
+    }
 
     return `
         <section class="coins-vitrine" id="coins-vitrine">
@@ -162,9 +189,7 @@ function buildVitrine(works) {
                 <h2 class="coins-vitrine__heading">Collector's Vitrine</h2>
                 <div class="coins-vitrine__divider"></div>
             </header>
-            <div class="coins-vitrine__grid">
-                ${works.map((work, i) => buildCoinCard(work, i)).join('')}
-            </div>
+            ${segmentsHTML}
         </section>
     `;
 }
@@ -178,6 +203,7 @@ function buildCoinCard(work, index) {
         <article class="coins-card" data-reveal data-reveal-delay="${Math.min(index, 5)}" data-index="${index}" data-description="${desc}">
             <div class="coins-card__image-wrap">
                 <div class="coins-card__spotlight"></div>
+                <div class="coins-card__specular"></div>
                 ${hasImage
                     ? `<img class="coins-card__image" src="${work.image}" alt="${work.title}" loading="lazy" draggable="false" />`
                     : `<div class="coins-card__placeholder">
@@ -212,8 +238,10 @@ function buildSidePanel() {
                         <path d="M18 6L6 18M6 6l12 12"/>
                     </svg>
                 </button>
-                <div class="coins-panel__image-wrap">
-                    <img class="coins-panel__image" src="" alt="" draggable="false" />
+                <div class="coins-panel__image-wrap" id="panel-image-wrap">
+                    <img class="coins-panel__image" id="panel-image" src="" alt="" draggable="false" />
+                    <div class="coins-panel__spotlight"></div>
+                    <div class="coins-panel__specular"></div>
                 </div>
                 <div class="coins-panel__body">
                     <span class="coins-panel__eyebrow"></span>
@@ -226,35 +254,6 @@ function buildSidePanel() {
     `;
 }
 
-// ─── Inquire CTA ─────────────────────────────────
-
-function buildInquire() {
-    return `
-        <section class="coins-inquire" id="coins-inquire">
-            <div class="coins-inquire__container" data-reveal>
-                <div class="coins-inquire__crown">
-                    <span class="coins-inquire__line"></span>
-                    <span class="coins-inquire__diamond">◈</span>
-                    <span class="coins-inquire__line"></span>
-                </div>
-                <span class="coins-inquire__label">Commissions & Inquiries</span>
-                <h3 class="coins-inquire__title">
-                    <span>Let's </span>
-                    <span class="coins-inquire__title-accent">Connect</span>
-                </h3>
-                <p class="coins-inquire__text">
-                    For commemorative coin commissions, medal design, or to learn more about the numismatic craft — I welcome your inquiry.
-                </p>
-                <a href="/contact.html" class="coins-inquire__cta">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 
 // ═══════════════════════════════════════════
@@ -482,17 +481,43 @@ function setupVitrineInteraction(container) {
     // Hover tilt (desktop only)
     if (window.matchMedia('(hover: hover)').matches) {
         cards.forEach(card => {
+            const imgWrap = card.querySelector('.coins-card__image-wrap');
+            const coinImg = card.querySelector('.coins-card__image');
+
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width;
                 const y = (e.clientY - rect.top) / rect.height;
+
+                // Card tilt (subtle)
                 const rotateY = (x - 0.5) * 6;
                 const rotateX = (0.5 - y) * 4;
-                card.style.transform = `translateY(-4px) perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+
+                // Coin image tilt (dramatic 3D)
+                if (coinImg) {
+                    const coinRY = (x - 0.5) * 22;
+                    const coinRX = (0.5 - y) * 18;
+                    coinImg.style.transform = `perspective(400px) rotateX(${coinRX}deg) rotateY(${coinRY}deg) scale(1.06)`;
+                }
+
+                // Light position
+                if (imgWrap) {
+                    const wRect = imgWrap.getBoundingClientRect();
+                    const lx = ((e.clientX - wRect.left) / wRect.width) * 100;
+                    const ly = ((e.clientY - wRect.top) / wRect.height) * 100;
+                    imgWrap.style.setProperty('--shine-x', `${lx}%`);
+                    imgWrap.style.setProperty('--shine-y', `${ly}%`);
+                }
             });
 
             card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
+                if (coinImg) coinImg.style.transform = '';
+                if (imgWrap) {
+                    imgWrap.style.removeProperty('--shine-x');
+                    imgWrap.style.removeProperty('--shine-y');
+                }
             });
         });
     }
@@ -510,12 +535,40 @@ function setupSidePanel(container, cards) {
     const backdrop = panel.querySelector('.coins-panel__backdrop');
     const sheet = panel.querySelector('.coins-panel__sheet');
     const closeBtn = panel.querySelector('.coins-panel__close');
-    const panelImage = panel.querySelector('.coins-panel__image');
+    const panelImageWrap = panel.querySelector('#panel-image-wrap');
+    const panelImage = panel.querySelector('#panel-image');
     const panelEyebrow = panel.querySelector('.coins-panel__eyebrow');
     const panelTitle = panel.querySelector('.coins-panel__title');
     const panelDesc = panel.querySelector('.coins-panel__description');
 
     let activeCard = null;
+
+    // Hover effect for side panel image
+    if (window.matchMedia('(hover: hover)').matches && panelImageWrap && panelImage) {
+        sheet.addEventListener('mousemove', (e) => {
+            const rect = panelImageWrap.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+
+            const clampedX = Math.max(-0.5, Math.min(1.5, x));
+            const clampedY = Math.max(-0.5, Math.min(1.5, y));
+
+            const coinRY = (clampedX - 0.5) * 22;
+            const coinRX = (0.5 - clampedY) * 18;
+            panelImage.style.transform = `perspective(400px) rotateX(${coinRX}deg) rotateY(${coinRY}deg) scale(1.06)`;
+
+            const lx = clampedX * 100;
+            const ly = clampedY * 100;
+            panelImageWrap.style.setProperty('--shine-x', `${lx}%`);
+            panelImageWrap.style.setProperty('--shine-y', `${ly}%`);
+        });
+
+        sheet.addEventListener('mouseleave', () => {
+            panelImage.style.transform = '';
+            panelImageWrap.style.removeProperty('--shine-x');
+            panelImageWrap.style.removeProperty('--shine-y');
+        });
+    }
 
     function openPanel(card) {
         const index = parseInt(card.dataset.index, 10);
