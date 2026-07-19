@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             import('./ui/menu-overlay.js'),
             import('./ui/footer.js')
         ]);
-        menuModule.initMenuOverlay();
-        footerModule.initFooter();
+        if (menuModule.createMenuOverlay) menuModule.createMenuOverlay();
+        if (footerModule.setupFooter) footerModule.setupFooter();
     } catch (e) {
         console.warn('Shared components failed to load:', e);
     }
@@ -61,7 +61,6 @@ function buildHTML() {
         ${buildBioFlipbook()}
         ${buildRezervar()}
         ${buildStudio()}
-        ${buildCTA()}
     `;
 }
 
@@ -249,35 +248,7 @@ function buildStudio() {
 }
 
 
-// ─── CTA ─────────────────────────────────────────
 
-function buildCTA() {
-    return `
-        <section class="forge-cta" id="forge-cta">
-            <div class="forge-cta__container" data-reveal>
-                <div class="forge-cta__crown">
-                    <span class="forge-cta__line"></span>
-                    <span class="forge-cta__diamond">◈</span>
-                    <span class="forge-cta__line"></span>
-                </div>
-                <span class="forge-cta__label">Commissions & Inquiries</span>
-                <h3 class="forge-cta__title">
-                    <span>Let's </span>
-                    <span class="forge-cta__title-accent">Connect</span>
-                </h3>
-                <p class="forge-cta__text">
-                    For commissions, exhibitions, or simply to share your thoughts on the interplay of form and light — I welcome your message.
-                </p>
-                <a href="/contact.html" class="forge-cta__link">
-                    <span>Get in Touch</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-    `;
-}
 
 
 // ═══════════════════════════════════════════
