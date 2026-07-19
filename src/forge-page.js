@@ -262,7 +262,7 @@ function setupYouTubeHero() {
     const poster = document.querySelector('.forge-hero__poster');
     if (poster) {
         // Hide poster after short delay for YouTube to start
-        setTimeout(() => poster.classList.add('is-hidden'), 3000);
+        setTimeout(() => poster.classList.add('is-hidden'), 4500);
     }
 }
 

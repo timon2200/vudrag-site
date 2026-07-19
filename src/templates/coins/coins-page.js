@@ -315,7 +315,7 @@ function setupVideoHero(container, videoConfig) {
 
                         // Hide poster once we know the player is ready and playing
                         if (poster) {
-                            setTimeout(() => poster.classList.add('is-hidden'), 1500);
+                            setTimeout(() => poster.classList.add('is-hidden'), 4500);
                         }
                     },
                     onStateChange: () => {
