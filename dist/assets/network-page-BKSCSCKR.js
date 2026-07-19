@@ -30,7 +30,7 @@ async function A(t,e){const{pageContent:s,works:a=[],segments:n=[]}=e,{heroSlide
                 </svg>
             </div>
         </section>
-    `:""}function f(t,e){if(t.youtubeId){const s=t.youtubeId,a=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${s}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin)].join("&"),n=`https://www.youtube.com/embed/${s}?${a}`;return`
+    `:""}function f(t,e){if(t.youtubeId){const s=t.youtubeId,a=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${s}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin),"cc_load_policy=3"].join("&"),n=`https://www.youtube.com/embed/${s}?${a}`;return`
             <div class="nw-hero__video-wrap">
                 <iframe
                     class="nw-hero__video"

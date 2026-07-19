@@ -294,7 +294,7 @@ function setupLightbox(section) {
         if (film.youtubeId) {
             playerArea.innerHTML = `
                 <iframe 
-                    src="https://www.youtube.com/embed/${film.youtubeId}?autoplay=1&rel=0&modestbranding=1"
+                    src="https://www.youtube.com/embed/${film.youtubeId}?autoplay=1&rel=0&modestbranding=1&cc_load_policy=3"
                     allow="autoplay; encrypted-media"
                     allowfullscreen
                 ></iframe>

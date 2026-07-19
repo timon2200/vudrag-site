@@ -52,7 +52,7 @@ const FALLBACK_CATEGORIES = [
         title: 'Paintings',
         subtitle: 'Metal Paintings',
         description: 'Plasma-cut reliefs and torch-drawn compositions — where the metal sheet becomes canvas',
-        count: 3,
+        count: 2,
         image: '/images/works/painting-hand.webp',
         pageType: 'paintings'
     },

@@ -94,7 +94,7 @@ function renderBlock(block) {
             else if (src.includes('youtu.be/')) id = src.split('youtu.be/')[1].split('?')[0];
 
             if (id) {
-                src = `https://www.youtube.com/embed/${id}?modestbranding=1&rel=0`;
+                src = `https://www.youtube.com/embed/${id}?modestbranding=1&rel=0&cc_load_policy=3`;
                 return `<div class="content-block block-video"><iframe src="${src}" allowfullscreen></iframe></div>`;
             }
         }

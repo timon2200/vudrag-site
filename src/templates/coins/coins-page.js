@@ -56,7 +56,8 @@ function buildVideoHero(video) {
             'autoplay=1', 'mute=1', 'loop=1', 'controls=0',
             'showinfo=0', 'modestbranding=1', 'rel=0', 'disablekb=1',
             'iv_load_policy=3', 'playsinline=1', `playlist=${video.src}`,
-            'enablejsapi=1', 'origin=' + encodeURIComponent(window.location.origin)
+            'enablejsapi=1', 'origin=' + encodeURIComponent(window.location.origin),
+            'cc_load_policy=3'
         ].join('&');
         videoElement = `
             <iframe
@@ -302,9 +303,30 @@ function setupVideoHero(container, videoConfig) {
             ytPlayer = new window.YT.Player(iframe, {
                 events: {
                     onReady: () => {
+                        // Attempt to force disable captions
+                        try {
+                            if (typeof ytPlayer.unloadModule === 'function') {
+                                ytPlayer.unloadModule('captions');
+                                ytPlayer.unloadModule('cc');
+                            }
+                        } catch (e) {
+                            console.warn('Could not unload captions module:', e);
+                        }
+
                         // Hide poster once we know the player is ready and playing
                         if (poster) {
                             setTimeout(() => poster.classList.add('is-hidden'), 1500);
+                        }
+                    },
+                    onStateChange: () => {
+                        // State transitions can re-enable captions, so force disable them again
+                        try {
+                            if (typeof ytPlayer.unloadModule === 'function') {
+                                ytPlayer.unloadModule('captions');
+                                ytPlayer.unloadModule('cc');
+                            }
+                        } catch (e) {
+                            // ignore
                         }
                     }
                 }

@@ -250,8 +250,7 @@
     "description": "Plasma-cut reliefs and torch-drawn compositions on raw steel — where the industrial act of cutting becomes an act of drawing, and the metal sheet becomes canvas.",
     "image": "/images/works/painting-hand.webp",
     "segments": [
-      "Plasma Torch",
-      "Mirror Steel"
+      "Plasma Torch"
     ],
     "pageContent": {
       "hero": {
@@ -280,7 +279,7 @@
             "label": "Steel Thickness"
           },
           {
-            "value": "3",
+            "value": "2",
             "label": "Works in Collection"
           }
         ]
@@ -302,14 +301,6 @@
         "description": "Plasma hand-cutting on raw metal sheets, enhanced with LED light installations. Wall metal art where industry and humanity collide — the torch reveals what the metal conceals. Each composition transforms functional steel into a canvas of flickering illumination.",
         "image": "/images/works/plasma-torch-series.webp",
         "segment": "Plasma Torch"
-      },
-      {
-        "title": "The Dandelion",
-        "year": "2024",
-        "dimensions": "190 × 110 × 110 cm",
-        "description": "A quiet philosopher of the ruins, a golden whisper born from cracks in the pavement. Mirrored stainless steel captures the sun like liquid silver, each curve a calculated surrender to form. The dandelion is not fragile; it is the defiance of fragility — a paradox of softness and indomitability. To pluck it is futile; its seeds scatter on the wind, ensuring that even its destruction becomes genesis.",
-        "image": "/images/works/dandelion.webp",
-        "segment": "Mirror Steel"
       }
     ]
   },

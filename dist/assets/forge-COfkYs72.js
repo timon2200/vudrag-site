@@ -130,7 +130,7 @@ import"./modulepreload-polyfill-B5Qt9EMX.js";import{_ as C}from"./playcanvas-C6g
         ${$()}
         ${F()}
         ${z()}
-    `}function B(){const p=window.innerWidth<768?"QDHLG4YIkno":"QDHLG4YIkno",u=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${p}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin)].join("&");return`
+    `}function B(){const p=window.innerWidth<768?"QDHLG4YIkno":"QDHLG4YIkno",u=["autoplay=1","mute=1","loop=1","controls=0","showinfo=0","modestbranding=1","rel=0","disablekb=1","iv_load_policy=3","playsinline=1",`playlist=${p}`,"enablejsapi=1","origin="+encodeURIComponent(window.location.origin),"cc_load_policy=3"].join("&");return`
         <section class="forge-hero" id="forge-hero">
             <div class="forge-hero__video-wrap">
                 <iframe

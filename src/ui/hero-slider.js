@@ -85,6 +85,7 @@ function buildVideoUrl(slide) {
         `playlist=${videoId}`,
         'enablejsapi=1',
         'origin=' + encodeURIComponent(window.location.origin),
+        'cc_load_policy=3',
         ...(slide.startTime ? [`start=${slide.startTime}`] : [])
     ].join('&');
 

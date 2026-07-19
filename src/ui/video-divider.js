@@ -31,7 +31,7 @@ export function createVideoDivider(container, options = {}) {
         <!-- Video Background -->
         <div class="video-divider__bg">
             <iframe
-                src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${VIDEO_ID}&playsinline=1&rel=0&showinfo=0&modestbranding=1&disablekb=1&fs=0"
+                src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${VIDEO_ID}&playsinline=1&rel=0&showinfo=0&modestbranding=1&disablekb=1&fs=0&cc_load_policy=3"
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
                 title="Ambient video divider"></iframe>
         </div>

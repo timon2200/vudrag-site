@@ -76,7 +76,8 @@ function buildHero() {
         'autoplay=1', 'mute=1', 'loop=1', 'controls=0',
         'showinfo=0', 'modestbranding=1', 'rel=0', 'disablekb=1',
         'iv_load_policy=3', 'playsinline=1', `playlist=${videoId}`,
-        'enablejsapi=1', 'origin=' + encodeURIComponent(window.location.origin)
+        'enablejsapi=1', 'origin=' + encodeURIComponent(window.location.origin),
+        'cc_load_policy=3'
     ].join('&');
 
     return `
