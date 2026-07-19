@@ -290,55 +290,36 @@ function setupVideoHero(container, videoConfig) {
         return;
     }
 
-    // ── YouTube IFrame Player API ──
+    // ── YouTube IFrame Controls & Captions ──
     if (iframe && videoConfig.type === 'youtube') {
-        // Load YouTube IFrame API if not already loaded
-        if (!window.YT || !window.YT.Player) {
-            const tag = document.createElement('script');
-            tag.src = 'https://www.youtube.com/iframe_api';
-            document.head.appendChild(tag);
+        // Hide poster after 1800ms (to let background autoplay start and controls auto-hide)
+        if (poster) {
+            setTimeout(() => poster.classList.add('is-hidden'), 1800);
         }
 
-        const initYTPlayer = () => {
-            ytPlayer = new window.YT.Player(iframe, {
-                events: {
-                    onReady: () => {
-                        // Attempt to force disable captions
-                        try {
-                            if (typeof ytPlayer.unloadModule === 'function') {
-                                ytPlayer.unloadModule('captions');
-                                ytPlayer.unloadModule('cc');
-                            }
-                        } catch (e) {
-                            console.warn('Could not unload captions module:', e);
-                        }
-
-                        // Hide poster once we know the player is ready and playing
-                        if (poster) {
-                            setTimeout(() => poster.classList.add('is-hidden'), 4500);
-                        }
-                    },
-                    onStateChange: () => {
-                        // State transitions can re-enable captions, so force disable them again
-                        try {
-                            if (typeof ytPlayer.unloadModule === 'function') {
-                                ytPlayer.unloadModule('captions');
-                                ytPlayer.unloadModule('cc');
-                            }
-                        } catch (e) {
-                            // ignore
-                        }
-                    }
-                }
-            });
+        // Programmatically unload captions via postMessage
+        const unloadCaptions = () => {
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    event: 'command',
+                    func: 'unloadModule',
+                    args: ['captions']
+                }), '*');
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    event: 'command',
+                    func: 'unloadModule',
+                    args: ['cc']
+                }), '*');
+            } catch (e) {
+                // ignore
+            }
         };
 
-        // Wait for API to be available
-        if (window.YT && window.YT.Player) {
-            initYTPlayer();
-        } else {
-            window.onYouTubeIframeAPIReady = initYTPlayer;
-        }
+        // Send unload commands repeatedly on initialization to ensure they register
+        setTimeout(unloadCaptions, 500);
+        setTimeout(unloadCaptions, 1000);
+        setTimeout(unloadCaptions, 2000);
+        setTimeout(unloadCaptions, 3000);
     }
 
     // Hide poster once video starts playing (MP4)
@@ -366,12 +347,16 @@ function setupVideoHero(container, videoConfig) {
     function toggleMute() {
         isMuted = !isMuted;
 
-        // Toggle on YouTube player
-        if (ytPlayer && ytPlayer.isMuted) {
-            if (isMuted) {
-                ytPlayer.mute();
-            } else {
-                ytPlayer.unMute();
+        // Toggle on YouTube player via postMessage
+        if (iframe && videoConfig.type === 'youtube') {
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    event: 'command',
+                    func: isMuted ? 'mute' : 'unMute',
+                    args: []
+                }), '*');
+            } catch (e) {
+                console.warn('Could not toggle mute via postMessage:', e);
             }
         }
 

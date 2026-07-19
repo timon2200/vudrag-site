@@ -99,7 +99,7 @@
 .hero-slide__image--poster {
     z-index: 1;
     opacity: 1;
-    transition: opacity 1.5s ease 3.5s;
+    transition: opacity 0.4s ease 1.8s;
 }
 
 .hero-slide.is-active .hero-slide__image--poster {

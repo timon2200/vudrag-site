@@ -10,7 +10,12 @@
  *  5. CTA — Let's Connect bridge to contact
  */
 
+// Shared CSS
+import './styles/variables.css';
+import './styles/menu-overlay.css';
+import './styles/footer.css';
 import './styles/forge-page.css';
+
 import { PageFlip } from 'page-flip';
 
 // ═══════════════════════════════════════════
@@ -24,12 +29,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Build page content
     container.innerHTML = buildHTML();
 
-    // Initialize interactive systems
-    requestAnimationFrame(() => {
+    // Initialize interactive systems.
+    // setTimeout instead of requestAnimationFrame: rAF never fires in
+    // background/occluded tabs, which would leave the flipbook unbuilt.
+    setTimeout(() => {
         setupScrollReveal(container);
         setupFlipbook(container);
         setupYouTubeHero();
-    });
+    }, 0);
 
     // Dismiss loading screen
     const loadingScreen = document.getElementById('loading-screen');
@@ -61,6 +68,7 @@ function buildHTML() {
         ${buildBioFlipbook()}
         ${buildRezervar()}
         ${buildStudio()}
+        ${buildCTA()}
     `;
 }
 
@@ -249,6 +257,32 @@ function buildStudio() {
 }
 
 
+// ─── CTA / Footer Bridge ────────────────────────
+
+function buildCTA() {
+    return `
+        <section class="forge-cta" id="forge-cta">
+            <div class="forge-cta__container" data-reveal>
+                <div class="forge-cta__crown">
+                    <span class="forge-cta__line"></span>
+                    <span class="forge-cta__diamond">◆</span>
+                    <span class="forge-cta__line" style="transform: scaleX(-1);"></span>
+                </div>
+                <span class="forge-cta__label">The Forge Awaits</span>
+                <h2 class="forge-cta__title">Let's <span class="forge-cta__title-accent">Connect</span></h2>
+                <p class="forge-cta__text">
+                    Whether you wish to commission a work, visit Rezervart, or begin a collaboration — the studio doors are open.
+                </p>
+                <a href="/contact.html" class="forge-cta__link">
+                    Get in Touch
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+    `;
+}
 
 
 
@@ -262,7 +296,7 @@ function setupYouTubeHero() {
     const poster = document.querySelector('.forge-hero__poster');
     if (poster) {
         // Hide poster after short delay for YouTube to start
-        setTimeout(() => poster.classList.add('is-hidden'), 4500);
+        setTimeout(() => poster.classList.add('is-hidden'), 1800);
     }
 }
 
@@ -321,19 +355,40 @@ function setupFlipbook(container) {
 // ─── Scroll Reveal ───────────────────────────────
 
 function setupScrollReveal(container) {
-    const elements = container.querySelectorAll('[data-reveal]');
+    const pending = new Set(container.querySelectorAll('[data-reveal]'));
+
+    const reveal = (el) => {
+        el.classList.add('is-revealed');
+        observer.unobserve(el);
+        pending.delete(el);
+    };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-revealed');
-                observer.unobserve(entry.target);
-            }
+            if (entry.isIntersecting) reveal(entry.target);
         });
     }, {
         threshold: 0.15,
         rootMargin: '0px 0px -40px 0px'
     });
 
-    elements.forEach(el => observer.observe(el));
+    pending.forEach(el => observer.observe(el));
+
+    // Instant scroll jumps (End key, scrollbar drag, anchors) can skip past
+    // elements without ever intersecting — sweep for anything above the fold.
+    let sweepQueued = false;
+    const sweep = () => {
+        sweepQueued = false;
+        pending.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 40) reveal(el);
+        });
+        if (pending.size === 0) window.removeEventListener('scroll', onScroll);
+    };
+    const onScroll = () => {
+        if (!sweepQueued) {
+            sweepQueued = true;
+            requestAnimationFrame(sweep);
+        }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
 }
